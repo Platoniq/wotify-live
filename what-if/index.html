@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>What if</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+  <br>
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <!--
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+      <li data-target="#myCarousel" data-slide-to="3"></li>
+    </ol>
+    -->
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox" id="items">
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+
+<script>
+
+    //Set slides from API
+
+    var url="https://roadbook.ideacamp2017.eu/api/v2/projects";
+
+    $.getJSON(url, function(data) {
+      num=0;
+      items='';
+      for(i in data) {
+        project = data[i];
+        if(project.extra.step0.whatif){
+          whatif=project.extra.step0.whatif;
+          whatif_size=whatif.length;
+          if(whatif_size<300)
+          {
+            num++;
+            img_author=project.leader.picture;
+            author=project.leader.name;
+            items+='<div class="item';
+            if(num==1)
+              items+=' active';
+            items+='" >';
+              items+='<p class="text-center">'
+                items+=whatif;  
+              items+='</p>';
+              items+='<div class="text-center">'
+                items+='<img style="border-radius: 50%;" width="75" src="'+img_author+'" >';  
+                items+=' <span style="font-size:16px">'+author+'<span>'
+              items+='</div>'  
+            items+='</div>';  
+          }
+        }        
+      }
+      //alert(num);
+      $('div#items').html(items);  
+    });
+
+    $('.carousel').carousel({
+      interval: 1000 * 6
+    });
+
+
+  </script>
+
+</body>
+</html>
