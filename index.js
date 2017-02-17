@@ -21,6 +21,8 @@ app.use(express.static(__dirname + '/public'));
 // Live (socket.io) features
 live(app, http);
 
-http.listen(3000,function(){
-    console.log("Listening on 3000");
+var port = process.env.PORT || '3000';
+
+http.listen(port,function(){
+    console.log("Listening on " + port);
 });

@@ -1,8 +1,8 @@
 {
   "name": "ideacamp-widgets",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
-    "start": "NODE_PATH=. nodemon Server.js"
+    "start": "NODE_PATH=. DEBUG=widgets:* nodemon index"
   },
   "dependencies": {
     "express": "^4.14.1",
