@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div.row
+    div.col-xs-12
+      h1 step !{step}
+        span.group
+
+block prepend scripts
+  script.
+    STEP=!{step};
+    GROUP=!{step};
+
+block append scripts
+  script.
+    function setGroup(group) {
+      GROUP=group;
+      $('.group').html(' Group ' + group);
+    }
+
+    $(function(){
+      setGroup(GROUP);
+      SOCKET.on('change group', function(step, group) {
+        console.log('Change',step,group);
+        if(STEP === step) {
+          setGroup(group);
+        }
+      });
+    });

@@ -1,0 +1,85 @@
+extends layout
+
+block content
+  div.row
+    div.col-xs-12
+      h1 Admin
+      div.well
+        ul#step-changer.nav.nav-pills.nav-stacked
+          each val in [1, 2, 3, 4, 5, 6]
+            li(data-step=val)
+              span(class="step step-" + val).
+                Step !{val}
+              span &nbsp;
+              select.select-step
+                each g in [1, 2, 3, 4, 5, 6]
+                  option(value=g, selected=val===g).
+                    Group !{g}
+
+    div.col-xs-12
+      p
+        a#rotate.btn.btn-primary Rotate groups
+        span &nbsp;
+        a#reset.btn.btn-warning Reset groups
+        span &nbsp;
+        a#reload-remotes.btn.btn-danger Reload remotes
+
+    div.col-xs-12
+      div#feed.well
+
+block append scripts
+  script.
+    // Do not auto reload
+    AUTORELOAD=false;
+    $(function(){
+      $('.select-step').on('change', function(){
+        var step = $(this).closest('li').data('step');
+        var group = $(this).val();
+        console.log('emit step change', step, group);
+        SOCKET.emit('step change', step, group);
+      });
+
+      $('#rotate').on('click', function(){
+        var total = $('.select-step').length;
+        $('.select-step').each(function(index){
+          var $li = $(this).closest('li');
+          var first = parseInt($('.select-step option:first').val());
+          var last = parseInt($('.select-step option:last').val());
+          var g = parseInt($(this).val()) + 1;
+          if(g > last) {
+            g = first;
+          }
+
+          $(this).val(g);
+          $(this).change();
+
+          console.log('step ', $li.data('step'), 'group', g, last);
+        });
+      });
+      $('#reset').on('click', function() {
+        $('.select-step').each(function(index){
+          var step = parseInt($(this).closest('li').data('step'));
+          $(this).val(step);
+          $(this).change();
+        });
+      });
+
+      // Update local select if anoother admin is making changes
+      SOCKET.on('change group', function(step, group) {
+        $('#step-changer li[data-step=' + step + '] .select-step').val(group);
+      });
+
+      $('#reload-remotes').on('click', function(){
+        console.log('Reloading remotes');
+        SOCKET.emit('reload remotes');
+        // Sync remote statuses with this page
+        setTimeout(function(){
+          $('.select-step').change();
+        },2000);
+      });
+
+      SOCKET.on('refresh feed',function(msg){
+        $("#feed").append(msg + '<br>');
+      });
+
+    });
