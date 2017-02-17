@@ -6,7 +6,9 @@
   },
   "dependencies": {
     "express": "^4.14.1",
+    "less-middleware": "^2.2.0",
     "mongoose": "^4.8.3",
+    "pug": "^2.0.0-beta11",
     "socket.io": "^1.7.2"
   },
   "devDependencies": {

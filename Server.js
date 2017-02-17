@@ -1,15 +1,25 @@
-var app       =     require("express")();
-var http      =     require('http').Server(app);
-var io        =     require("socket.io")(http);
+var express   = require("express");
+var app       = express();
+var http      = require('http').Server(app);
+var io        = require("socket.io")(http);
+var pug       = require('pug');
+var less     = require('less-middleware');
+
+app.set('view engine', 'pug');
+app.use(less(__dirname + '/public', {debug:true}));
 
 
 app.get("/",function(req,res){
-    res.sendFile(__dirname + '/client/index.html');
+  res.render('index');
 });
 
-app.get("/prueba",function(req,res){
-    res.sendFile(__dirname + '/client/test.html');
-});
+// Public assets
+app.use(express.static(__dirname + '/public'));
+
+// app.get("/",function(req,res){
+//     res.sendFile(__dirname + '/views/index.html');
+// });
+
 
 /*  This is auto initiated event when Client connects to Your Machien.  */
 
@@ -30,7 +40,6 @@ io.on('connection',function(socket){
     setTimeout(function(){
       io.emit('refresh feed','Test ' + new Date());
     }, 2000);
-    io.emit('refresh page', 'test.html');
 });
 
 var add_status = function (status,callback) {
