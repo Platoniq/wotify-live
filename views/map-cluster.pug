@@ -1,0 +1,14 @@
+extends layout
+
+block styles
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.css")
+  link(rel="stylesheet", href="/assets/css/map-cluster.css")
+
+block append scripts
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.js")
+  script(src="/assets/js/map/markercluster-src.js")
+  script(src="/assets/js/map/map.js")
+
+
+block body
+    div(id="map")

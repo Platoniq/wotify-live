@@ -3,22 +3,20 @@ var app       = express();
 var http      = require('http').Server(app);
 var io        = require("socket.io")(http);
 var pug       = require('pug');
-var less     = require('less-middleware');
+var less      = require('less-middleware');
+var routes    = require('lib/routes.js');
 
+// Setup template engine
+app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
+// Autocompile less
 app.use(less(__dirname + '/public', {debug:true}));
 
+// Add routes
+app.use('/', routes);
 
-app.get("/",function(req,res){
-  res.render('index');
-});
-
-// Public assets
+// Handle public assets
 app.use(express.static(__dirname + '/public'));
-
-// app.get("/",function(req,res){
-//     res.sendFile(__dirname + '/views/index.html');
-// });
 
 
 /*  This is auto initiated event when Client connects to Your Machien.  */

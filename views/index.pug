@@ -1,5 +1,16 @@
 extends layout
 
+block append styles
+  link(rel="stylesheet", href="/assets/css/index.css")
+
 block content
+  div(class="row")
+    div(class="col-md-4 col-md-offset-4" style="background-color: #FFF; margin-top:150px; padding: 50px; padding-top: 20px;")
+      h1(class="text-center" style="color:#000; margin-bottom: 30px;") Widgets
+        a(href="/map-cluster/")
+          div Map Idea Makers
+            a(href="/what-if/")
+            div What if
+
   div(id="show_comments", class="jumbotron")
      p Hellow World
