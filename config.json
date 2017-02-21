@@ -1,3 +1,4 @@
 {
-    "apiUrl": "https://roadbook.ideacamp2017.eu/api/v2"
+    "apiUrl": "https://roadbook.ideacamp2017.eu/api/v2",
+    "dashboard": "devel"
 }
