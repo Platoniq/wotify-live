@@ -2,6 +2,7 @@ var express   = require("express");
 var app       = express();
 var http      = require('http').Server(app);
 var pug       = require('pug');
+var _         = require('underscore');
 var less      = require('less-middleware');
 var routes    = require('lib/routes.js');
 var live = require('lib/live.js');

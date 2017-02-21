@@ -1,10 +1,52 @@
 extends layout
 
+block append styles
+  link(rel="stylesheet", href="/assets/css/step/style.css")
+
+block append scripts
+  script(src="/assets/js/step/data.js")
+  script(src="/assets/js/step/main.js")
+
 block content
+ 
+  div(
+    id='myCarousel'
+    class='carousel slide'
+    data-ride='carousel'
+  )
+    div(
+    id='items'
+    class='carousel-inner'
+    role='listbox'
+  )
+    a(
+    class='left carousel-control'
+    href='#myCarousel'
+    role='button' 
+    data-slide='prev'
+  )
+      span(
+      class='glyphicon glyphicon-chevron-left'
+      aria-hidden='true'
+      )
+      span.sr-only Previous
+    a(
+    class='right carousel-control'
+    href='#myCarousel'
+    role='button' 
+    data-slide='next'
+  )
+      span(
+      class='glyphicon glyphicon-chevron-right'
+      aria-hidden='true'
+      )
+      span.sr-only Next
+
   div.row
     div.col-xs-12
-      h1 step !{step}
+      h1.text-right step !{step}
         span.group
+
 
 block prepend scripts
   script.
@@ -27,3 +69,4 @@ block append scripts
         }
       });
     });
+
