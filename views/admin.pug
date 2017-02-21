@@ -20,9 +20,12 @@ block content
       p
         a#rotate.btn.btn-primary Rotate groups
         span &nbsp;
-        a#reset.btn.btn-warning Reset groups
-        span &nbsp;
-        a#reload-remotes.btn.btn-danger Reload remotes
+        a#sync.btn.btn-info Synchronize
+
+        span.pull-right
+          a#reset.btn.btn-warning Reset groups
+          span &nbsp;
+          a#reload-remotes.btn.btn-danger Reload remotes
 
     div.col-xs-12
       div#feed.well
@@ -31,20 +34,22 @@ block append scripts
   script.
     // Do not auto reload
     AUTORELOAD=false;
+
     $(function(){
       $('.select-step').on('change', function(){
         var step = $(this).closest('li').data('step');
         var group = $(this).val();
         console.log('emit step change', step, group);
         SOCKET.emit('step change', step, group);
+        //- $("#feed").prepend('<p><span class="badge">Synchronizing Step ' + step + ', Group ' + group + '</span></p>');
       });
 
       $('#rotate').on('click', function(){
         var total = $('.select-step').length;
         $('.select-step').each(function(index){
           var $li = $(this).closest('li');
-          var first = parseInt($('.select-step option:first').val());
-          var last = parseInt($('.select-step option:last').val());
+          var first = parseInt($('.select-step option:first').val(), 10);
+          var last = parseInt($('.select-step option:last').val(), 10);
           var g = parseInt($(this).val()) + 1;
           if(g > last) {
             g = first;
@@ -56,9 +61,15 @@ block append scripts
           console.log('step ', $li.data('step'), 'group', g, last);
         });
       });
-      $('#reset').on('click', function() {
+
+      $('#sync').on('click', function() {
+        $('.select-step').change();
+      });
+
+
+    $('#reset').on('click', function() {
         $('.select-step').each(function(index){
-          var step = parseInt($(this).closest('li').data('step'));
+          var step = parseInt($(this).closest('li').data('step'), 10);
           $(this).val(step);
           $(this).change();
         });
@@ -72,14 +83,20 @@ block append scripts
       $('#reload-remotes').on('click', function(){
         console.log('Reloading remotes');
         SOCKET.emit('reload remotes');
-        // Sync remote statuses with this page
-        setTimeout(function(){
-          $('.select-step').change();
-        },2000);
       });
 
-      SOCKET.on('refresh feed',function(msg){
-        $("#feed").append(msg + '<br>');
+      SOCKET.on('refresh feed',function(msg, url){
+        if(url) {
+          // Check for connections to steps (and send current status)
+          url = url.substr(url.lastIndexOf('/') + 1);
+          if(url.indexOf('step') === 0) {
+            // Send current status
+            var step = parseInt(url.substr(4),10);
+            $('li[data-step=' + step+ '] .select-step').change();
+            msg += ' <span class="badge">Synchronizing ' + url+'</span>';
+          }
+        }
+        $("#feed").prepend('<p>' + msg + '</p>');
       });
 
     });

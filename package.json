@@ -1,12 +1,18 @@
 {
   "name": "ideacamp-widgets",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "repository" :
+    { "type" : "git"
+    , "url" : "https://github.com/GoteoFoundation/wotify-widgets"
+    },
+  "license" : "MIT",
   "scripts": {
     "start": "NODE_PATH=. DEBUG=widgets:* nodemon index"
   },
   "dependencies": {
     "express": "^4.14.1",
     "less-middleware": "^2.2.0",
+    "moment": "^2.17.1",
     "mongoose": "^4.8.3",
     "pug": "^2.0.0-beta11",
     "socket.io": "^1.7.2",
