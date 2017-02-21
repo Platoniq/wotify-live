@@ -29,6 +29,7 @@ block content
 
 block prepend scripts
   script.
+    TIME = 6000;
     STEP=!{step};
     GROUP=!{step};
     PROJECTS=[];
@@ -41,7 +42,7 @@ block append scripts
       $('#stepsCarousel').carousel('pause').removeData();
       $('#stepsCarousel').carousel(0);
       $('#stepsCarousel>.carousel-inner').html('');
-      $('.spinning').hide();
+      $('.spinning').show();
       console.log('Setting up group', group);
     }
 
@@ -54,8 +55,8 @@ block append scripts
       var total = $('#stepsCarousel .item').length;
 
       //- $('#stepsCarousel').carousel('pause');
-
-      _.each(projects, function(project, index) {
+      var index = 0;
+      _.each(projects, function(project) {
         //- console.log(index, project);
         // TODO: split texts
         if(project.text) {
@@ -80,6 +81,7 @@ block append scripts
             //-     indicators += ' class="active"';
             //- indicators += '></li>';
             //- $('#stepsCarousel>.carousel-indicators').html(indicators);
+            index++;
         }
       });
       $('#stepsCarousel').carousel('cycle');
@@ -88,19 +90,21 @@ block append scripts
 
     $(function(){
       $('#stepsCarousel').carousel({
-        interval: 1000 * 6
+        interval: TIME
       });
 
       setGroup(GROUP);
 
-      $('#stepsCarousel').on('slide.bs.carousel', function (target) {
+      $('#stepsCarousel').on('slid.bs.carousel', function (target) {
         var index = $(target.relatedTarget).data('index');
         var total = $('#stepsCarousel .item').length;
         if(index >= total - 1) {
           // Final slide, request more
           console.log('End slides');
           SOCKET.emit('end slides');
-          SOCKET.emit('step change', STEP, GROUP);
+          setTimeout(function(){
+            SOCKET.emit('step change', STEP, GROUP);
+          }, TIME);
         }
         console.log('start slide', target.relatedTarget );
       });
