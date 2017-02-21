@@ -41,6 +41,7 @@ block append scripts
       $('#stepsCarousel').carousel('pause').removeData();
       $('#stepsCarousel').carousel(0);
       $('#stepsCarousel>.carousel-inner').html('');
+      $('.spinning').hide();
       console.log('Setting up group', group);
     }
 
@@ -115,12 +116,9 @@ block append scripts
         if(projects && projects.length) {
           console.log('Adding', projects.length, 'projects');
           addSlides(projects);
-        } else {
-          $('.spinning').hide();
         }
       });
-      //- SOCKET.on('end projects', function(projects) {
-      //-   $('.spinning').show();
-      //-   $('#stepsCarousel>.carousel-inner').removeData();
-      //- });
+      SOCKET.on('end projects', function(projects) {
+        $('.spinning').hide();
+      });
     });
