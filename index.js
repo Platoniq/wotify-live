@@ -4,7 +4,7 @@ var http      = require('http').Server(app);
 var pug       = require('pug');
 var less      = require('less-middleware');
 var routes    = require('lib/routes.js');
-var live = require('lib/live.js');
+var live      = require('lib/live.js');
 
 // Setup template engine
 app.set('views', __dirname + '/views');

@@ -1,29 +1,126 @@
 extends layout
 
+block append styles
+  link(rel="stylesheet", href="/assets/css/carousel.css")
+
 block content
   div.row
     div.col-xs-12
       h1 step !{step}
         span.group
+        div.pull-right.glyphicon.glyphicon-refresh.spinning
+
+  div#slides.row
+    div.col-xs-12
+      div#stepsCarousel.carousel.slide
+        div.carousel-inner
+          div.item.active
+
+        //- o.carousel-indicators
+        //-   li(data-target="#stepsCarousel", data-slide-to="0")
+
+        a(class="left carousel-control" href="#stepsCarousel" role="button" data-slide="prev")
+          span.glyphicon.glyphicon-chevron-left
+          span.sr-only Previous
+        a(class="right carousel-control" href="#stepsCarousel" role="button" data-slide="next")
+          span.glyphicon.glyphicon-chevron-right
+          span.sr-only Next
+  </div>
 
 block prepend scripts
   script.
     STEP=!{step};
     GROUP=!{step};
+    PROJECTS=[];
 
 block append scripts
   script.
     function setGroup(group) {
       GROUP=group;
       $('.group').html(' Group ' + group);
+      $('#stepsCarousel').carousel('pause').removeData();
+      $('#stepsCarousel').carousel(0);
+      $('#stepsCarousel>.carousel-inner').html('');
+      console.log('Setting up group', group);
     }
 
+    function resetSlides() {
+
+
+    }
+
+    function addSlides(projects){
+      var total = $('#stepsCarousel .item').length;
+
+      //- $('#stepsCarousel').carousel('pause');
+
+      _.each(projects, function(project, index) {
+        //- console.log(index, project);
+        // TODO: split texts
+        if(project.text) {
+            var item = '';
+            item += '<div class="item';
+            if(index === 0 && total === 0)
+                item += ' active';
+            item += '" id="' + project.id + '" data-index="' + (total + index) + '">';
+            item += '<p class="text-center">'
+            item += project.text;
+            item += '</p>';
+            item += '<div class="text-center">'
+            item += '<img style="border-radius: 50%;" width="75" src="' + project.avatar + '" >';
+            item += ' <span style="font-size:16px">' + project.author + '<span>'
+            item += '</div>'
+            item += '</div>';
+            $('#stepsCarousel>.carousel-inner').append(item);
+
+            //- var indicators = '';
+            //- indicators += '<li data-target="#stepsCarousel" data-slide-to="' + index + '"';
+            //- if(index === 0 && total === 0)
+            //-     indicators += ' class="active"';
+            //- indicators += '></li>';
+            //- $('#stepsCarousel>.carousel-indicators').html(indicators);
+        }
+      });
+      $('#stepsCarousel').carousel('cycle');
+    }
+
+
     $(function(){
+      $('#stepsCarousel').carousel({
+        interval: 1000 * 6
+      });
+
       setGroup(GROUP);
+
+      $('#stepsCarousel').on('slide.bs.carousel', function (target) {
+        var index = $(target.relatedTarget).data('index');
+        var total = $('#stepsCarousel .item').length;
+        if(index >= total - 1) {
+          // Final slide, request more
+          console.log('End slides');
+          SOCKET.emit('end slides');
+          SOCKET.emit('step change', STEP, GROUP);
+        }
+        console.log('start slide', target.relatedTarget );
+      });
+
+
       SOCKET.on('change group', function(step, group) {
-        console.log('Change',step,group);
+        console.log('Change group',step,group);
         if(STEP === step) {
           setGroup(group);
         }
       });
+      SOCKET.on('add projects', function(projects) {
+        if(projects && projects.length) {
+          console.log('Adding', projects.length, 'projects');
+          addSlides(projects);
+        } else {
+          $('.spinning').hide();
+        }
+      });
+      //- SOCKET.on('end projects', function(projects) {
+      //-   $('.spinning').show();
+      //-   $('#stepsCarousel>.carousel-inner').removeData();
+      //- });
     });

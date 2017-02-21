@@ -28,7 +28,7 @@ html
     block styles
       link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
 
-      link(rel="stylesheet", href="/assets/css/app.css")
+      link(rel="stylesheet", href="/assets/css/app.css?v=" + version)
 
 
   body
@@ -40,4 +40,5 @@ html
       script(src="/socket.io/socket.io.js")
       script(src="https://code.jquery.com/jquery-3.1.1.min.js", integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=", crossorigin="anonymous")
       script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
-      script(src="/assets/js/app.js")
+      script(src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js")
+      script(src="/assets/js/app.js?v=" + version)

@@ -85,7 +85,7 @@ block append scripts
         SOCKET.emit('reload remotes');
       });
 
-      SOCKET.on('refresh feed',function(msg, url){
+      SOCKET.on('refresh feed',function(msg, error, url){
         if(url) {
           // Check for connections to steps (and send current status)
           url = url.substr(url.lastIndexOf('/') + 1);
@@ -96,7 +96,7 @@ block append scripts
             msg += ' <span class="badge">Synchronizing ' + url+'</span>';
           }
         }
-        $("#feed").prepend('<p>' + msg + '</p>');
+        $("#feed").prepend('<p' + (error ? ' class="error"' : '') + '>' + msg + '</p>');
       });
 
     });
