@@ -4,7 +4,7 @@ function updateSlider(){
   items='';
  
   _.each(PROJECTS, function(project) {
-    if(project.extra && project.extra.stepSTEP && project.extra.stepSTEP.whatif){
+    if(project.extra && project.extra.step0 && project.extra.step0.whatif){
         whatif=project.extra.step0.whatif;
         num++;
         img_author=project.leader.picture;
