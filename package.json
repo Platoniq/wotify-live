@@ -17,6 +17,7 @@
     "node-rest-client": "^2.5.0",
     "pug": "^2.0.0-beta11",
     "socket.io": "^1.7.2",
+    "truncate": "^2.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
