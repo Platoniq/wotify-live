@@ -5,6 +5,8 @@ var pug       = require('pug');
 var less      = require('less-middleware');
 var routes    = require('lib/routes.js');
 var live      = require('lib/live.js');
+require('lib/models');
+
 
 // Setup template engine
 app.set('views', __dirname + '/views');
