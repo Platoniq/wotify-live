@@ -9,7 +9,7 @@ block header
     div.container-fluid
       div.row
         div.col-xs-2
-          div.step-circle 
+          div.step-circle
             h1.title.text-center Step!{step}
         div.col-xs-4.col-sm-6.col-md-7
         div.col-xs-6.col-sm-4.col-md-3
@@ -17,10 +17,10 @@ block header
               class='img-responsive moving')
 
 
-    
+
 block content
   div.row
-    div.col-xs-12        
+    div.col-xs-12
         div.pull-right.glyphicon.glyphicon-refresh.spinning
 
   div#slides.row
@@ -46,7 +46,7 @@ block footer
       div.row
         div.col-xs-10
         div.col-xs-2
-          div.step-circle 
+          div.step-circle
             div.group.text-center
 
 block prepend scripts
@@ -91,7 +91,7 @@ block append scripts
             item += project.text;
             item += '</p>';
             item += '<div class="text-center">'
-            item += '<img style="border-radius: 50%;" width="75" src="' + project.avatar + '" >';
+            item += '<div class="avatar hexagon" style="background-image:url(' + project.avatar + ')"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + project.role + '"></div></div>';
             item += ' <span style="font-size:16px">' + project.author + '<span>'
             item += '</div>'
             item += '</div>';
