@@ -1,0 +1,66 @@
+body{
+	background-color: #4200C5;
+	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+	min-height: 100vh; /* These two lines are counted as one :-)       */
+	display: flex;
+	align-items: center;
+}
+
+nav{
+	background-color: #32009F;
+}
+
+.step-circle{
+	border-radius:50%;
+	background-color: #CDD1D5;
+	width: 120px;
+	height: 120px;
+	color: #1F2326;
+	margin-left: 30px;
+	margin-bottom: 20px;
+}
+h1.title{
+	padding-top: 30px;
+	font-weight: bold;
+	font-size: 28px;
+}
+
+.moving{
+	margin-top: 30px;
+	padding-right: 60px;
+}
+
+.group-circle{
+	border-radius:50%;
+	background-color: #CDD1D5;
+	width: 110px;
+	height: 110px;
+	color: #1F2326;
+	margin-right: 30px;
+	margin-bottom: 10px;
+}
+
+body .carousel-inner > .item{
+	height: 250px;
+}
+
+footer{
+	background-color: #32009F;
+}
+
+div.group{
+	margin-top: 10px;
+	padding-top: 40px;
+	line-height: 1;
+}
+
+@media(max-width: 600px){
+    body{
+       font-size: 14px !important;
+    }
+    .step-circle{
+    	width: 80px;
+		height: 80px;	
+    }
+
+}
