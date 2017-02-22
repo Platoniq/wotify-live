@@ -2,12 +2,25 @@ extends layout
 
 block append styles
   link(rel="stylesheet", href="/assets/css/carousel.css")
+  link(rel="stylesheet", href="/assets/css/step.css")
 
+block header
+  nav.navbar-fixed-top
+    div.container-fluid
+      div.row
+        div.col-xs-2
+          div.step-circle 
+            h1.title.text-center Step!{step}
+        div.col-xs-4.col-sm-6.col-md-7
+        div.col-xs-6.col-sm-4.col-md-3
+          img(src='assets/img/moving.png'
+              class='img-responsive moving')
+
+
+    
 block content
   div.row
-    div.col-xs-12
-      h1 step !{step}
-        span.group
+    div.col-xs-12        
         div.pull-right.glyphicon.glyphicon-refresh.spinning
 
   div#slides.row
@@ -27,6 +40,15 @@ block content
           span.sr-only Next
   </div>
 
+block footer
+  footer.navbar-fixed-bottom
+    div.container-fluid
+      div.row
+        div.col-xs-10
+        div.col-xs-2
+          div.step-circle 
+            div.group.text-center
+
 block prepend scripts
   script.
     TIME = 6000;
@@ -38,7 +60,7 @@ block append scripts
   script.
     function setGroup(group) {
       GROUP=group;
-      $('.group').html(' Group ' + group);
+      $('.group').html(' Group<br>' + group);
       $('#stepsCarousel').carousel('pause').removeData();
       $('#stepsCarousel').carousel(0);
       $('#stepsCarousel>.carousel-inner').html('');
