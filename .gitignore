@@ -3,4 +3,5 @@ node_modules
 .sublime-workspace
 npm-debug.log
 sftp-config.json
+config.json
 public/assets/css/*.css
