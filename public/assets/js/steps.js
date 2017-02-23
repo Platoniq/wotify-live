@@ -87,16 +87,16 @@ $(function(){
     keyboard: false
   });
 
-  $('#stepsCarousel').on('slid.bs.carousel', function (target) {
-    var index = $(target.relatedTarget).data('index');
-    var total = $('#stepsCarousel .item').length;
-    console.log('end sliding, carousel total', total, 'current index',index);
-    if(index >= total - 1) {
-      // Final slide, request more
-      console.log('End slides step', STEP);
-      SOCKET.emit('end slides', STEP);
-    }
-  });
+  // $('#stepsCarousel').on('slid.bs.carousel', function (target) {
+  //   var index = $(target.relatedTarget).data('index');
+  //   var total = $('#stepsCarousel .item').length;
+  //   console.log('end sliding, carousel total', total, 'current index',index);
+  //   if(index >= total - 1) {
+  //     // Final slide, request more
+  //     console.log('End slides step', STEP);
+  //     SOCKET.emit('end slides', STEP);
+  //   }
+  // });
 
 
 });
