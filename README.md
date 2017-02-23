@@ -25,7 +25,7 @@ bower install
 npm install
 ```
 
-Fill the database using th node script
+Fill the database using the node script
 
 ```
 ./slides.js
