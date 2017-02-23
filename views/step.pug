@@ -4,18 +4,23 @@ block append styles
   link(rel="stylesheet", href="/assets/css/carousel.css")
   link(rel="stylesheet", href="/assets/css/step.css")
 
+block body
+  body(class="body-bg-"+step)
+
 block header
-  nav.navbar-fixed-top
+  nav(class="navbar-fixed-top nav-bg-"+step)
     div.container-fluid
       div.row
         div.col-xs-2
           div.step-circle
             h1.title.text-center Step!{step}
+            div.text-center
+              img(src="/assets/img/steps/step-"+step+".png" width="50")
         div.col-xs-4.col-sm-6.col-md-7
-          div.imagine.hidden-xs
-            div#title Imagine your Idea as a platform
+          div(class="imagine hidden-xs nav-title-bg-"+step)
+            div#title
           div.info.hidden-xs
-            span#subtitle Define my organizational model
+            span#subtitle
             span(class="glyphicon glyphicon-info-sign pull-right"
                  aria-hidden="true")
         div.col-xs-6.col-sm-4.col-md-3
@@ -23,7 +28,6 @@ block header
               class='img-responsive moving')
 
         div.glyphicon.glyphicon-refresh.spinning
-
 
 block content
 
@@ -45,12 +49,12 @@ block content
   </div>
 
 block footer
-  footer.navbar-fixed-bottom
+  footer(class="navbar-fixed-bottom footer-bg-"+step)
     div.container-fluid
       div.row
         div.col-xs-10
-          div.how HOW
-          div.strategy MY STRATEGY, MY SUSTAINABILITY
+          div#title_footer(class="title-footer footer-element-bg-"+step)
+          div#subtitle_footer(class="subtitle-footer footer-element-bg-"+step)
 
         div.col-xs-2
           div.step-circle
@@ -60,6 +64,7 @@ block prepend scripts
   script.
     STEP=!{step};
     GROUP=!{step};
+    $('#title_footer')
 
 block append scripts
   script(src="/assets/js/steps.js?v="+version)
