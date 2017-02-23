@@ -35,13 +35,12 @@ html
       link(rel="stylesheet", href="/components/animate.css/animate.min.css")
       link(rel="stylesheet", href="/assets/css/app.css?v=" + version)
 
-
-  body
     block body
-      block header
-      div.container
-        block content
-      block footer
+    body
+        block header
+        div.container
+          block content
+        block footer
 
     block scripts
       if useCDN

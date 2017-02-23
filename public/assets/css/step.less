@@ -6,16 +6,115 @@ body{
 	align-items: center;
 }
 
+
+/* Nav and footer background color */
+
+.nav-bg-1, .footer-bg-1{
+	background-color: #E5CA71;
+}
+
+.nav-bg-2, .footer-bg-2{
+	background-color: #D69238;
+}
+
+.nav-bg-3, .footer-bg-3{
+	background-color: #74A5DD;
+}
+
+.nav-bg-4, .footer-bg-4{
+	background-color: #467EB8;	
+}	
+
+.nav-bg-5, .footer-bg-5{
+	background-color: #6C3F93;
+}
+
+.nav-bg-6, .footer-bg-6{
+	background-color: #C0075A;
+}
+
+/* Nav elements backgrounds */
+
+.nav-title-bg-1{
+	background-color: #F68712;	
+}
+
+.nav-title-bg-2{
+	background-color: #F5C54D;	
+}
+
+.nav-title-bg-3{
+	background-color: #1C81C4;	
+}
+
+.nav-title-bg-4{
+	background-color: #50ADE5;	
+}
+
+.nav-title-bg-5{
+	background-color: #ED1056;	
+}
+
+.nav-title-bg-6{
+	background-color: #71339C;	
+}
+
+/* Body background color */
+
+.body-bg-1{
+	background-color: #393536;
+}
+
+.body-bg-2{
+	background-color:#F5C54D; 
+}
+
+.body-bg-3{
+	background-color: #F5C54D;
+}
+
+.body-bg-4{
+	background-color: #50ADE5;
+}
+
+.body-bg-5{
+	background-color: #9B70BA;
+}
+
+.body-bg-6{
+	background-color: #F14078;
+}
+
+/* Footer elements background color */
+
+.footer-element-bg-1, .footer-element-bg-2{
+	background-color: #D69238;
+}
+
+.footer-element-bg-3, .footer-element-bg-4{
+	background-color: #64A8DF;
+}
+
+.footer-element-bg-5, .footer-element-bg-6{
+	background-color: #C0075A;
+}
+
+
 nav{
-	background-color: #32009F;
+	background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px),
+	linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+	background-size:20px 20px, 20px 20px, 20px 20px, 20px 20px;
+	background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px
 }
 
 .step-circle{
 	border-radius:50%;
-	background-color: #CDD1D5;
+	background-color: #FFF;
 	width: 120px;
 	height: 120px;
-	color: #1F2326;
+	color: #000000;
 	margin-left: 30px;
 	margin-bottom: 20px;
 }
@@ -26,7 +125,6 @@ h1.title{
 }
 
 nav div.imagine{
-	background-color: #4B26FD;
 	text-transform: uppercase;
 	padding: 10px;
 	transform: skew(-20deg);
@@ -47,6 +145,12 @@ nav div.info{
 	font-weight: normal;
 }
 
+nav div.info span#subtitle{
+	padding-right: 10px;
+	background-color: #D3D3D3;
+	color: #7B7979;
+}
+
 nav div.info span.glyphicon{
 	font-size: 24px;
 	color: #696468;
@@ -61,10 +165,10 @@ nav div.info span.glyphicon{
 
 .group-circle{
 	border-radius:50%;
-	background-color: #CDD1D5;
+	background-color: #FFF;
 	width: 110px;
 	height: 110px;
-	color: #1F2326;
+	color: #000000;
 	margin-right: 30px;
 	margin-bottom: 10px;
 }
@@ -75,20 +179,24 @@ body .carousel-inner > .item{
 
 footer{
 	background-color: #32009F;
+	background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px),
+	linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+	background-size:20px 20px, 20px 20px, 20px 20px, 20px 20px;
+	background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px
 }
 
-footer div.how{
+footer div.title-footer{
 	font-size: 55px;
-	background-color: #5176FF;
 	float:left;
 	padding: 10px;
 	margin-top: 25px;
 	margin-left: 50px;
 }
 
-footer div.strategy{
+footer div.subtitle-footer{
 	font-size: 30px;
-	background-color: #5176FF;
 	float:left;
 	margin-left: 20px;
 	padding: 10px;
