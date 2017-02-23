@@ -10,6 +10,7 @@
     "start": "NODE_PATH=. DEBUG=widgets:* nodemon index"
   },
   "dependencies": {
+    "async": "^2.1.5",
     "commander": "^2.9.0",
     "cron": "^1.2.1",
     "express": "^4.14.1",
