@@ -1,31 +1,37 @@
 PROJECTS=[];
 INTERVAL=6000;
 
-function initStep(step) {
-  GROUP=step.group;
-  $('.group').html(' Group<br>' + step.group);
+function initModel(obj) {
+  var model = 'group';
+  if(obj.step) model = 'step';
+
+  // This changes only on step models
+  if(obj.step && obj.group) {
+    GROUP=obj.group;
+    $('.group').html(' Group<br>' + obj.group);
+  }
 
   // Set users
-  if(step.users && step.users.length) {
-    $.getJSON('/api/users',{id:step.users},function(users){
-      console.log('set users',step.users,users);
-      $('#step-users').html('');
+  if(obj.users && obj.users.length) {
+    $.getJSON('/api/users',{id:obj.users},function(users){
+      console.log('set users for',model,obj.users,users);
+      $('#' + model + '-users').html('');
       _.each(users,function(u){
         console.log(u.name);
         // TODO: format this
-        $('#step-users').append('<li>' + u.name + '</li>');
+        $('#' + model + '-users').append('<li>' + u.name + '</li>');
       });
     });
 
   }
 
   // Put current values on place
-  _.each(step, function(val, key){
+  _.each(obj, function(val, key){
     if(key != 'step' && key != 'group' && key != 'users')
       $('#' + key).text(val);
   });
-  console.log('Initialized step', step.step,' asking for slides');
-  SOCKET.emit('get slides', step.step);
+  console.log('Initialized ',model, obj.step,' asking for slides');
+  SOCKET.emit('get slides', obj.step);
   $('.spinning').show();
 }
 
@@ -68,7 +74,15 @@ SOCKET.on('step init', function(step) {
   console.log('Received init event for step ',step.step,'Current Step', STEP);
   if(STEP === step.step) {
     console.log('Applying Init step for ',step);
-    initStep(step);
+    initModel(step);
+  }
+});
+
+SOCKET.on('group init', function(group) {
+  console.log('Received init event for group ',group.group,'Current Step', GROUP);
+  if(GROUP === group.group) {
+    console.log('Applying Init group for ',group);
+    initModel(group);
   }
 });
 
