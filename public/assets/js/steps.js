@@ -14,25 +14,25 @@ function initStep(step) {
   $('.spinning').show();
 }
 
-function addSlides(projects){
+function addSlides(slides){
   var total = $('#stepsCarousel .item').length;
 
   var index = 0;
-  _.each(projects, function(project) {
-    //- console.log(index, project);
+  _.each(slides, function(slide) {
+    //- console.log(index, slide);
     // TODO: split texts
-    if(project.text) {
+    if(slide.text) {
         var item = '';
         item += '<div class="item';
         if(index === 0 && total === 0)
             item += ' active';
-        item += '" id="' + project.id + '" data-index="' + (total + index) + '">';
+        item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
         item += '<p class="text-center">'
-        item += project.text;
+        item += slide.text;
         item += '</p>';
         item += '<div class="text-center">'
-        item += '<div class="avatar hexagon" style="background-image:url(' + project.avatar + ')"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + project.role + '"></div></div>';
-        item += ' <span style="font-size:16px">' + project.author + '<span>'
+        item += '<div class="avatar hexagon" style="background-image:url(' + slide.avatar + ')"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + slide.role + '"></div></div>';
+        item += ' <span style="font-size:16px">' + slide.author + '<span>'
         item += '</div>'
         item += '</div>';
         $('#stepsCarousel>.carousel-inner').append(item);
@@ -57,27 +57,17 @@ SOCKET.on('step init', function(step) {
   }
 });
 
-SOCKET.on('start projects step ' + STEP, function() {
-  console.log('Initializind slides');
-  PROJECTS=[];
-});
-
-SOCKET.on('projects step ' + STEP, function(projects) {
-  if(projects && projects.length) {
-    console.log('Adding', projects.length, 'projects', projects);
-    // addSlides(projects);
-    PROJECTS = _.union(PROJECTS, projects);
+SOCKET.on('slides step ' + STEP, function(slides) {
+  if(slides && slides.length) {
+    $('.spinning').hide();
+    $('#stepsCarousel').carousel('pause');
+    $('#stepsCarousel').carousel(0);
+    $('#stepsCarousel').removeData();
+    $('#stepsCarousel>.carousel-inner').html('');
+    console.log('Adding slides', slides);
+    addSlides(slides);
+    $('#stepsCarousel').carousel('cycle');
   }
-});
-SOCKET.on('end projects step ' + STEP, function(projects) {
-  $('.spinning').hide();
-  $('#stepsCarousel').carousel('pause');
-  $('#stepsCarousel').carousel(0);
-  $('#stepsCarousel').removeData();
-  $('#stepsCarousel>.carousel-inner').html('');
-  console.log('Adding projects', PROJECTS);
-  addSlides(PROJECTS);
-  $('#stepsCarousel').carousel('cycle');
 });
 
 $(function(){
@@ -86,17 +76,4 @@ $(function(){
     pause: null,
     keyboard: false
   });
-
-  // $('#stepsCarousel').on('slid.bs.carousel', function (target) {
-  //   var index = $(target.relatedTarget).data('index');
-  //   var total = $('#stepsCarousel .item').length;
-  //   console.log('end sliding, carousel total', total, 'current index',index);
-  //   if(index >= total - 1) {
-  //     // Final slide, request more
-  //     console.log('End slides step', STEP);
-  //     SOCKET.emit('end slides', STEP);
-  //   }
-  // });
-
-
 });
