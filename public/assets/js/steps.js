@@ -4,9 +4,24 @@ INTERVAL=6000;
 function initStep(step) {
   GROUP=step.group;
   $('.group').html(' Group<br>' + step.group);
+
+  // Set users
+  if(step.users && step.users.length) {
+    $.getJSON('/api/users',{id:step.users},function(users){
+      console.log('set users',step.users,users);
+      $('#step-users').html('');
+      _.each(users,function(u){
+        console.log(u.name);
+        // TODO: format this
+        $('#step-users').append('<li>' + u.name + '</li>');
+      });
+    });
+
+  }
+
   // Put current values on place
   _.each(step, function(val, key){
-    if(key != 'step' && key != 'group')
+    if(key != 'step' && key != 'group' && key != 'users')
       $('#' + key).text(val);
   });
   console.log('Initialized step', step.step,' asking for slides');
