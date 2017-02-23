@@ -13,21 +13,19 @@ block header
             h1.title.text-center Step!{step}
         div.col-xs-4.col-sm-6.col-md-7
           div.imagine.hidden-xs
-            div Imagine your Idea as a platform
+            div#title Imagine your Idea as a platform
           div.info.hidden-xs
-            span Define my organizational model
+            span#subtitle Define my organizational model
             span(class="glyphicon glyphicon-info-sign pull-right"
                  aria-hidden="true")
         div.col-xs-6.col-sm-4.col-md-3
           img(src='assets/img/moving.png'
               class='img-responsive moving')
 
+        div.glyphicon.glyphicon-refresh.spinning
 
 
 block content
-  div.row
-    div.col-xs-12
-      div.pull-right.glyphicon.glyphicon-refresh.spinning
 
   div#slides.row
     div.col-xs-12
@@ -60,100 +58,9 @@ block footer
 
 block prepend scripts
   script.
-    TIME = 6000;
     STEP=!{step};
     GROUP=!{step};
-    PROJECTS=[];
 
 block append scripts
-  script.
-    function setGroup(group) {
-      GROUP=group;
-      $('.group').html(' Group<br>' + group);
-      $('#stepsCarousel').carousel('pause').removeData();
-      $('#stepsCarousel').carousel(0);
-      $('#stepsCarousel>.carousel-inner').html('');
-      $('.spinning').show();
-      console.log('Setting up group', group);
-    }
+  script(src="/assets/js/steps.js")
 
-    function resetSlides() {
-
-
-    }
-
-    function addSlides(projects){
-      var total = $('#stepsCarousel .item').length;
-
-      //- $('#stepsCarousel').carousel('pause');
-      var index = 0;
-      _.each(projects, function(project) {
-        //- console.log(index, project);
-        // TODO: split texts
-        if(project.text) {
-            var item = '';
-            item += '<div class="item';
-            if(index === 0 && total === 0)
-                item += ' active';
-            item += '" id="' + project.id + '" data-index="' + (total + index) + '">';
-            item += '<p class="text-center">'
-            item += project.text;
-            item += '</p>';
-            item += '<div class="text-center">'
-            item += '<div class="avatar hexagon" style="background-image:url(' + project.avatar + ')"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + project.role + '"></div></div>';
-            item += ' <span style="font-size:16px">' + project.author + '<span>'
-            item += '</div>'
-            item += '</div>';
-            $('#stepsCarousel>.carousel-inner').append(item);
-
-            //- var indicators = '';
-            //- indicators += '<li data-target="#stepsCarousel" data-slide-to="' + index + '"';
-            //- if(index === 0 && total === 0)
-            //-     indicators += ' class="active"';
-            //- indicators += '></li>';
-            //- $('#stepsCarousel>.carousel-indicators').html(indicators);
-            index++;
-        }
-      });
-      $('#stepsCarousel').carousel('cycle');
-    }
-
-
-    $(function(){
-      $('#stepsCarousel').carousel({
-        interval: TIME
-      });
-
-      setGroup(GROUP);
-
-      $('#stepsCarousel').on('slid.bs.carousel', function (target) {
-        var index = $(target.relatedTarget).data('index');
-        var total = $('#stepsCarousel .item').length;
-        if(index >= total - 1) {
-          // Final slide, request more
-          console.log('End slides');
-          SOCKET.emit('end slides');
-          setTimeout(function(){
-            SOCKET.emit('step change', STEP, GROUP);
-          }, TIME);
-        }
-        console.log('start slide', target.relatedTarget );
-      });
-
-
-      SOCKET.on('change group', function(step, group) {
-        console.log('Change group',step,group);
-        if(STEP === step) {
-          setGroup(group);
-        }
-      });
-      SOCKET.on('add projects', function(projects) {
-        if(projects && projects.length) {
-          console.log('Adding', projects.length, 'projects');
-          addSlides(projects);
-        }
-      });
-      SOCKET.on('end projects', function(projects) {
-        $('.spinning').hide();
-      });
-    });
