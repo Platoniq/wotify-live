@@ -1,5 +1,5 @@
 PROJECTS=[];
-TIME=6000;
+INTERVAL=6000;
 
 function initStep(step) {
   GROUP=step.group;
@@ -82,7 +82,7 @@ SOCKET.on('end projects step ' + STEP, function(projects) {
 
 $(function(){
   $('#stepsCarousel').carousel({
-    interval: TIME,
+    interval: INTERVAL,
     pause: null,
     keyboard: false
   });
