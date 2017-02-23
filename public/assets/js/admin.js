@@ -10,9 +10,20 @@ function initStep (step) {
     // Select current step in select
     $('#step-changer li[data-step=' + step.step + '] .select-step').val(step.group);
   }
+  if(step.users && step.users.length) {
+    $.getJSON('/api/users',{id:step.users},function(users){
+      console.log('set users',step.users,users);
+      $('li[data-step="' + step.step + '"] .select-users').html('');
+      _.each(users,function(u){
+        console.log(u.name);
+        $('li[data-step="' + step.step + '"] .select-users').append('<option value="' + u.id + '" selected>' + u.name + '</option>');
+      });
+    });
+
+  }
   // Put current values on place
   _.each(step, function(val, key){
-    if(key != 'step' && key != 'group')
+    if(key != 'step' && key != 'group' && key != 'users')
       $('li[data-step="' + step.step + '"] [data-target="' + key + '"]').attr('title', val);
   });
 
@@ -110,6 +121,44 @@ $(function(){
       $(this).val(step);
       $(this).change();
     });
+  });
+
+  $('.select-users').select2({
+    ajax: {
+      url: '/api/users',
+      dataType: 'json',
+      delay: 250,
+      processResults: function (data) {
+        return {
+          results: data
+        };
+      },
+    },
+    escapeMarkup: function (markup) { return markup; },
+    minimumInputLength: 1,
+    templateSelection: function(item) {
+      return '<b>' + item.id + '</b> ' + (item.name || item.text);
+    },
+    templateResult: function(item) {
+      if (item.loading) return item.name;
+      var markup = "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__avatar'><img src='" + item.avatar + "' /></div>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'><b>" + item.id + '</b> ' + item.name + "</div>";
+
+      // if (repo.bio) {
+      //   markup += "<div class='select2-result-__description'>" + repo.bio + "</div>";
+      // }
+
+      markup += "</div></div>";
+
+      return markup;
+    },
+  }).on('change', function(item) {
+    var values = $(item.target).val() || [];
+    var step = $(this).closest('li').data('step');
+    console.log('save users for', step, values);
+    SOCKET.emit('step change', {step: step, users: values});
   });
 });
 
