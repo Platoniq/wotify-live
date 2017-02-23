@@ -4,27 +4,34 @@ INITIALIZED=false;
 
 /* SOCKET ACTIONS */
 
-function initStep (step) {
-  console.log($('li[data-step="' + step.step + '"] [data-target="title"]').attr('alt'), step);
-  if(step.step && step.group) {
-    // Select current step in select
-    $('#step-changer li[data-step=' + step.step + '] .select-step').val(step.group);
+function initModel (obj) {
+  var model = 'group';
+  if(obj.step) model = 'step';
+
+  if(obj.group && obj.step) {
+    // Select current group in select
+    $('#step-changer li[data-step="' + obj.step + '"] .select-group').val(obj.group);
   }
-  if(step.users && step.users.length) {
-    $.getJSON('/api/users',{id:step.users},function(users){
-      console.log('set users',step.users,users);
-      $('li[data-step="' + step.step + '"] .select-users').html('');
+
+  if(!obj.step)
+    console.log('init model',model,obj);
+
+  console.log('U',obj.users);
+  if(obj.users && obj.users.length) {
+    $.getJSON('/api/users',{id:obj.users},function(users){
+      console.log('set users',obj.users,users);
+      $('li[data-' + model + '="' + obj[model] + '"] .select-users').html('');
       _.each(users,function(u){
         console.log(u.name);
-        $('li[data-step="' + step.step + '"] .select-users').append('<option value="' + u.id + '" selected>' + u.name + '</option>');
+        $('li[data-' + model + '="' + obj[model] + '"] .select-users').append('<option value="' + u.id + '" selected>' + u.name + '</option>');
       });
     });
 
   }
   // Put current values on place
-  _.each(step, function(val, key){
+  _.each(obj, function(val, key){
     if(key != 'step' && key != 'group' && key != 'users')
-      $('li[data-step="' + step.step + '"] [data-target="' + key + '"]').attr('title', val);
+      $('li[data-' + model + '="' + obj[model] + '"] [data-target="' + key + '"]').attr('title', val);
   });
 
 }
@@ -32,9 +39,13 @@ function initStep (step) {
 
 // Update local select if anoother admin is making changes
 SOCKET.on('step init', function(step) {
-  initStep(step);
+  initModel(step);
   $('body').loading('stop');
   INITIALIZED=true;
+});
+
+SOCKET.on('group init', function(group) {
+  initModel(group);
 });
 
 $('#reload-remotes').on('click', function(){
@@ -49,7 +60,7 @@ SOCKET.on('refresh feed',function(msg, error, url){
     if(url.indexOf('step') === 0) {
       // Send current status
       var step = parseInt(url.substr(4),10);
-      $('li[data-step=' + step+ '] .select-step').change();
+      $('li[data-step=' + step+ '] .select-group').change();
       msg += ' <span class="badge">Synchronizing ' + url+'</span>';
     }
   }
@@ -70,21 +81,30 @@ $(function(){
   // Save property to step
   $('.property').on('click', function() {
     var step = $(this).closest('li').data('step');
+    var group = $(this).closest('li').data('group');
     var target = $(this).data('target');
     eModal
       .prompt({message: $(this).text(), title: $(this).attr('alt'), value: $(this).attr('title')})
       .then(function(msg){
-        var obj = {step: step};
+        var obj = {};
+        if(step) obj.step = step;
+        if(group) obj.group = group;
         obj[target] = msg;
-        SOCKET.emit('step change', obj)
-        // initStep(obj);
+        if(group) {
+          console.log('EMIT GROUP',obj);
+          SOCKET.emit('group change', obj)
+        } else {
+          console.log('EMIT STEP',obj);
+          SOCKET.emit('step change', obj)
+        }
+        // initModel(obj);
         showMsg('Set <strong>'+target+'</strong> to <em>'+msg+'</em>');
       }, function(){
         showWarning('Nothing done');
       });
   });
 
-  $('.select-step').on('change', function(){
+  $('.select-group').on('change', function(){
     var step = $(this).closest('li').data('step');
     var group = $(this).val();
     console.log('emit step change', step, group);
@@ -93,11 +113,11 @@ $(function(){
   });
 
   $('#rotate').on('click', function(){
-    var total = $('.select-step').length;
-    $('.select-step').each(function(index){
+    var total = $('.select-group').length;
+    $('.select-group').each(function(index){
       var $li = $(this).closest('li');
-      var first = parseInt($('.select-step option:first').val(), 10);
-      var last = parseInt($('.select-step option:last').val(), 10);
+      var first = parseInt($('.select-group option:first').val(), 10);
+      var last = parseInt($('.select-group option:last').val(), 10);
       var g = parseInt($(this).val()) + 1;
       if(g > last) {
         g = first;
@@ -111,19 +131,19 @@ $(function(){
   });
 
   $('#sync').on('click', function() {
-    $('.select-step').change();
+    $('.select-group').change();
   });
 
 
   $('#reset').on('click', function() {
-    $('.select-step').each(function(index){
+    $('.select-group').each(function(index){
       var step = parseInt($(this).closest('li').data('step'), 10);
       $(this).val(step);
       $(this).change();
     });
   });
 
-  $('.select-users').select2({
+  var select2 = {
     ajax: {
       url: '/api/users',
       dataType: 'json',
@@ -134,6 +154,7 @@ $(function(){
         };
       },
     },
+    placeholder: "Select an user",
     escapeMarkup: function (markup) { return markup; },
     minimumInputLength: 1,
     templateSelection: function(item) {
@@ -154,11 +175,22 @@ $(function(){
 
       return markup;
     },
-  }).on('change', function(item) {
-    var values = $(item.target).val() || [];
-    var step = $(this).closest('li').data('step');
-    console.log('save users for', step, values);
-    SOCKET.emit('step change', {step: step, users: values});
-  });
+  };
+  $('#step-changer .select-users')
+    .select2(select2)
+    .on('change', function(item) {
+      var values = $(item.target).val() || [];
+      var step = $(this).closest('li').data('step');
+      console.log('save users for Step', step, values);
+      SOCKET.emit('step change', {step: step, users: values});
+    });
+  $('#group-changer .select-users')
+    .select2(select2)
+    .on('change', function(item) {
+      var values = $(item.target).val() || [];
+      var group = $(this).closest('li').data('group');
+      console.log('save users for Group', group, values);
+      SOCKET.emit('group change', {group: group, users: values});
+    });
 });
 
