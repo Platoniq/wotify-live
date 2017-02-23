@@ -5,16 +5,19 @@ block content
     div.col-xs-12
       h1 Admin
       div.well
-        ul#step-changer.nav.nav-pills.nav-stacked
+        ul#step-changer.list-unstyled
           each val in [1, 2, 3, 4, 5, 6]
             li(data-step=val)
-              span(class="step step-" + val).
-                Step !{val}
-              span &nbsp;
-              select.select-step
-                each g in [1, 2, 3, 4, 5, 6]
-                  option(value=g, selected=val===g).
-                    Group !{g}
+              form.form-inline
+                div.form-group
+                  p(class="form-control-static step step-" + val) Step !{val}
+                div.form-group
+                  select.form-control.select-step
+                    each g in [1, 2, 3, 4, 5, 6]
+                      option(value=g, selected=val===g) Group !{g}
+                div.btn-group
+                  button(type="button" class="property btn btn-default" data-target="title" alt="Set title for this step") Title
+                  button(type="button" class="property btn btn-default" data-target="subtitle" alt="Set subtitle for this step") SubTitle
 
     div.col-xs-12
       p
@@ -31,72 +34,4 @@ block content
       div#feed.well
 
 block append scripts
-  script.
-    // Do not auto reload
-    AUTORELOAD=false;
-
-    $(function(){
-      $('.select-step').on('change', function(){
-        var step = $(this).closest('li').data('step');
-        var group = $(this).val();
-        console.log('emit step change', step, group);
-        SOCKET.emit('step change', step, group);
-        //- $("#feed").prepend('<p><span class="badge">Synchronizing Step ' + step + ', Group ' + group + '</span></p>');
-      });
-
-      $('#rotate').on('click', function(){
-        var total = $('.select-step').length;
-        $('.select-step').each(function(index){
-          var $li = $(this).closest('li');
-          var first = parseInt($('.select-step option:first').val(), 10);
-          var last = parseInt($('.select-step option:last').val(), 10);
-          var g = parseInt($(this).val()) + 1;
-          if(g > last) {
-            g = first;
-          }
-
-          $(this).val(g);
-          $(this).change();
-
-          console.log('step ', $li.data('step'), 'group', g, last);
-        });
-      });
-
-      $('#sync').on('click', function() {
-        $('.select-step').change();
-      });
-
-
-    $('#reset').on('click', function() {
-        $('.select-step').each(function(index){
-          var step = parseInt($(this).closest('li').data('step'), 10);
-          $(this).val(step);
-          $(this).change();
-        });
-      });
-
-      // Update local select if anoother admin is making changes
-      SOCKET.on('change group', function(step, group) {
-        $('#step-changer li[data-step=' + step + '] .select-step').val(group);
-      });
-
-      $('#reload-remotes').on('click', function(){
-        console.log('Reloading remotes');
-        SOCKET.emit('reload remotes');
-      });
-
-      SOCKET.on('refresh feed',function(msg, error, url){
-        if(url) {
-          // Check for connections to steps (and send current status)
-          url = url.substr(url.lastIndexOf('/') + 1);
-          if(url.indexOf('step') === 0) {
-            // Send current status
-            var step = parseInt(url.substr(4),10);
-            $('li[data-step=' + step+ '] .select-step').change();
-            msg += ' <span class="badge">Synchronizing ' + url+'</span>';
-          }
-        }
-        $("#feed").prepend('<p' + (error ? ' class="error"' : '') + '>' + msg + '</p>');
-      });
-
-    });
+  script(src="/assets/js/admin.js")

@@ -5,6 +5,9 @@ Widgets for the wotify (hackdash) api widgets.ideacamp2017.eu
 
 -  Node
 -  npm
+-  bower
+-  mongodb
+-  A [hackdash](https://github.com/GoteoFoundation/hackdash) installation somewhere (GoteoFoundation version)
 
 # Development
 
@@ -18,6 +21,7 @@ nano config.json
 Install the environment:
 
 ```
+bower install
 npm install
 ```
 

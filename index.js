@@ -14,6 +14,9 @@ app.set('view engine', 'pug');
 // Autocompile less
 app.use(less(__dirname + '/public', {debug:true}));
 
+// Set to use bower
+app.use('/components',  express.static(__dirname + '/bower_components'));
+
 // Add routes
 app.use('/', routes);
 
