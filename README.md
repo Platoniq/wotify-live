@@ -25,6 +25,17 @@ bower install
 npm install
 ```
 
+Fill the database using the node script
+
+```
+./sync.js
+```
+
+Slides script can be executed as a cron process:
+
+```
+./sync.js -i 30
+```
 
 Start the local server:
 

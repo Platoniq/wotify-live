@@ -1,6 +1,6 @@
 {
   "name": "ideacamp-widgets",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/GoteoFoundation/wotify-widgets"
@@ -10,6 +10,9 @@
     "start": "NODE_PATH=. DEBUG=widgets:* nodemon index"
   },
   "dependencies": {
+    "async": "^2.1.5",
+    "commander": "^2.9.0",
+    "cron": "^1.2.1",
     "express": "^4.14.1",
     "less-middleware": "^2.2.0",
     "moment": "^2.17.1",
