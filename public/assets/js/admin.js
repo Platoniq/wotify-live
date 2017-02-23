@@ -66,7 +66,7 @@ $(function(){
         var obj = {step: step};
         obj[target] = msg;
         SOCKET.emit('step change', obj)
-        initStep(obj);
+        // initStep(obj);
         showMsg('Set <strong>'+target+'</strong> to <em>'+msg+'</em>');
       }, function(){
         showWarning('Nothing done');
