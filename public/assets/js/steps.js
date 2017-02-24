@@ -1,5 +1,4 @@
 PROJECTS=[];
-INTERVAL=6000;
 AJAXS={};
 
 function initModel(obj) {
@@ -34,9 +33,12 @@ function initModel(obj) {
     if(key != 'step' && key != 'group' && key != 'users')
       $('#' + key).text(val);
   });
-  console.log('Initialized ',model, obj.step,' asking for slides');
-  SOCKET.emit('get slides', obj.step);
-  $('.spinning').show();
+  console.log('Initialized ',model);
+  if(obj.step && obj.group) {
+    console.log(obj.step,' asking for slides');
+    SOCKET.emit('get slides', obj.step);
+    $('.spinning').show();
+  }
 }
 
 function addSlides(slides){
@@ -52,7 +54,7 @@ function addSlides(slides){
         if(index === 0 && total === 0)
             item += ' active';
         item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
-        item += '<p class="text-center">'
+        item += '<p class="text-center text">' // Class "text" breaks lines with \n
         item += slide.text;
         item += '</p>';
         item += '<div class="text-center">'
@@ -90,7 +92,8 @@ SOCKET.on('group init', function(group) {
   }
 });
 
-SOCKET.on('slides step ' + STEP, function(slides) {
+SOCKET.on('slides step ' + STEP, function(slide) {
+  var slides = slide && slide.slides;
   if(slides && slides.length) {
     $('.spinning').hide();
     $('#stepsCarousel').carousel('pause');
@@ -105,7 +108,7 @@ SOCKET.on('slides step ' + STEP, function(slides) {
 
 $(function(){
   $('#stepsCarousel').carousel({
-    interval: INTERVAL,
+    interval: SLIDE_INTERVAL * 1000,
     pause: null,
     keyboard: false
   });

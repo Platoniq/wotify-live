@@ -60,12 +60,16 @@ SOCKET.on('refresh feed',function(msg, error, url){
       msg += ' <span class="badge">Synchronizing ' + url+'</span>';
     }
   }
-  $("#feed").prepend('<p' + (error ? ' class="error"' : '') + '>' + msg + '</p>');
+  $("#feed").prepend('<p' + (error ? ' class="' + error + '"' : '') + '>' + msg + '</p>');
 });
 
-SOCKET.on('error', function(msg) {
+SOCKET.on('failure', function(msg) {
   $.notifyClose();
   showError(msg);
+});
+
+SOCKET.on('success', function(msg) {
+  showSuccess(msg);
 });
 /* JQUERY ACTIONS */
 
@@ -94,7 +98,7 @@ $(function(){
           SOCKET.emit('step change', obj)
         }
         // initModel(obj);
-        showMsg('Set <strong>'+target+'</strong> to <em>'+msg+'</em>');
+        showSuccess('Set <strong>'+target+'</strong> to <em>'+msg+'</em>');
       }, function(){
         showWarning('Nothing done');
       });
