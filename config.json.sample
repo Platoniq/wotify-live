@@ -2,5 +2,6 @@
     "apiUrl": "https://wotify.eu/api/v2",
     "dashboard": "devel",
     "db": "mongodb://localhost/widgets-ideacamp",
+    "slideInterval": 5,
     "useCDN" : true
 }

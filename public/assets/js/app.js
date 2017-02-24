@@ -11,7 +11,7 @@ SOCKET.on('reload page',function(page){
 });
 
 // Notifications
-function showMsg(txt) {
+function showSuccess(txt) {
   $.notify(txt, {
     type:'success',
     animate: {

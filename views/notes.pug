@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  div.row
+    div.col-xs-12
+      h1 Notes for Step !{step}
+      ul.nav.nav-tabs
+        li.active
+          a(href="#note", data-toggle="tab") Notes&nbsp;
+            span#total-note.badge
+        li
+          a(href="#api", data-toggle="tab") Roadbook responses&nbsp;
+            span#total-api.badge
+
+        li.pull-right
+          form.form-inline
+            div.form-group
+              label(for="show-type") Show:
+              select#show-type.form-control
+                option(value="all") Notes &amp; Roadbook
+                option(value="note") Only notes
+                option(value="api") Only Roadbook
+
+      div.well.tab-content
+
+        div#note.tab-pane.active
+
+          form.form-horizontal
+            div.form-group
+              label(for="note-user", class="col-sm-2 control-label") User:
+              div.col-sm-10
+                select#note-user.form-control
+            div.form-group
+              label(for="note-text", class="col-sm-2 control-label") Says:
+              div.col-sm-10
+                textarea#note-text.form-control
+            div.form-group
+              div.col-sm-offset-2.col-sm-10
+                button(type="submit", class="btn btn-primary")
+                  span.glyphicon.glyphicon-floppy-save
+                  .
+                    &nbsp;Save note
+                button(type="reset", class="btn btn-warning pull-right")
+                  span.glyphicon.glyphicon-remove
+                  .
+                    &nbsp;Cancel
+                input(type="hidden", id="note-id")
+          hr
+          ul.media-list
+
+        div#api.tab-pane
+
+          ul.media-list
+
+block prepend scripts
+  script.
+    STEP=!{step};
+
+block append scripts
+  script(src="/assets/js/notes.js?v="+version)
