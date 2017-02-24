@@ -47,11 +47,14 @@ block content
           span.glyphicon.glyphicon-chevron-right
           span.sr-only Next
 
-  //- ideamakers, users defined in model Group
-  ul#group-users.pull-left
+  div.row.users
+    //- ideamakers, users defined in model Group
+    div#group-users.col-md-6.text-align-left
+      h2 Idea Makers
 
-  //- ideafeeders, admins etc, users defined in model Step
-  ul#step-users.pull-right
+    //- ideafeeders, admins etc, users defined in model Step
+    ul#step-users.col-md-6.text-align-right
+      h2 Idea Feeders
 
 
 block footer
