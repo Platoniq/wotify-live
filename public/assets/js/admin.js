@@ -13,16 +13,12 @@ function initModel (obj) {
     $('#step-changer li[data-step="' + obj.step + '"] .select-group').val(obj.group);
   }
 
-  if(!obj.step)
-    console.log('init model',model,obj);
-
-  console.log('U',obj.users);
+  $('li[data-' + model + '="' + obj[model] + '"] .select-users').html('');
   if(obj.users && obj.users.length) {
-    $.getJSON('/api/users',{id:obj.users},function(users){
-      console.log('set users',obj.users,users);
-      $('li[data-' + model + '="' + obj[model] + '"] .select-users').html('');
+    $.getJSON('/api/users',{id:obj.users}, function(users){
+      // delete AJAXS[model];
+      console.log('set users for ',model,obj.users,users);
       _.each(users,function(u){
-        console.log(u.name);
         $('li[data-' + model + '="' + obj[model] + '"] .select-users').append('<option value="' + u.id + '" selected>' + u.name + '</option>');
       });
     });

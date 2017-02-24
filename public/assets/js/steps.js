@@ -1,5 +1,6 @@
 PROJECTS=[];
 INTERVAL=6000;
+AJAXS={};
 
 function initModel(obj) {
   var model = 'group';
@@ -12,17 +13,16 @@ function initModel(obj) {
   }
 
   // Set users
+  $('#' + model + '-users').html('');
+  if(AJAXS[model]) AJAXS[model].abort();
   if(obj.users && obj.users.length) {
-    $.getJSON('/api/users',{id:obj.users},function(users){
+    AJAXS[model] = $.getJSON('/api/users',{id:obj.users},function(users){
       console.log('set users for',model,obj.users,users);
-      $('#' + model + '-users').html('');
       _.each(users,function(u){
-        console.log(u.name);
         // TODO: format this
         $('#' + model + '-users').append('<li>' + u.name + '</li>');
       });
     });
-
   }
 
   // Put current values on place
