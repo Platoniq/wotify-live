@@ -49,11 +49,7 @@ block content
 
   div.row.users
     //- ideamakers, users defined in model Group
-    div#group-users.col-sm-12.text-align-left
-      h2 Idea Makers
-
-    //- ideafeeders, admins etc, users defined in model Step
-    ul#step-users.col-md-6.text-align-right
+    div#step-users.col-sm-12
       h2 Idea Feeders
 
 
@@ -61,13 +57,16 @@ block footer
   footer(class="navbar-fixed-bottom footer-bg-"+step)
     div.container-fluid
       div.row
-        div.col-xs-10
-          div#title_footer(class="title-footer footer-element-bg-"+step)
-          div#subtitle_footer(class="subtitle-footer footer-element-bg-"+step)
-
         div.col-xs-2
           div.step-circle
             div.group.text-center
+        div#group-users.col-xs-10
+
+
+        //div#title_footer(class="title-footer footer-element-bg-"+step)
+        //div#subtitle_footer(class="subtitle-footer footer-element-bg-"+step)
+
+        
 
 block prepend scripts
   script.
