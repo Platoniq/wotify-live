@@ -50,7 +50,9 @@ body{
     width: 68px;
     max-height: 68px;
   }
-
+  .media .hexagon {
+    .getHexagon(68px, 3px);
+  }
   .btn-group {
     margin-right: 10px;
   }
@@ -76,6 +78,24 @@ body{
     // margin-right: 5px;
   }
 
+  .icon-panic {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: #D9534F url(../img/panic.svg) no-repeat center;
+    background-size: 50%;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .blink {
+    animation: blinker 1s linear infinite;
+  }
+
+  @keyframes blinker {
+    50% { opacity: 0; }
+  }
+
   nav {
     .getGrid();
     &.step {
@@ -87,45 +107,49 @@ body{
         padding:5px;
         color:#fff;
       }
+      .icon-panic {
+        width: 60px;
+        height: 60px;
+      }
     }
     &.step.step1{
       background-color: @nav-color-step1;
-      h1 {
+      h1,.icon-panic {
         background-color:@footer-color-step1;
       }
     }
 
     &.step.step2{
       background-color: @nav-color-step2;
-      h1 {
+      h1,.icon-panic {
         background-color:@footer-color-step2;
       }
     }
 
     &.step.step3{
       background-color: @nav-color-step3;
-      h1 {
+      h1,.icon-panic {
         background-color:@footer-color-step3;
       }
     }
 
     &.step.step4{
       background-color: @nav-color-step4;
-      h1 {
+      h1,.icon-panic {
         background-color:@footer-color-step4;
       }
     }
 
     &.step.step5{
       background-color: @nav-color-step5;
-      h1 {
+      h1,.icon-panic {
         background-color:@footer-color-step5;
       }
     }
 
     &.step.step6{
       background-color: @nav-color-step6;
-      h1 {
+      h1,.icon-panic {
         background-color:@footer-color-step6;
       }
     }

@@ -50,6 +50,17 @@ SOCKET.on('slides step ' + STEP, function(slide) {
   addSlides(slides || []);
 });
 
+SOCKET.on('step init', function(step) {
+  if(STEP === step.step) {
+    console.log('Received init event for step ',step.step,'Current Step', STEP);
+    // If panic, show icon
+    if(step.panic) {
+      $('.icon-panic').addClass('blink');
+    } else {
+      $('.icon-panic').removeClass('blink');
+    }
+  }
+});
 
 SOCKET.on('failure', function(msg) {
   $.notifyClose();
@@ -170,4 +181,10 @@ $(function(){
     SOCKET.emit('slide change', {step: STEP, show: $(this).val()});
   });
 
+  // Panic button
+  $('.icon-panic').on('click', function(e){
+    e.preventDefault();
+    SOCKET.emit('step panic', STEP, !$(this).hasClass('blink'));
+    $(this).addClass('blink');
+  })
 });

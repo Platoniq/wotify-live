@@ -31,6 +31,12 @@ function initModel (obj) {
       $('li[data-' + model + '="' + obj[model] + '"] [data-target="' + key + '"]').attr('title', val);
   });
 
+  // If panic, show icon
+  if(obj.panic) {
+    $('#step-changer li[data-step="' + obj.step + '"] .icon-panic').addClass('blink').removeClass('hidden');
+  } else {
+    $('#step-changer li[data-step="' + obj.step + '"] .icon-panic').removeClass('blink').addClass('hidden');
+  }
 }
 
 
