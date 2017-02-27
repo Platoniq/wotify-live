@@ -1,3 +1,5 @@
+FULLSCREEN=false;
+
 /* SOCKET ACTIONS */
 
 function addSlides(slides) {

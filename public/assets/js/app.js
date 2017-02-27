@@ -2,6 +2,7 @@
 // Global var
 SOCKET = io();
 AUTORELOAD = true;
+FULLSCREEN = true;
 
 // Common tasks
 SOCKET.on('reload page',function(page){
@@ -41,10 +42,12 @@ function getHexagon(user) {
 
 
 function toggleFullscreen() {
-  if($.fullscreen.isFullScreen())
+  if($.fullscreen.isFullScreen()) {
     $.fullscreen.exit();
-  else
+  }
+  else if(FULLSCREEN) {
     $('html').fullscreen();
+  }
 }
 
 $(function(){

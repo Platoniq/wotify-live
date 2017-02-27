@@ -1,6 +1,7 @@
 // Do not auto reload
 AUTORELOAD=false;
 INITIALIZED=false;
+FULLSCREEN=false;
 
 /* SOCKET ACTIONS */
 
