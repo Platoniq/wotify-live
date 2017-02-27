@@ -35,8 +35,14 @@ function showWarning(txt, delay) {
   showMsg(txt, 'warning', delay);
 }
 
-function getHexagon(user) {
-  return '<div class="avatar hexagon" style="background-image:url(' + user.avatar + ')" title="' + user.title + '"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + user.role + '"></div></div>';
+function getHexagon(user, show_id) {
+  var avatar='<div class="avatar hexagon" style="background-image:url(' + user.avatar + ')" title="' + user.title + '"><div class="hex-top"></div><div class="hex-bottom"></div>';
+  if(show_id)
+    avatar+='<div class="role show-id">' + user.id  +'</div>';
+  else
+    avatar+='<div class="role role-' + user.role + '"></div>';
+  avatar+='</div>';
+  return avatar;
 }
 
 
