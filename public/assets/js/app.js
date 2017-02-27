@@ -52,6 +52,6 @@ $(function(){
       // alert(e.which);
       if(e.which == 102) toggleFullscreen();
   });
-  $('body').on('.goto-fullscreen', 'click', toggleFullscreen);
+  $('body').on('click', '.goto-fullscreen', toggleFullscreen);
   showInfo('Press "f" for awesomeness', 1000);
 });
