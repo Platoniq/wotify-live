@@ -42,11 +42,12 @@ function initModel(obj) {
 }
 
 function addSlides(slides){
+
   var total = $('#stepsSlider > div').length;
 
   var index = 0;
   _.each(slides, function(slide) {
-    console.log(index, slide);
+    console.log('ADDING SLIDE',index, slide);
     // TODO: split texts
     if(slide.text) {
         var item = '';
@@ -64,7 +65,7 @@ function addSlides(slides){
         item += '</div>';
         //$('#stepsSlider').append(item);
 
-        $('#stepsSlider').slick('slickAdd',"Hola");
+        $('#stepsSlider').slick('slickAdd', item);
 
         //- var indicators = '';
         //- indicators += '<li data-target="#stepsCarousel" data-slide-to="' + index + '"';
@@ -97,6 +98,7 @@ SOCKET.on('group init', function(group) {
 SOCKET.on('slides step ' + STEP, function(slide) {
   var slides = slide && slide.slides;
   $('.spinning').hide();
+  $('#stepsSlider').slick('removeSlide', null, null, true);
   /*$('#stepsSlider').carousel('pause');
   $('#stepsSlider').carousel(0);
   $('#stepsSlider').removeData();

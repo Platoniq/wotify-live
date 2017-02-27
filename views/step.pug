@@ -28,8 +28,7 @@ block header
 
 block content
 
-  <div class="stepsSlider">
-  </div>
+  div#stepsSlider
 
   //div#slides.row
     div.col-xs-12
@@ -37,8 +36,8 @@ block content
         div.carousel-inner
           div.item.active
 
-        //- o.carousel-indicators
-        //-   li(data-target="#stepsCarousel", data-slide-to="0")
+        o.carousel-indicators
+          li(data-target="#stepsCarousel", data-slide-to="0")
 
         a(class="left carousel-control" href="#stepsCarousel" role="button" data-slide="prev")
           span.glyphicon.glyphicon-chevron-left
@@ -66,7 +65,7 @@ block footer
         //div#title_footer(class="title-footer footer-element-bg-"+step)
         //div#subtitle_footer(class="subtitle-footer footer-element-bg-"+step)
 
-        
+
 
 block prepend scripts
   script.
