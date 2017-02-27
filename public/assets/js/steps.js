@@ -55,7 +55,7 @@ function addSlides(slides){
         //if(index === 0 && total === 0)
             //item += ' active';
         //item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
-        item += '<p class="text-center text">' // Class "text" breaks lines with \n
+        item += '<p class="text-center">' // Class "text" breaks lines with \n
         item += slide.text;
         item += '</p>';
         item += '<div class="text-center">'
