@@ -12,7 +12,7 @@ function initModel(obj) {
   }
 
   // Set users
-  $('#' + model + '-users').html('');    
+  $('#' + model + '-users').html('');
   if(AJAXS[model]) AJAXS[model].abort();
   if(obj.users && obj.users.length) {
     AJAXS[model] = $.getJSON('/api/users',{id:obj.users},function(users){
@@ -23,7 +23,7 @@ function initModel(obj) {
           $('#' + model + '-users').html('<h2>Idea Feeders & Facilitators</h2>');
       _.each(users,function(u){
         // TODO: format this
-        $('#' + model + '-users').append('<div class="avatar hexagon pull-left" style="background-image:url(' + u.avatar + ')"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + u.role + '"></div></div>');
+        $('#' + model + '-users').append(getHexagon(u));
       });
     });
   }
