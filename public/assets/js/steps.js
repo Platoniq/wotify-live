@@ -63,9 +63,9 @@ function addSlides(slides){
         item += ' <span style="font-size:16px">' + slide.author + '<span>'
         item += '</div>'
         item += '</div>';
-        //$('#stepsSlider').append(item);
+        $('#stepsSlider').append(item);
 
-        $('#stepsSlider').slick('slickAdd', item);
+        // $('#stepsSlider').slick('slickAdd', item);
 
         //- var indicators = '';
         //- indicators += '<li data-target="#stepsCarousel" data-slide-to="' + index + '"';
@@ -95,29 +95,43 @@ SOCKET.on('group init', function(group) {
   }
 });
 
+CURRENT_TIMEOUT = null;
+
+function startSlides(){
+  try{clearTimeout(CURRENT_TIMEOUT);}catch(e){};
+  var $el = $('#stepsSlider > div:visible');
+  $el.fadeOut(function(){
+    if($(this).next().is('div')) {
+      $(this).next().fadeIn(function(){
+        CURRENT_TIMEOUT = setTimeout(startSlides, SLIDE_INTERVAL * 1000);
+      });
+    }
+    else {
+      $('#stepsSlider > div:first').fadeIn(function(){
+        CURRENT_TIMEOUT = setTimeout(startSlides, SLIDE_INTERVAL * 1000);
+      });
+    }
+  })
+}
+
 SOCKET.on('slides step ' + STEP, function(slide) {
   var slides = slide && slide.slides;
+  try{clearTimeout(CURRENT_TIMEOUT);}catch(e){};
   $('.spinning').hide();
-  $('#stepsSlider').slick('removeSlide', null, null, true);
-  /*$('#stepsSlider').carousel('pause');
-  $('#stepsSlider').carousel(0);
-  $('#stepsSlider').removeData();
   $('#stepsSlider').html('');
   console.log('Adding slides', slides);
   addSlides(slides || []);
-  $('#stepsSlider').carousel('cycle');*/
-  addSlides(slides || []);
-});
-
-$(function(){
-  /*$('#stepsCarousel').carousel({
-    interval: SLIDE_INTERVAL * 1000,
-    pause: null,
-    keyboard: false
-  });*/
-
-  $('#stepsSlider').slick({
-    autoplay: true
-  });
+  if($('#stepsSlider > div:visible').is('div')) {
+    $('#stepsSlider > div:visible').fadeOut(function(){
+      $('#stepsSlider > div:first').fadeIn(function(){
+        CURRENT_TIMEOUT = setTimeout(startSlides, SLIDE_INTERVAL * 1000);
+      });
+    });
+  } else {
+    $('#stepsSlider > div:first').fadeIn(function(){
+      CURRENT_TIMEOUT = setTimeout(startSlides, SLIDE_INTERVAL * 1000);
+    });
+  }
 
 });
+
