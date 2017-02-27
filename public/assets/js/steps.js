@@ -18,7 +18,7 @@ function initModel(obj) {
     AJAXS[model] = $.getJSON('/api/users',{id:obj.users},function(users){
       console.log('set users for',model,obj.users,users);
         if(model=="group")
-          $('#' + model + '-users').html('<h2>Idea Makers</h2>');
+          $('#' + model + '-users').html('');
         else
           $('#' + model + '-users').html('<h2>Idea Feeders & Facilitators</h2>');
       _.each(users,function(u){
