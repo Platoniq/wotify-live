@@ -20,7 +20,7 @@ function addSlides(slides) {
     if($('#' + slide.type + ' #' + slide.id).is('li')) {
       $('#' + slide.type + ' #' + slide.id).replaceWith(markup);
     } else {
-      $('#' + slide.type + ' ul.media-list').append(markup);
+      $('#' + slide.type + ' ul.media-list').prepend(markup);
     }
     totals[slide.type] = (totals[slide.type] || 0) + 1;
     valid.push(slide.id);

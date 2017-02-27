@@ -63,7 +63,7 @@ function addSlides(slides){
         item += ' <span style="font-size:16px">' + slide.author + '<span>'
         item += '</div>'
         item += '</div>';
-        $('#stepsSlider').append(item);
+        $('#stepsSlider').prepend(item);
 
         // $('#stepsSlider').slick('slickAdd', item);
 
