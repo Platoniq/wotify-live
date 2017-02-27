@@ -42,18 +42,18 @@ function initModel(obj) {
 }
 
 function addSlides(slides){
-  var total = $('#stepsCarousel .item').length;
+  var total = $('#stepsSlider > div').length;
 
   var index = 0;
   _.each(slides, function(slide) {
-    //- console.log(index, slide);
+    console.log(index, slide);
     // TODO: split texts
     if(slide.text) {
         var item = '';
-        item += '<div class="item';
-        if(index === 0 && total === 0)
-            item += ' active';
-        item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
+        item += '<div>';
+        //if(index === 0 && total === 0)
+            //item += ' active';
+        //item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
         item += '<p class="text-center text">' // Class "text" breaks lines with \n
         item += slide.text;
         item += '</p>';
@@ -62,7 +62,9 @@ function addSlides(slides){
         item += ' <span style="font-size:16px">' + slide.author + '<span>'
         item += '</div>'
         item += '</div>';
-        $('#stepsCarousel>.carousel-inner').append(item);
+        //$('#stepsSlider').append(item);
+
+        $('#stepsSlider').slick('slickAdd',"Hola");
 
         //- var indicators = '';
         //- indicators += '<li data-target="#stepsCarousel" data-slide-to="' + index + '"';
@@ -95,19 +97,25 @@ SOCKET.on('group init', function(group) {
 SOCKET.on('slides step ' + STEP, function(slide) {
   var slides = slide && slide.slides;
   $('.spinning').hide();
-  $('#stepsCarousel').carousel('pause');
-  $('#stepsCarousel').carousel(0);
-  $('#stepsCarousel').removeData();
-  $('#stepsCarousel>.carousel-inner').html('');
+  /*$('#stepsSlider').carousel('pause');
+  $('#stepsSlider').carousel(0);
+  $('#stepsSlider').removeData();
+  $('#stepsSlider').html('');
   console.log('Adding slides', slides);
   addSlides(slides || []);
-  $('#stepsCarousel').carousel('cycle');
+  $('#stepsSlider').carousel('cycle');*/
+  addSlides(slides || []);
 });
 
 $(function(){
-  $('#stepsCarousel').carousel({
+  /*$('#stepsCarousel').carousel({
     interval: SLIDE_INTERVAL * 1000,
     pause: null,
     keyboard: false
+  });*/
+
+  $('#stepsSlider').slick({
+    autoplay: true
   });
+
 });
