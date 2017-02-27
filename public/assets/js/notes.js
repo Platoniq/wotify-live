@@ -8,7 +8,7 @@ function addSlides(slides) {
   _.each(slides, function(slide) {
     var markup = '<li class="media" id="' + slide.id + '">' +
       '<div class="media-left">' +
-        '<a href="#"><img class="media-object" src="' + slide.avatar + '" alt="' + slide.author + '"></a>' +
+        '<a href="#">' +  getHexagon(slide) + '</a>' +
       '</div>' +
       '<div class="media-body">' +
         '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span>' +

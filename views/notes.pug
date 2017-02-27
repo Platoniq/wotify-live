@@ -1,9 +1,15 @@
 extends layout
 
+block header
+  nav(class="step step"+step)
+    div.container
+      div.row
+        div.col-xs-12
+          h1 Notes for Step !{step}
+
 block content
   div.row
     div.col-xs-12
-      h1 Notes for Step !{step}
       ul.nav.nav-tabs
         li.active
           a(href="#note", data-toggle="tab") Notes&nbsp;

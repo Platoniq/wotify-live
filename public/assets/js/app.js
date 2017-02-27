@@ -45,16 +45,18 @@ function toggleFullscreen() {
   if($.fullscreen.isFullScreen()) {
     $.fullscreen.exit();
   }
-  else if(FULLSCREEN) {
+  else {
     $('html').fullscreen();
   }
 }
 
 $(function(){
-  $("body").keypress(function(e){
-      // alert(e.which);
-      if(e.which == 102) toggleFullscreen();
-  });
-  $('body').on('click', '.goto-fullscreen', toggleFullscreen);
-  showInfo('Press "f" for awesomeness', 1000);
+  if(FULLSCREEN) {
+    $("body").keypress(function(e){
+        // alert(e.which);
+        if(e.which == 102) toggleFullscreen();
+    });
+    $('body').on('click', '.goto-fullscreen', toggleFullscreen);
+    showInfo('Press "f" for awesomeness', 1000);
+  }
 });

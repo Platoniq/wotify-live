@@ -1,223 +1,221 @@
+@import './mixins';
+@import './settings';
+
 body{
-	background-color: #4200C5;
-	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-	min-height: 100vh; /* These two lines are counted as one :-)       */
+  background-color: #4200C5;
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
 }
 
 
 /* Nav and footer background color */
 
 .nav-bg-1, .footer-bg-1{
-	background-color: #E5CA71;
+  background-color: @nav-color-step1;
 }
 
 .nav-bg-2, .footer-bg-2{
-	background-color: #D69238;
+  background-color: @nav-color-step2;
 }
 
 .nav-bg-3, .footer-bg-3{
-	background-color: #74A5DD;
+  background-color: @nav-color-step3;
 }
 
 .nav-bg-4, .footer-bg-4{
-	background-color: #467EB8;
+  background-color: @nav-color-step4;
 }
 
 .nav-bg-5, .footer-bg-5{
-	background-color: #6C3F93;
+  background-color: @nav-color-step5;
 }
 
 .nav-bg-6, .footer-bg-6{
-	background-color: #C0075A;
+  background-color: @nav-color-step6;
 }
 
 /* Nav elements backgrounds */
 
 .nav-title-bg-1{
-	background-color: #F68712;
+  background-color: @title-color-step1;
 }
 
 .nav-title-bg-2{
-	background-color: #F5C54D;
+  background-color: @title-color-step2;
 }
 
 .nav-title-bg-3{
-	background-color: #1C81C4;
+  background-color: @title-color-step3;
 }
 
 .nav-title-bg-4{
-	background-color: #50ADE5;
+  background-color: @title-color-step4;
 }
 
 .nav-title-bg-5{
-	background-color: #ED1056;
+  background-color: @title-color-step5;
 }
 
 .nav-title-bg-6{
-	background-color: #71339C;
+  background-color: @title-color-step6;
 }
 
 /* Body background color */
 
 .body-bg-1{
-	background-color: #393536;
+  background-color: @body-color-step1;
 }
 
 .body-bg-2{
-	background-color:#F5C54D;
+  background-color: @body-color-step2;
 }
 
 .body-bg-3{
-	background-color: #F5C54D;
+  background-color: @body-color-step3;
 }
 
 .body-bg-4{
-	background-color: #50ADE5;
+  background-color: @body-color-step4;
 }
 
 .body-bg-5{
-	background-color: #9B70BA;
+  background-color: @body-color-step5;
 }
 
 .body-bg-6{
-	background-color: #F14078;
+  background-color: @body-color-step6;
 }
 
 /* Footer elements background color */
 
 .footer-element-bg-1, .footer-element-bg-2{
-	background-color: #D69238;
+  background-color: @footer-color-step1;
 }
 
 .footer-element-bg-3, .footer-element-bg-4{
-	background-color: #64A8DF;
+  background-color: @footer-color-step3;
 }
 
 .footer-element-bg-5, .footer-element-bg-6{
-	background-color: #C0075A;
+  background-color: @footer-color-step5;
 }
 
 
 nav{
-	background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px),
-	linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
-	background-size:20px 20px, 20px 20px, 20px 20px, 20px 20px;
-	background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px
+  .getGrid();
 }
 
 .step-circle{
-	border-radius:50%;
-	background-color: #FFF;
-	width: 120px;
-	height: 120px;
-	color: #000000;
-	margin-left: 30px;
-	margin-bottom: 20px;
+  border-radius:50%;
+  background-color: #FFF;
+  width: 120px;
+  height: 120px;
+  color: #000000;
+  margin-left: 30px;
+  margin-bottom: 20px;
 }
 h1.title{
-	padding-top: 30px;
-	font-weight: bold;
-	font-size: 28px;
+  padding-top: 30px;
+  font-weight: bold;
+  font-size: 28px;
 }
 
 nav div.imagine{
-	text-transform: uppercase;
-	padding: 10px;
-	transform: skew(-20deg);
+  text-transform: uppercase;
+  padding: 10px;
+  transform: skew(-20deg);
     margin-left: 10px;
 }
 
 nav div.imagine div{
-	padding-left: 20px;
-	transform: skew(20deg);
+  padding-left: 20px;
+  transform: skew(20deg);
 }
 
 nav div.info{
-	background-color: #CDD1D5;
-	padding: 20px 10px;
-	color:#333;
-	font-size: 14px;
-	margin-right: 10px;
-	font-weight: normal;
+  background-color: #CDD1D5;
+  padding: 20px 10px;
+  color:#333;
+  font-size: 14px;
+  margin-right: 10px;
+  font-weight: normal;
 }
 
 nav div.info span#subtitle{
-	padding-right: 10px;
-	background-color: #D3D3D3;
-	color: #7B7979;
+  padding-right: 10px;
+  background-color: #D3D3D3;
+  color: #7B7979;
 }
 
 nav div.info span.glyphicon{
-	font-size: 24px;
-	color: #696468;
+  font-size: 24px;
+  color: #696468;
 }
 
 #slides.row{
-	margin-top:50px;
+  margin-top:50px;
 }
 
 .moving{
-	margin-top: 30px;
-	padding-right: 60px;
-	max-width: 300px;
-	float: right;
+  margin-top: 30px;
+  padding-right: 60px;
+  max-width: 300px;
+  float: right;
 }
 
 .group-circle{
-	border-radius:50%;
-	background-color: #FFF;
-	width: 110px;
-	height: 110px;
-	color: #000000;
-	margin-right: 30px;
-	margin-bottom: 10px;
+  border-radius:50%;
+  background-color: #FFF;
+  width: 110px;
+  height: 110px;
+  color: #000000;
+  margin-right: 30px;
+  margin-bottom: 10px;
 }
 
 body .carousel-inner > .item{
-	height: 250px;
+  height: 250px;
 }
 
 div.row.users{
-	margin-top: 20px;
+  margin-top: 20px;
   .hexagon {
     float:left;
   }
  .avatar{
-  	margin-left: 20px;
+    margin-left: 20px;
   }
 }
 footer{
-	background-color: #32009F;
-	background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px),
-	linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-	linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
-	background-size:20px 20px, 20px 20px, 20px 20px, 20px 20px;
-	background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px
+  background-color: #32009F;
+  background-image: linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px),
+  linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+  background-size:20px 20px, 20px 20px, 20px 20px, 20px 20px;
+  background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px
 }
 
 footer div.title-footer{
-	font-size: 55px;
-	float:left;
-	padding: 10px;
-	margin-top: 25px;
-	margin-left: 50px;
+  font-size: 55px;
+  float:left;
+  padding: 10px;
+  margin-top: 25px;
+  margin-left: 50px;
 }
 
 footer div.subtitle-footer{
-	font-size: 30px;
-	float:left;
-	margin-left: 20px;
-	padding: 10px;
-	margin-top: 43px;
+  font-size: 30px;
+  float:left;
+  margin-left: 20px;
+  padding: 10px;
+  margin-top: 43px;
 }
 
 div.group{
-	margin-top: 10px;
-	padding-top: 40px;
-	line-height: 1;
+  margin-top: 10px;
+  padding-top: 40px;
+  line-height: 1;
 }
 
 @media(max-width: 600px){

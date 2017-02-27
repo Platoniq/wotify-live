@@ -1,5 +1,6 @@
 @import "./mixins";
 @import "./select2";
+@import "./settings";
 
 
 .glyphicon.spinning {
@@ -56,6 +57,7 @@ body{
 
   .text {
     white-space: pre;
+    font-size: 1.2em;
   }
 
   li.media.editing {
@@ -74,6 +76,60 @@ body{
     // margin-right: 5px;
   }
 
+  nav {
+    .getGrid();
+    &.step {
+      padding:30px 0;
+      margin-bottom:30px;
+      h1 {
+        background: #000;
+        display: inline;
+        padding:5px;
+        color:#fff;
+      }
+    }
+    &.step.step1{
+      background-color: @nav-color-step1;
+      h1 {
+        background-color:@footer-color-step1;
+      }
+    }
+
+    &.step.step2{
+      background-color: @nav-color-step2;
+      h1 {
+        background-color:@footer-color-step2;
+      }
+    }
+
+    &.step.step3{
+      background-color: @nav-color-step3;
+      h1 {
+        background-color:@footer-color-step3;
+      }
+    }
+
+    &.step.step4{
+      background-color: @nav-color-step4;
+      h1 {
+        background-color:@footer-color-step4;
+      }
+    }
+
+    &.step.step5{
+      background-color: @nav-color-step5;
+      h1 {
+        background-color:@footer-color-step5;
+      }
+    }
+
+    &.step.step6{
+      background-color: @nav-color-step6;
+      h1 {
+        background-color:@footer-color-step6;
+      }
+    }
+  }
 }
 
 
