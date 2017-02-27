@@ -12,14 +12,18 @@ function initModel(obj) {
   }
 
   // Set users
-  $('#' + model + '-users').html('');
+  $('#' + model + '-users').html('');    
   if(AJAXS[model]) AJAXS[model].abort();
   if(obj.users && obj.users.length) {
     AJAXS[model] = $.getJSON('/api/users',{id:obj.users},function(users){
       console.log('set users for',model,obj.users,users);
+        if(model=="group")
+          $('#' + model + '-users').html('<h2>Idea Makers</h2>');
+        else
+          $('#' + model + '-users').html('<h2>Idea Feeders & Facilitators</h2>');
       _.each(users,function(u){
         // TODO: format this
-        $('#' + model + '-users').append('<li>' + u.name + '</li>');
+        $('#' + model + '-users').append('<div class="avatar hexagon pull-left" style="background-image:url(' + u.avatar + ')"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + u.role + '"></div></div>');
       });
     });
   }
