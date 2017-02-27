@@ -23,7 +23,10 @@ function initModel(obj) {
           $('#' + model + '-users').html('<h2>Idea Feeders & Facilitators</h2>');
       _.each(users,function(u){
         // TODO: format this
-        $('#' + model + '-users').append(getHexagon(u,1));
+        if(model=="group")
+          $('#' + model + '-users').append(getHexagon(u,1,1));
+        else
+          $('#' + model + '-users').append(getHexagon(u,1));
       });
     });
   }

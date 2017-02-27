@@ -36,12 +36,16 @@ function showWarning(txt, delay) {
   showMsg(txt, 'warning', delay);
 }
 
-function getHexagon(user, show_id) {
+function getHexagon(user, show_id, show_name) {
   var avatar='<div class="avatar hexagon" style="background-image:url(' + user.avatar + ')" title="' + user.title + '"><div class="hex-top"></div><div class="hex-bottom"></div>';
   if(show_id)
     avatar+='<div class="role show-id">' + user.id  +'</div>';
   else
     avatar+='<div class="role role-' + user.role + '"></div>';
+
+  if(show_name)
+    avatar+='<div class="text-center" style="font-size:12px; position: absolute; top: 65px;">' + user.name + '</div>';
+
   avatar+='</div>';
   return avatar;
 }
