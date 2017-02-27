@@ -47,3 +47,7 @@ function showWarning(txt) {
     }
   });
 }
+
+function getHexagon(user) {
+  return '<div class="avatar hexagon" style="background-image:url(' + user.avatar + ')" title="' + user.title + '"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + user.role + '"></div></div>';
+}

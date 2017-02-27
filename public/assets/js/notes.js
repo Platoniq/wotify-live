@@ -92,7 +92,7 @@ $(function(){
     templateResult: function(item) {
       if (item.loading) return item.name;
       var markup = "<div class='select2-result-repository clearfix'>" +
-        "<div class='select2-result-repository__avatar'><img src='" + item.avatar + "' /></div>" +
+        "<div class='select2-result-repository__avatar'>" + getHexagon(item) + "</div>" +
         "<div class='select2-result-repository__meta'>" +
         "<div class='select2-result-repository__title'><b>" + item.id + '</b> ' + item.name + "</div>";
 

@@ -54,7 +54,7 @@ function addSlides(slides){
         item += slide.text;
         item += '</p>';
         item += '<div class="text-center">'
-        item += '<div class="avatar hexagon" style="background-image:url(' + slide.avatar + ')"><div class="hex-top"></div><div class="hex-bottom"></div><div class="role role-' + slide.role + '"></div></div>';
+        item += getHexagon(slide);
         item += ' <span style="font-size:16px">' + slide.author + '<span>'
         item += '</div>'
         item += '</div>';
