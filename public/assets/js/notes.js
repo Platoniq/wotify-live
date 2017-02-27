@@ -2,7 +2,7 @@
 
 function addSlides(slides) {
   var valid = [];
-  var totals = {};
+  var totals = {api:0,note:0};
   _.each(slides, function(slide) {
     var markup = '<li class="media" id="' + slide.id + '">' +
       '<div class="media-left">' +
@@ -29,8 +29,10 @@ function addSlides(slides) {
       $(this).remove();
     }
   });
+
   // Set totals
   _.each(totals, function(val, key){
+    console.log('SET TOTAL #total-'+key,':',val);
     $('#total-' + key).text(val);
   });
 }
@@ -41,11 +43,9 @@ SOCKET.on('slides step ' + STEP, function(slide) {
     $('#show-type').val(slide.show);
   }
   var slides = slide && slide.slides;
-  if(slides && slides.length) {
-    $('.spinning').hide();
-    console.log('Adding slides', slides);
-    addSlides(slides);
-  }
+  $('.spinning').hide();
+  console.log('Adding slides', slides);
+  addSlides(slides || []);
 });
 
 

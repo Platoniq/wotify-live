@@ -90,16 +90,14 @@ SOCKET.on('group init', function(group) {
 
 SOCKET.on('slides step ' + STEP, function(slide) {
   var slides = slide && slide.slides;
-  if(slides && slides.length) {
-    $('.spinning').hide();
-    $('#stepsCarousel').carousel('pause');
-    $('#stepsCarousel').carousel(0);
-    $('#stepsCarousel').removeData();
-    $('#stepsCarousel>.carousel-inner').html('');
-    console.log('Adding slides', slides);
-    addSlides(slides);
-    $('#stepsCarousel').carousel('cycle');
-  }
+  $('.spinning').hide();
+  $('#stepsCarousel').carousel('pause');
+  $('#stepsCarousel').carousel(0);
+  $('#stepsCarousel').removeData();
+  $('#stepsCarousel>.carousel-inner').html('');
+  console.log('Adding slides', slides);
+  addSlides(slides || []);
+  $('#stepsCarousel').carousel('cycle');
 });
 
 $(function(){
