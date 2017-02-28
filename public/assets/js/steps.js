@@ -66,7 +66,7 @@ function addSlides(slides){
                 });
         else
           text=$.truncate(slide.text, {
-                    length: 450
+                    length: 400
               });
         //if(index === 0 && total === 0)
             //item += ' active';
