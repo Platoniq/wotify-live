@@ -40,7 +40,7 @@ function initModel(obj) {
       $('#' + key).text(val);
   });
   console.log('Initialized ',model);
-  if(obj.step && obj.group) {
+  if(model === 'step') {
     console.log(obj.step,' asking for slides');
     SOCKET.emit('get slides', obj.step);
     $('.spinning').show();

@@ -7,11 +7,11 @@ FULLSCREEN=false;
 
 function initModel (obj) {
   var model = 'group';
-  if(obj.step) model = 'step';
+  if(obj.step !== undefined) model = 'step';
 
-  if(obj.group && obj.step) {
+  if(model === 'step') {
     // Select current group in select
-    $('#step-changer li[data-step="' + obj.step + '"] .select-group').val(obj.group);
+    $('#step-changer li[data-step="' + obj.step + '"] .select-group').val(obj.group ? obj.group : '');
   }
 
   $('li[data-' + model + '="' + obj[model] + '"] .select-users').html('');
