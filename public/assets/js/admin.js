@@ -161,6 +161,7 @@ $(function(){
         };
       },
     },
+    selectOnClose: true,
     placeholder: "Select an user",
     escapeMarkup: function (markup) { return markup; },
     minimumInputLength: 1,
