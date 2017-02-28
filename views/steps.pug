@@ -5,28 +5,14 @@ block append metas
 
 block append styles
   link(rel="stylesheet", href="/assets/css/steps.css")
+  link(href="https://www.fontify.me/wf/13616c18583b4c758cefb695290910be" rel="stylesheet" type="text/css")
 
 block content
   div.row
     div.col-xs-12
-      img(src='/assets/img/circulo.png'
-        width='1350' 
+      //- include ../public/assets/img/circulo.svg
+      object(type="image/svg+xml" data='/assets/img/circulo.svg'
+        width='1350'
         height='1079'
         usemap='#map'
         class='img-responsive')
-      map(name='map')
-        area(shape="poly" coords="163,335,326,389,352,359,381,347,397,341,424,341,673,343,674,181,369,186,288,214,247,236,205,276,208,274" href="/step1" alt="Users & beneficiaries. Their roles and actions" )
-        area(shape="poly" coords="682,186,680,344,969,342,1014,363,1042,386,1202,335,1137,255,1047,204,1009,189,976,189,976,190,972,186,968,188,963,183" href="/step2" )
-        area(shape="poly" coords="1044,392,1207,338,1244,509,1236,541,1225,614,1189,675,1029,624,1064,566,1074,526,1076,482,1077,456,1064,420" href="/step3" )
-        area(shape="poly" coords="1022,626,1188,677,1120,753,1054,787,1004,801,947,810,673,811,675,654,942,655,974,653,996,649" href="/step4" )
-        area(shape="poly" coords="669,655,672,815,383,809,310,794,267,769,209,722,171,676,170,674,336,621,394,655" href="/step5")
-        area(shape="poly" coords="161,344,317,394,293,431,285,464,283,464,280,501,284,533,284,534,295,570,328,622,161,670,119,545,123,523,121,473,131,405" href="/step6")
-
-
-block append scripts
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-rwdImageMaps/1.6/jquery.rwdImageMaps.js")
-  script.
-    $(document).ready(function(e) {
-      $('img[usemap]').rwdImageMaps();
-    });
-
