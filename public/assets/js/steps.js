@@ -23,7 +23,10 @@ function initModel(obj) {
           $('#' + model + '-users').html('<h2>Idea Feeders & Facilitators</h2>');
       _.each(users,function(u){
         // TODO: format this
-        $('#' + model + '-users').append(getHexagon(u,1));
+        if(model=="group")
+          $('#' + model + '-users').append(getHexagon(u,1,1));
+        else
+          $('#' + model + '-users').append(getHexagon(u,1));
       });
     });
   }
@@ -55,7 +58,7 @@ function addSlides(slides){
         //if(index === 0 && total === 0)
             //item += ' active';
         //item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
-        item += '<p class="text-center text">' // Class "text" breaks lines with \n
+        item += '<p class="text-center">' // Class "text" breaks lines with \n
         item += slide.text;
         item += '</p>';
         item += '<div class="text-center">'

@@ -5,6 +5,7 @@ body{
   background-color: #4200C5;
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
+  position: relative;
 }
 
 
@@ -124,7 +125,7 @@ nav div.imagine{
   text-transform: uppercase;
   padding: 10px;
   transform: skew(-20deg);
-    margin-left: 10px;
+  margin-top: 55px;
 }
 
 nav div.imagine div{
@@ -153,7 +154,8 @@ nav div.info span.glyphicon{
 }
 
 #stepsSlider{
-	// height: 150px;
+	 margin-top: 50px;
+   font-size: 1.3em;
   >div{
     display:none;
     // &:first-child {
@@ -167,8 +169,8 @@ nav div.info span.glyphicon{
 }
 
 .moving{
-  margin-top: 30px;
-  padding-right: 60px;
+  margin-top: 35px;
+  padding: 0 45px;
   max-width: 300px;
   float: right;
 }
@@ -184,8 +186,8 @@ nav div.info span.glyphicon{
 }
 
 div.row.users{
-  margin-top: 20px;
-	height: 150px;
+  position: absolute;
+  bottom: 170px;
 }
 
 footer.navbar-fixed-bottom, div#step-users{
@@ -245,6 +247,28 @@ div.group{
 @media(max-width: 600px){
     body{
        font-size: 14px !important;
+    }
+    .step-circle{
+      margin: 0 auto;
+      font-size: 25px;
+    }
+    .moving{
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+
+    div.row.users{
+      position: inherit;
+      margin-bottom: 30px;
+    }
+
+    footer{
+      position: inherit !important;
+    }
+
+    footer.navbar-fixed-bottom #group-users {
+      display: table;
+      padding-bottom: 40px;
     }
 
 }
