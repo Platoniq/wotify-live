@@ -188,4 +188,11 @@ $(function(){
     SOCKET.emit('step panic', STEP, !$(this).hasClass('blink'));
     $(this).addClass('blink');
   })
+
+  // Keypress CTRL-Enter sends form
+  $('body').keypress(function(e){
+     if(e.ctrlKey && e.which === 13 ) {
+      $('#note form').submit();
+     }
+  });
 });
