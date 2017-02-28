@@ -23,6 +23,6 @@
     "underscore": "^1.8.3",
     "select2": "^4.0.3",
     "jq-fullscreen": "^0.6.0",
-    "truncate": "^1.1.2"
+    "jquery-truncate-html": "jquery-truncate#*"
   }
 }

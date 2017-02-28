@@ -57,17 +57,25 @@ function addSlides(slides){
     // TODO: split texts
     if(slide.text) {
         var item = '';
+        var text=  '';
         item += '<div>';
+
+        if(STEP!=0)
+          text=$.truncate(slide.text, {
+                    length: 250
+                });
+        else
+          text=slide.text;
         //if(index === 0 && total === 0)
             //item += ' active';
         //item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
         item += '<p class="text-center">' // Class "text" breaks lines with \n
-        item += slide.text;
+        item += text;
         item += '</p>';
-        item += '<div class="text-center">'
+        item += '<div class="text-center">';
         item += getHexagon(slide);
         item += ' <span style="font-size:16px">' + slide.author + '<span>'
-        item += '</div>'
+        item += '</div>';
         item += '</div>';
         $('#stepsSlider').prepend(item);
 
