@@ -52,7 +52,7 @@ function pollProjects(exit) {
   var allUsers = [];
   console.log('Sync users...');
   POLLING=true;
-  api.request('/users?role', 0, function(err, data){
+  api.request('/users', 0, function(err, data){
       if(err) return abort(exit, 'ERROR', err);
       console.log('%d results, going to next page...', data.length);
       allUsers = _.union(allUsers, data);
