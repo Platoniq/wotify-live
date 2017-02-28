@@ -9,7 +9,7 @@ block header
     div.container-fluid
       div.row
         div.col-sm-2
-          div.step-circle.goto-fullscreen
+          div.step-circle.goto-fullscreen.with-group
             h1.title.text-center Step!{step}
             div.text-center
               img(src="/assets/img/steps/step-"+step+".png" width="50")
@@ -30,22 +30,6 @@ block content
 
   div#stepsSlider
 
-  //div#slides.row
-    div.col-xs-12
-      div#stepsCarousel.carousel.slide
-        div.carousel-inner
-          div.item.active
-
-        o.carousel-indicators
-          li(data-target="#stepsCarousel", data-slide-to="0")
-
-        a(class="left carousel-control" href="#stepsCarousel" role="button" data-slide="prev")
-          span.glyphicon.glyphicon-chevron-left
-          span.sr-only Previous
-        a(class="right carousel-control" href="#stepsCarousel" role="button" data-slide="next")
-          span.glyphicon.glyphicon-chevron-right
-          span.sr-only Next
-
   div.row.users
     //- ideamakers, users defined in model Group
     div#step-users.col-sm-12
@@ -55,7 +39,7 @@ block content
 block footer
   footer(class="navbar-fixed-bottom footer-bg-"+step)
     div.container-fluid
-      div.row
+      div.row.with-group
         div.col-sm-2
           div.step-circle
             div.group.text-center

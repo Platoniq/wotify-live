@@ -13,14 +13,15 @@ block content
       div.well.tab-content
 
         ul#step-changer.tab-pane.active.list-unstyled
-          each val in [1, 2, 3, 4, 5, 6]
+          each val in steps
             li(data-step=val)
               form.form-inline
                 div.form-group
                   p(class="form-control-static step step-" + val) Step !{val}
                 div.form-group
                   select.form-control.select-group
-                    each g in [1, 2, 3, 4, 5, 6]
+                    option(value="", selected=val==="") No Group
+                    each g in groups
                       option(value=g, selected=val===g) Group !{g}
                 div.btn-group
                   button(type="button" class="property btn btn-default", data-target="title", alt="Set title for this step") Title

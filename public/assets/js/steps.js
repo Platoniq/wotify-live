@@ -3,12 +3,15 @@ AJAXS={};
 
 function initModel(obj) {
   var model = 'group';
-  if(obj.step) model = 'step';
+  if(obj.step !== undefined) model = 'step';
 
   // This changes only on step models
   if(obj.step && obj.group) {
     GROUP=obj.group;
     $('.group').html(' Group<br>' + obj.group);
+  }
+  if(model === 'step' && !obj.group) {
+    $('.with-group').hide();
   }
 
   // Set users

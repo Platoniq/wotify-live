@@ -87,14 +87,14 @@ $(function(){
 
   // Save property to step
   $('.property').on('click', function() {
-    var step = $(this).closest('li').data('step');
+    var step = $(this).closest('li[data-step]') ? $(this).closest('li').data('step') : null;
     var group = $(this).closest('li').data('group');
     var target = $(this).data('target');
     eModal
       .prompt({message: $(this).text(), title: $(this).attr('alt'), value: $(this).attr('title')})
       .then(function(msg){
         var obj = {};
-        if(step) obj.step = step;
+        if(!_.isNull(step)) obj.step = step;
         if(group) obj.group = group;
         obj[target] = msg;
         if(group) {
