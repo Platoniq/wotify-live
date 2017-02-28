@@ -11,6 +11,10 @@ body{
 
 /* Nav and footer background color */
 
+.nav-bg-0{
+  background:none;
+}
+
 .nav-bg-1, .footer-bg-1{
   background-color: @nav-color-step1;
 }
@@ -63,7 +67,7 @@ body{
 
 /* Body background color */
 
-.body-bg-1{
+.body-bg-1, .body-bg-0{
   background-color: @body-color-step1;
 }
 
@@ -242,6 +246,37 @@ div.group{
   margin-top: 10px;
   padding-top: 40px;
   line-height: 1;
+}
+
+/* Custom step-0 what-if */
+
+.body-bg-0 .imagine{
+  display: none;
+}
+
+.ideacamp-logo{
+  display: none;
+}
+
+.ideacamp-logo img{
+  max-width: 300px;
+  margin-top: 35px;
+  padding: 0 45px;
+}
+
+
+.body-bg-0 .ideacamp-logo{
+  display: block !important;
+}
+
+
+@media(min-width: 1500px){
+  #stepsSlider{
+    margin-top: 40%;
+    font-size: 1.5em;
+  }
+
+
 }
 
 @media(max-width: 600px){
