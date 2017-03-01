@@ -118,11 +118,14 @@ nav{
   color: #000000;
   margin-left: 30px;
   margin-bottom: 20px;
-}
-h1.title{
-  padding-top: 30px;
-  font-weight: bold;
-  font-size: 28px;
+  h1 {
+    padding-top: 30px;
+    font-weight: bold;
+    font-size: 28px;
+  }
+  img {
+    width: 50px;
+  }
 }
 
 nav div.imagine{
@@ -335,6 +338,36 @@ div.group{
     .moving-container{
       text-align: center;
     }
+
+}
+
+@media(max-height:550px){
+
+  .step-circle{
+    width: 80px;
+    height: 80px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    div.group, h1 {
+      font-size: 14px;
+      line-height:14px;
+      padding:25px 0 0 0 ;
+    }
+    img {
+      width:30px;
+    }
+  }
+  nav {
+    height: 120px;
+  }
+  .moving{
+    // width: 200px;
+    // top:0;
+    margin-top: 10px;
+  }
+  footer.navbar-fixed-bottom .avatar{
+    margin-top: 0px;
+  }
 
 }
 
