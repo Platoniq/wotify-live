@@ -13,6 +13,10 @@ block body
         iframe(id="iframe" + val, data-step=val, src="/step" + val)
         //- iframe(id="iframe" + val, style="height:" + (100*3/total)+"%", src="/step" + val)
 
+block prepend scripts
+  script.
+    FULLSCREEN=false;
+
 block append scripts
   script.
     $(function(){
@@ -31,10 +35,11 @@ block append scripts
           $body.find('iframe:not(#iframe' + c + ')').addClass('hidden').removeClass('fullscreen');
           $iframe.removeClass('hidden').addClass('fullscreen');
           $iframe.focus();
-        }
+        } else if(e.which == 102 || e.which == 70) toggleFullscreen();
       }
       function handleEscape(e) {
-        if(e.keyCode === 27) {
+        if(e.keyCode === 27 || e.keyCode === 97 || e.keyCode === 65) {
+          e.preventDefault();
           $all_iframe.removeClass('hidden').removeClass('fullscreen');
           $body.focus();
         }

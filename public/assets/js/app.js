@@ -77,15 +77,14 @@ function toggleFullscreen() {
 }
 
 $(function(){
-  if(FULLSCREEN) {
+  // Prevent fullscreen from iframes
+  if(FULLSCREEN && window == window.top) {
     $("body").keypress(function(e){
-      e.preventDefault();
+      // e.preventDefault();
       console.log('KEY Press',e.which);
-      if(e.which == 102) toggleFullscreen();
+      if(e.which == 102 || e.which == 70) toggleFullscreen();
     });
     $('body').on('click', '.goto-fullscreen', toggleFullscreen);
-    if (window == window.top) {
-      showInfo('Press "f" for awesomeness', 500);
-    }
+    showInfo('Press "f" for awesomeness', 500);
   }
 });
