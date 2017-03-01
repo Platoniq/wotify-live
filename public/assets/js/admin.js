@@ -43,6 +43,10 @@ function initModel (obj) {
 // Update local select if anoother admin is making changes
 SOCKET.on('step init', function(step) {
   initModel(step);
+  // SOCKET.on('slides step ' + step, function(slide) {
+  //   console.log('notes',slide);
+  // });
+
   $('body').loading('stop');
   INITIALIZED=true;
 });
@@ -50,6 +54,7 @@ SOCKET.on('step init', function(step) {
 SOCKET.on('group init', function(group) {
   initModel(group);
 });
+
 
 $('#reload-remotes').on('click', function(){
   console.log('Reloading remotes');

@@ -35,9 +35,9 @@ function initModel(obj) {
   }
 
   // Put current values on place
-  _.each(obj, function(val, key){
+  _.each(obj, function(val, key) {
     if(key != 'step' && key != 'group' && key != 'users')
-      $('#' + key).text(val);
+      $('#'+ model + '-prop-' + key).text(val);
   });
   console.log('Initialized ',model);
   if(model === 'step') {
