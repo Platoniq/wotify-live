@@ -279,7 +279,7 @@ div.group{
 
 }
 
-@media(max-width: 600px){
+@media(max-width: 767px){
     body{
        font-size: 14px !important;
     }
@@ -288,8 +288,10 @@ div.group{
       font-size: 25px;
     }
     .moving{
-      margin-top: 15px;
-      margin-bottom: 30px;
+      margin: 30px auto !important;
+      padding: 0;
+      max-width: 250px;
+      float: none;
     }
 
     div.row.users{
@@ -310,6 +312,10 @@ div.group{
       display: table;
       padding-bottom: 40px;
       margin-top: 0;
+    }
+
+    .moving-container{
+      text-align: center;
     }
 
 }
