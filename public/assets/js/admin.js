@@ -61,7 +61,7 @@ $('#reload-remotes').on('click', function(){
   SOCKET.emit('reload remotes');
 });
 
-SOCKET.on('refresh feed',function(msg, error, url){
+SOCKET.on('refresh feed',function(msg, type, url){
   if(url) {
     // Check for connections to steps (and send current status)
     url = url.substr(url.lastIndexOf('/') + 1);
@@ -72,7 +72,18 @@ SOCKET.on('refresh feed',function(msg, error, url){
       msg += ' <span class="badge">Synchronizing ' + url+'</span>';
     }
   }
-  $("#feed").prepend('<p' + (error ? ' class="' + error + '"' : '') + '>' + msg + '</p>');
+  if(type === 'error') {
+    Push.create("Error message", {
+        body: $(msg).text(),
+        // icon: 'icon.png',
+        timeout: 4000,
+        onClick: function () {
+            window.focus();
+            this.close();
+        }
+    });
+  }
+  $("#feed").prepend('<p' + (type ? ' class="' + type + '"' : '') + '>' + msg + '</p>');
 });
 
 SOCKET.on('failure', function(msg) {
@@ -86,9 +97,17 @@ SOCKET.on('success', function(msg) {
 /* JQUERY ACTIONS */
 
 $(function(){
+
   // Set loading initial status
   // $('body').loading({message: '<span class="glyphicon glyphicon-refresh spinning"></span> Loading...'});
   if(!INITIALIZED) $('body').loading();
+
+  // Ask for notifications
+  Push.Permission.request(function(){
+    showSuccess('Great! error messages will be send as notifications now!');
+  }, function() {
+    showError('What a shame, no worries budy!');
+  });
 
   // Save property to step
   $('.property').on('click', function() {
