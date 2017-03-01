@@ -50,6 +50,8 @@ block append scripts
       // Prevent iframes get keypress events
       $('body').keypress(handleMaximize)
       $('body').keydown(handleEscape);
-      $("iframe").contents().keypress(handleMaximize);
-      $("iframe").contents().keydown(handleEscape);
+      $('iframe').on('load',function() {
+        $(this).contents().keypress(handleMaximize);
+        $(this).contents().keydown(handleEscape);
+      });
     });
