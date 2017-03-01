@@ -79,10 +79,13 @@ function toggleFullscreen() {
 $(function(){
   if(FULLSCREEN) {
     $("body").keypress(function(e){
-        // alert(e.which);
-        if(e.which == 102) toggleFullscreen();
+      e.preventDefault();
+      console.log('KEY Press',e.which);
+      if(e.which == 102) toggleFullscreen();
     });
     $('body').on('click', '.goto-fullscreen', toggleFullscreen);
-    showInfo('Press "f" for awesomeness', 1000);
+    if (window == window.top) {
+      showInfo('Press "f" for awesomeness', 500);
+    }
   }
 });

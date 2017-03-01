@@ -16,23 +16,35 @@ block body
 block append scripts
   script.
     $(function(){
-      //- showInfo('TIP: use CTRL- or CTRL+ to adjust the viewport!');
-      showInfo('TIP: Use keyboard nums (1,2,3,...) to maximize a frame.');
-      $('body').keypress(function(e){
+      var $body = $('body');
+      var $all_iframe = $('iframe');
+
+      function handleMaximize(e) {
         var c = String.fromCharCode(e.which);
         console.log('KEY PRESSED',e.which,c);
-        if(e.which && $('#iframe' + c).is('iframe')) {
+        var $iframe = $body.find('#iframe' + c);
+        if(e.which && $iframe.is('iframe')) {
           e.preventDefault();
-          if($('#iframe' + c).data('step') == c && $('#iframe' + c).hasClass('fullscreen')) {
-            return $('iframe').removeClass('hidden').removeClass('fullscreen');
+          if($iframe.data('step') == c && $iframe.hasClass('fullscreen')) {
+            return $all_iframe.removeClass('hidden').removeClass('fullscreen');
           }
-          $('iframe:not(#iframe' + c + ')').addClass('hidden').removeClass('fullscreen');
-          $('#iframe' + c).removeClass('hidden').addClass('fullscreen');
+          $body.find('iframe:not(#iframe' + c + ')').addClass('hidden').removeClass('fullscreen');
+          $iframe.removeClass('hidden').addClass('fullscreen');
+          $iframe.focus();
         }
-      })
-      $('body').keydown(function(e){
+      }
+      function handleEscape(e) {
         if(e.keyCode === 27) {
-          $('iframe').removeClass('hidden').removeClass('fullscreen');
+          $all_iframe.removeClass('hidden').removeClass('fullscreen');
+          $body.focus();
         }
-      });
+      }
+      //- showInfo('TIP: use CTRL- or CTRL+ to adjust the viewport!');
+      showInfo('TIP: Use keyboard nums (1,2,3,...) to maximize a frame.');
+
+      // Prevent iframes get keypress events
+      $('body').keypress(handleMaximize)
+      $('body').keydown(handleEscape);
+      $("iframe").contents().keypress(handleMaximize);
+      $("iframe").contents().keydown(handleEscape);
     });
