@@ -29,6 +29,9 @@ function showMsg(txt, type, delay, push) {
         timeout: push.delay || delay,
         onClick: function () {
           window.focus();
+          if(push.url) {
+            window.location = push.url;
+          }
           this.close();
         }
     });
