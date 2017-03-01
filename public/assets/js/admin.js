@@ -2,6 +2,7 @@
 AUTORELOAD=false;
 INITIALIZED=false;
 FULLSCREEN=false;
+ASKED_SLIDES={};
 
 /* SOCKET ACTIONS */
 
@@ -43,9 +44,16 @@ function initModel (obj) {
 // Update local select if anoother admin is making changes
 SOCKET.on('step init', function(step) {
   initModel(step);
-  // SOCKET.on('slides step ' + step, function(slide) {
-  //   console.log('notes',slide);
-  // });
+  if(!ASKED_SLIDES[step.step]) {
+    SOCKET.emit('get slides', step.step, true);
+    SOCKET.on('slides step ' + step.step, function(slide) {
+      var notes = _.filter(slide.slides, function(s){
+        return s.type === 'note';
+      });
+      console.log('notes',notes, slide.slides);
+      $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));
+    });
+  }
 
   $('body').loading('stop');
   INITIALIZED=true;
@@ -61,7 +69,7 @@ $('#reload-remotes').on('click', function(){
   SOCKET.emit('reload remotes');
 });
 
-SOCKET.on('refresh feed',function(msg, error, url){
+SOCKET.on('refresh feed',function(msg, type, url){
   if(url) {
     // Check for connections to steps (and send current status)
     url = url.substr(url.lastIndexOf('/') + 1);
@@ -72,23 +80,31 @@ SOCKET.on('refresh feed',function(msg, error, url){
       msg += ' <span class="badge">Synchronizing ' + url+'</span>';
     }
   }
-  $("#feed").prepend('<p' + (error ? ' class="' + error + '"' : '') + '>' + msg + '</p>');
+  $("#feed").prepend('<p' + (type ? ' class="' + type + '"' : '') + '>' + msg + '</p>');
 });
 
-SOCKET.on('failure', function(msg) {
-  $.notifyClose();
-  showError(msg);
+SOCKET.on('failure', function(msg, important) {
+  showMsg(msg, 'danger', 8000, important);
 });
 
-SOCKET.on('success', function(msg) {
-  showSuccess(msg);
+SOCKET.on('success', function(msg, important) {
+  showMsg(msg, 'success', 2000, important);
 });
+
 /* JQUERY ACTIONS */
 
 $(function(){
+
   // Set loading initial status
   // $('body').loading({message: '<span class="glyphicon glyphicon-refresh spinning"></span> Loading...'});
   if(!INITIALIZED) $('body').loading();
+
+  // Ask for notifications
+  Push.Permission.request(function(){
+    showSuccess('Great! error messages will be send as notifications now!');
+  }, function() {
+    showError('What a shame, no worries budy!');
+  });
 
   // Save property to step
   $('.property').on('click', function() {
@@ -124,15 +140,23 @@ $(function(){
     //- $("#feed").prepend('<p><span class="badge">Synchronizing Step ' + step + ', Group ' + group + '</span></p>');
   });
 
+  $('.icon-panic').on('click', function(e){
+    e.preventDefault();
+    var step = $(this).closest('li').data('step');
+    // Dismiss panic
+    SOCKET.emit('step panic', step, false);
+
+  });
+
   $('#rotate').on('click', function(){
     var total = $('.select-group').length;
     $('.select-group').each(function(index){
       var $li = $(this).closest('li');
-      var first = parseInt($('.select-group option:first').val(), 10);
+      var first = parseInt($('.select-group option:eq(1)').val(), 10);
       var last = parseInt($('.select-group option:last').val(), 10);
-      var g = parseInt($(this).val()) + 1;
-      if(g > last) {
-        g = first;
+      var g = parseInt($(this).val()) - 1;
+      if(g < first) {
+        g = last;
       }
 
       $(this).val(g);

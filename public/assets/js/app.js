@@ -11,7 +11,9 @@ SOCKET.on('reload page',function(page){
   }
 });
 
-function showMsg(txt, type, delay) {
+function showMsg(txt, type, delay, push) {
+  $.notifyClose();
+
   $.notify(txt, {
     type: type || 'info',
     delay: delay || 5000,
@@ -20,6 +22,17 @@ function showMsg(txt, type, delay) {
       exit: 'animated bounceOutUp'
     }
   });
+  if(push) {
+    Push.create(push.title || (type === 'success' ? 'No worries' : 'Heads up!'), {
+        body: $($.parseHTML(txt)).text(),
+        icon: push.icon || '/assets/img/panic.svg',
+        timeout: push.delay || delay,
+        onClick: function () {
+          window.focus();
+          this.close();
+        }
+    });
+  }
 }
 
 // Notifications
