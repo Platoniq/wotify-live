@@ -17,14 +17,20 @@
 }
 
 body.steps {
+  margin:0;
+  padding:0;
   height: 100%;
   .container-fluid{
     div.col {
       margin:0;
       padding:0;
     }
-    iframe {
-      border:0;
+  }
+  iframe {
+    border:0;
+    height:50%;
+    width:33%;
+    &.fullscreen {
       height:100%;
       width:100%;
     }

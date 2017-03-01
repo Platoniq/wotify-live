@@ -8,15 +8,31 @@ block append styles
 
 block body
   body(class=bodyClass)
-    div.container-fluid
-      div.row
-        each val in steps
-          if val !== 0
-            div.col.col-md-4.col-sm-6.col-xs-12
-              iframe(style="height:" + (100*3/total)+"%" src="/step" + val)
+    each val in steps
+      if val !== 0
+        iframe(id="iframe" + val, data-step=val, src="/step" + val)
+        //- iframe(id="iframe" + val, style="height:" + (100*3/total)+"%", src="/step" + val)
 
 block append scripts
   script.
     $(function(){
-      showInfo('TIP: use CTRL- or CTRL+ to adjust the viewport!')
+      //- showInfo('TIP: use CTRL- or CTRL+ to adjust the viewport!');
+      showInfo('TIP: Use keyboard nums (1,2,3,...) to maximize a frame.');
+      $('body').keypress(function(e){
+        var c = String.fromCharCode(e.which);
+        console.log('KEY PRESSED',e.which,c);
+        if(e.which && $('#iframe' + c).is('iframe')) {
+          e.preventDefault();
+          if($('#iframe' + c).data('step') == c && $('#iframe' + c).hasClass('fullscreen')) {
+            return $('iframe').removeClass('hidden').removeClass('fullscreen');
+          }
+          $('iframe:not(#iframe' + c + ')').addClass('hidden').removeClass('fullscreen');
+          $('#iframe' + c).removeClass('hidden').addClass('fullscreen');
+        }
+      })
+      $('body').keydown(function(e){
+        if(e.keyCode === 27) {
+          $('iframe').removeClass('hidden').removeClass('fullscreen');
+        }
+      });
     });
