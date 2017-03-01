@@ -1,0 +1,22 @@
+extends layout
+
+block append metas
+  meta(name='viewport', content='width=device-width, target-densitydpi=160dpi, initial-scale=1')
+
+block append styles
+  link(rel="stylesheet", href="/assets/css/steps.css")
+
+block body
+  body(class=bodyClass)
+    div.container-fluid
+      div.row
+        each val in steps
+          if val !== 0
+            div.col.col-md-4.col-sm-6.col-xs-12
+              iframe(style="height:" + (100*3/total)+"%" src="/step" + val)
+
+block append scripts
+  script.
+    $(function(){
+      showInfo('TIP: use CTRL- or CTRL+ to adjust the viewport!')
+    });
