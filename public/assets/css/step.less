@@ -275,10 +275,14 @@ div.group{
     margin-top: 12%;
     font-size: 1.9em;
   }
-
-
 }
 
+@media(max-width: 1030px){
+   .moving{
+    max-width: 250px;
+    padding-top: 10px;
+   }
+}
 @media(max-width: 767px){
     body{
        font-size: 14px !important;
@@ -290,19 +294,22 @@ div.group{
     .step-circle{
       margin: 0 auto;
       font-size: 25px;
+    }
+    nav h1.title{
+      padding-top: 10px;
+    }
+    nav .step-circle{
       position: absolute;
       top: 15px;
       left: 30px;
     }
-    h1.title{
-      padding-top: 10px;
-    }
     .moving{
-      width: 250px;
+      width: 150px;
       float: none;
       position: absolute;
       top: 15px;
-      right: 0;
+      right: 15px;
+      padding: 0;
     }
 
     div.row.users{
@@ -329,4 +336,10 @@ div.group{
       text-align: center;
     }
 
+}
+
+@media(max-width:360px){
+  .moving{
+    width: 120px !important;
+  }
 }
