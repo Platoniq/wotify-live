@@ -81,6 +81,7 @@ SOCKET.on('refresh feed',function(msg, type, url){
     }
   }
   $("#feed").prepend('<p' + (type ? ' class="' + type + '"' : '') + '>' + msg + '</p>');
+  $('#feed p:gt(100)').remove();
 });
 
 SOCKET.on('failure', function(msg, important) {
