@@ -10,7 +10,7 @@ block header
 
 block content
   div.row
-    div.col-xs-12
+    div.col-xs-10
       ul.nav.nav-tabs
         li.active
           a(href="#note", data-toggle="tab") Notes&nbsp;
@@ -28,7 +28,7 @@ block content
                 option(value="note") Only notes
                 option(value="api") Only Roadbook
 
-      div.well.tab-content
+      div.well.well-sm.tab-content
 
         div#note.tab-pane.active
 
@@ -60,9 +60,20 @@ block content
 
           ul.media-list
 
+    div.col-xs-2
+      div#step-users.well.well-sm
+        h4 Idea Feeders &amp; Facilitators
+        div.users
+        div.clearfix
+      div#group-users.well.well-sm
+        h4 Idea Makers
+        div.users
+        div.clearfix
+
 block prepend scripts
   script.
     STEP=!{step};
+    GROUP=!{step};
 
 block append scripts
   script(src="/assets/js/notes.js?v="+version)

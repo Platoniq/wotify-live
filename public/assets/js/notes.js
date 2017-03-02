@@ -39,6 +39,30 @@ function addSlides(slides) {
   });
 }
 
+function initModel(obj) {
+  var model = 'group';
+  if(obj.step !== undefined) model = 'step';
+
+  if(obj.users && obj.users.length) {
+    $.getJSON('/api/users',{id:obj.users},function(users){
+      console.log('set users for',model,obj.users,users);
+      $('#' + model + '-users .users').html('');
+      if(model=="group")
+        $('#' + model + '-users > h4').html('Group ' + obj.group );
+      else
+        $('#' + model + '-users > h4').html('Idea Feeders & Facilitators');
+      _.each(users,function(u){
+        console.log('ADD',u);
+        if(model=="group")
+          $('#' + model + '-users .users').append('<div class="pull-left">'+getHexagon(u,1)+'</div>');
+        else
+          $('#' + model + '-users .users').append('<div class="pull-left">'+getHexagon(u,1)+'</div>');
+      });
+    });
+  }
+
+}
+
 SOCKET.on('slides step ' + STEP, function(slide) {
   $('body').loading('stop');
   if(slide && slide.show) {
@@ -52,6 +76,7 @@ SOCKET.on('slides step ' + STEP, function(slide) {
 
 SOCKET.on('step init', function(step) {
   if(STEP === step.step) {
+    GROUP=step.group;
     console.log('Received init event for step ',step.step,'Current Step', STEP);
     // If panic, show icon
     if(step.panic) {
@@ -59,8 +84,18 @@ SOCKET.on('step init', function(step) {
     } else {
       $('.icon-panic').removeClass('blink');
     }
+    initModel(step);
   }
 });
+
+SOCKET.on('group init', function(group) {
+  console.log('Received init event for group ',group.group,'Current Step', GROUP);
+  if(GROUP === group.group) {
+    console.log('Applying Init group for ',group);
+    initModel(group);
+  }
+});
+
 
 SOCKET.on('failure', function(msg) {
   $.notifyClose();

@@ -53,7 +53,7 @@ function showWarning(txt, delay) {
 }
 
 function getHexagon(user, show_id, show_name) {
-  var avatar='<div class="avatar hexagon" style="background-image:url(' + user.avatar + ')" title="' + user.title + '"><div class="hex-top"></div><div class="hex-bottom"></div>';
+  var avatar='<div class="avatar hexagon" style="background-image:url(' + user.avatar + ')" title="' + user.name + '"><div class="hex-top"></div><div class="hex-bottom"></div>';
   if(show_id)
     avatar+='<div class="role show-id">' + user.id  +'</div>';
   else
