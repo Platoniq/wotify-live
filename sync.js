@@ -117,10 +117,10 @@ function pollProjects(exit) {
               slide.slides = _.map(slide.slides, function(s) {
                 var u = _.findWhere(allUsers, {userId: s.userId});
                 if(u) {
-                  console.log('FOUND USER', u, 'AGAINST SLIDE', s);
+                  // console.log('FOUND USER', u, 'AGAINST SLIDE', s);
                   var twitter = u.social && u.social.twitter;
                   if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
-                  console.log('RESULT USER', s);
+                  // console.log('RESULT USER', s);
                 }
                 return s;
               });
