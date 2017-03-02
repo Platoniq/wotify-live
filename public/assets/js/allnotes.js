@@ -9,6 +9,9 @@ function addSlides(slides, step) {
         '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span></h4>' +
         '<div class="text">' + slide.text + '</div>' +
       '</div>' +
+      '<div class="media-right">' +
+        '<a href="http://twitter.com/intent/tweet?text='+ slide.text +' by ' + slide.twitter + "><img src="/assets/img/social/twitter.svg" ></a>' +
+      '</div>' +
     '</li>';
     if($('#tab-' + step + ' #' + slide.id).is('li')) {
       $('#tab-' + step + '  #' + slide.id).replaceWith(markup);
