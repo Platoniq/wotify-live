@@ -64,7 +64,7 @@ function pollProjects(exit) {
     allUsers.forEach(function(u, index){
       calls.push(function(callback){
         var twitter = u.social && u.social.twitter;
-        if(twitter) twitter = twitter.replace(/^(.*)twitter\.com\//g,'@');
+        if(twitter) twitter = twitter.replace(/^(.*)twitter\.com\//g,'');
         else twitter = '';
         var user = {id: u._id, userId:u.userId, name:u.name, role:u.role, bio:u.bio, avatar: u.picture, twitter: twitter };
         if(u.email) {
@@ -108,9 +108,21 @@ function pollProjects(exit) {
               if(err) return abort(exit, 'ERROR FIND SLIDE', err);
               if(!slide) slide = new models.Slide({step: step.step});
               var notes = _.filter(slide.slides, function(s){
-                return s.type === 'note';
+                return s && s.type === 'note';
               });
               slide.slides = _.union(notes, projects);
+
+              console.log('Fixing props slides');
+
+              slide.slides = _.map(slide.slides, function(s) {
+                var u = _.findWhere(allUsers, {userId: s.userId});
+                if(u) {
+                  console.log('FOUND USER', u, 'AGAINST SLIDE', s);
+                  var twitter = u.social && u.social.twitter;
+                  if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
+                  console.log('RESULT USER', s);
+                }
+              });
               slide.save(function(err, slide){
                 if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
                 console.log('Saved slide %d with %d slides', slide.step,slide.slides.length);
@@ -119,6 +131,7 @@ function pollProjects(exit) {
             });
           });
         });
+
       });
     });
   });
