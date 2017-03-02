@@ -1,6 +1,8 @@
 function addSlides(slides, step) {
   var valid = [];
   _.each(slides, function(slide) {
+    var twitter = slide.twitter ? '&via=' + slide.twitter : '' ;
+
     var markup = '<li class="media" id="' + slide.id + '">' +
       '<div class="media-left">' +
         '<a href="#">' +  getHexagon(slide) + '</a>' +
@@ -8,6 +10,9 @@ function addSlides(slides, step) {
       '<div class="media-body">' +
         '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span></h4>' +
         '<div class="text">' + slide.text + '</div>' +
+      '</div>' +
+      '<div class="media-right">' +
+        '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(slide.text) + '&hashtags=IdeaCamp17' + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
       '</div>' +
     '</li>';
     if($('#tab-' + step + ' #' + slide.id).is('li')) {
