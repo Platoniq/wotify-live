@@ -9,7 +9,7 @@ block header
     div.container-fluid
       div.row
         div.col-sm-2
-          div.step-circle.goto-fullscreen.with-group
+          div.step-circle.goto-fullscreen.with-group.hidden
             h1.title.text-center Step!{step}
             div.text-center
               img(src="/assets/img/steps/step-" + step + ".png")
@@ -36,13 +36,12 @@ block content
   div.row.users
     //- ideamakers, users defined in model Group
     div#step-users.col-sm-12
-      h2 Idea Feeders
 
 
 block footer
-  footer(class="navbar-fixed-bottom footer-bg-"+step)
+  footer(class="with-group navbar-fixed-bottom hidden footer-bg-"+step)
     div.container-fluid
-      div.row.with-group
+      div.row
         div.col-sm-2
           div.step-circle
             div.group.text-center
