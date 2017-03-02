@@ -10,7 +10,7 @@ function addSlides(slides, step) {
         '<div class="text">' + slide.text + '</div>' +
       '</div>' +
       '<div class="media-right">' +
-        '<a href="http://twitter.com/intent/tweet?text='+ slide.text +' by ' + slide.twitter + "><img src="/assets/img/social/twitter.svg" ></a>' +
+        '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(slide.text) + '&hashtags=IdeaCamp17&via=' + slide.twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
       '</div>' +
     '</li>';
     if($('#tab-' + step + ' #' + slide.id).is('li')) {
