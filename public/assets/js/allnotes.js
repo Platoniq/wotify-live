@@ -96,8 +96,10 @@ function processHash() {
   var hash = window.location.hash;
   var $tab = $('a[href="' + hash + '"]');
   if($tab.is('a')) {
+    var step = $tab.parent().data('step');
     console.log('HASH', hash);
     $tab.tab('show');
+    $('nav.step').attr('class', 'step step-' +  step);
   }
 }
 
