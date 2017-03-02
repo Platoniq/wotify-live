@@ -95,7 +95,20 @@ SOCKET.on('step init', function(step){
   });
 });
 
+function processHash() {
+  var hash = window.location.hash;
+  var $tab = $('a[href="' + hash + '"]');
+  if($tab.is('a')) {
+    console.log('HASH', hash);
+    $tab.tab('show');
+  }
+}
+
 $(function(){
   $('body').loading();
+
+  // Hashchange
+  processHash();
+  $(window).bind( 'hashchange', processHash);
 });
 
