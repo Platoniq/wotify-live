@@ -104,7 +104,9 @@ function processHash() {
     var step = $tab.parent().data('step');
     console.log('HASH', hash);
     $tab.tab('show');
-    $('nav.step').attr('class', 'step step-' +  step);
+    $('nav.step').attr('class', 'step step' +  step);
+  } else {
+    window.location.hash = '#tab-1';
   }
 }
 
@@ -114,5 +116,6 @@ $(function(){
   // Hashchange
   processHash();
   $(window).bind( 'hashchange', processHash);
+
 });
 
