@@ -17,26 +17,28 @@ block content
         //-     .
         //-       &nbsp;All Notes
         each i in steps
-          li(class="step step-"+i, data-step=i)
-            a(href="#tab-" + i)
-              span.total-notes.badge 0
-              span.name Step !{i}
+          if i !== 0
+            li(class="step step-"+i, data-step=i)
+              a(href="#tab-" + i)
+                span.total-notes.badge 0
+                span.name Step !{i}
 
   div.tab-content
     each i in steps
-      div(id="tab-"+i, class="row tab-pane" + (i===0 ? ' active' : ''))
-        div.col-xs-10
-          ul.media-list.well.well-sm
+      if i !== 0
+        div(id="tab-"+i, class="row tab-pane" + (i===0 ? ' active' : ''))
+          div.col-xs-10
+            ul.media-list.well.well-sm
 
-        div.col-xs-2
-          div.step-users.well.well-sm
-            h4 Idea Feeders &amp; Facilitators
-            div.users
-            div.clearfix
-          div.group-users.well.well-sm
-            h4 Idea Makers
-            div.users
-            div.clearfix
+          div.col-xs-2
+            div.step-users.well.well-sm
+              h4 Idea Feeders &amp; Facilitators
+              div.users
+              div.clearfix
+            div.group-users.well.well-sm
+              h4 Idea Makers
+              div.users
+              div.clearfix
 
 block append scripts
   script(src="/assets/js/allnotes.js?v="+version)
