@@ -122,6 +122,7 @@ function pollProjects(exit) {
                   if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
                   console.log('RESULT USER', s);
                 }
+                return s;
               });
               slide.save(function(err, slide){
                 if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
