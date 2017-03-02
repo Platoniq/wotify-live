@@ -8,8 +8,11 @@ function addSlides(slides, step) {
         '<a href="#">' +  getHexagon(slide) + '</a>' +
       '</div>' +
       '<div class="media-body">' +
-        '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span></h4>' +
+        '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span>' +
+        (slide.group ? '<span class="badge pull-right">Group ' + slide.group + '</span>' : '') +
+        '</h4>' +
         '<div class="text">' + slide.text + '</div>' +
+        '<div class="date">' +  (new Date(slide.created_at)).toLocaleString() + '</div>' +
       '</div>' +
       '<div class="media-right">' +
         '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(slide.text) + '&hashtags=IdeaCamp17' + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
@@ -36,14 +39,13 @@ function initModel(obj, step) {
 
   if(obj.users && obj.users.length) {
     $.getJSON('/api/users',{id:obj.users},function(users){
-      console.log('set users for',model,step,obj.users,users);
+      // console.log('set users for',model,step,obj.users,users);
       $('#tab-' + step + ' .' + model + '-users .users').html('');
       if(model=="group")
-        $('#tab-' + step + ' .' + model + '-users > h4').html('Group ' + obj.group );
+        $('#tab-' + step + ' .' + model + '-users > h4').html('Current group ' + obj.group );
       else
         $('#tab-' + step + ' .' + model + '-users > h4').html('Idea Feeders & Facilitators');
       _.each(users,function(u){
-        console.log('ADD',u);
         if(model=="group")
           $('#tab-' + step + ' .' + model + '-users .users').append('<div class="pull-left">'+getHexagon(u,1)+'</div>');
         else
@@ -87,7 +89,7 @@ SOCKET.on('step init', function(step){
     var notes = _.filter(slide.slides, function(s){
       return s && s.type === 'note';
     });
-    console.log('notes',notes, slide.slides);
+    // console.log('notes',notes, slide.slides);
 
     // Set totals
     $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));
@@ -102,7 +104,6 @@ function processHash() {
   var $tab = $('a[href="' + hash + '"]');
   if($tab.is('a')) {
     var step = $tab.parent().data('step');
-    console.log('HASH', hash);
     $tab.tab('show');
     $('nav.step').attr('class', 'step step' +  step);
   } else {

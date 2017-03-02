@@ -126,7 +126,10 @@ function pollProjects(exit) {
               slide.slides = _.map(slide.slides, function(s) {
                 var u = _.findWhere(allUsers, {userId: s.userId});
                 if(u) {
-
+                  s.author = u.name;
+                  s.role = u.role;
+                  s.avatar = u.picture;
+                  s.bio = u.bio;
                   // console.log('FOUND USER', u, 'AGAINST SLIDE', s);
                   var twitter = u.social && u.social.twitter;
                   if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
