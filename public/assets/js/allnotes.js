@@ -85,7 +85,7 @@ SOCKET.on('step init', function(step){
 
     console.log('get slide',slide)
     var notes = _.filter(slide.slides, function(s){
-      return s.type === 'note';
+      return s && s.type === 'note';
     });
     console.log('notes',notes, slide.slides);
 
