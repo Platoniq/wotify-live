@@ -63,12 +63,15 @@ function pollProjects(exit) {
 
     allUsers.forEach(function(u, index){
       calls.push(function(callback){
-        var user = {id: u._id, userId:u.userId, name:u.name, role:u.role, bio:u.bio, avatar: u.picture};
+        var twitter = u.social && u.social.twitter;
+        if(twitter) twitter = twitter.replace(/^(.*)twitter\.com\//g,'@');
+        else twitter = '';
+        var user = {id: u._id, userId:u.userId, name:u.name, role:u.role, bio:u.bio, avatar: u.picture, twitter: twitter };
         if(u.email) {
           user.email = u.email;
         }
         models.User.findOneAndUpdate({id: user.id},user,{upsert:true},function(){
-          console.log(index + ' - Imported user', user.userId,user.name,user.id);
+          console.log(index + ' - Imported user', user.userId,user.name,user.id,user.twitter);
           callback();
         });
       });
