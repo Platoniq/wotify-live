@@ -16,9 +16,9 @@ $(function(){
   };
 
   var set_height= function setHeight(){
-     var height = getUrlParameter('height');
-     //If no height full screen
-      if(!height)
+    var height = getUrlParameter('height');
+    //If no height full screen
+    if(!height)
       height=$(window).height();
     $('div#map').css("height", height);
   };
@@ -60,7 +60,7 @@ $(function(){
 
         var marker = L.marker(new L.LatLng(coordinates[1],coordinates[0]), { title: project.title });
 
-        marker.bindPopup("<div><img width='100' src="+image_url+"></div><b>Project: </b>"+project.title+"<br /><b>Author: </b>"+project.leader.name+"<br /><b>Location: </b>"+location_content);
+        marker.bindPopup('<div class="marker-label"><a href="https://roadbook.ideacamp2017.eu/projects/' + project._id + '" target="_blank"><img width="100" src=' + image_url + '></a></div><b>Project: </b><a href="https://roadbook.ideacamp2017.eu/projects/' + project._id + '" target="_blank" >' + project.title + '</a><br /><b>Author: </b>' + project.leader.name + '<br /><b>Location: </b>' + location_content);
         markers.addLayer(marker);
       }
 
