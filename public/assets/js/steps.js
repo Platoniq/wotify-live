@@ -53,7 +53,7 @@ function addSlides(slides){
 
   var index = 0;
   _.each(slides, function(slide) {
-    console.log('ADDING SLIDE',index, slide);
+    // console.log('ADDING SLIDE',index, slide);
     // TODO: split texts
     if(slide.text) {
         var item = '';
