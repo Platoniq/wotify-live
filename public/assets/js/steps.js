@@ -10,8 +10,8 @@ function initModel(obj) {
     GROUP=obj.group;
     $('.group').html(' Group<br>' + obj.group);
   }
-  if(model === 'step' && !obj.group) {
-    $('.with-group').hide();
+  if(model !== 'step' || obj.group) {
+    $('.with-group').removeClass('hidden');
   }
 
   // Set users
@@ -53,7 +53,7 @@ function addSlides(slides){
 
   var index = 0;
   _.each(slides, function(slide) {
-    console.log('ADDING SLIDE',index, slide);
+    // console.log('ADDING SLIDE',index, slide);
     // TODO: split texts
     if(slide.text) {
         var item = '';

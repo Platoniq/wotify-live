@@ -50,6 +50,7 @@ function abort(exit, msg, err) {
 function pollProjects(exit) {
   var allProjects = [];
   var allUsers = [];
+  var allGroups = [];
   console.log('Sync users...');
   POLLING=true;
   api.request('/users', 0, function(err, data){
@@ -76,6 +77,14 @@ function pollProjects(exit) {
         });
       });
 
+    });
+
+    calls.push(function(callback) {
+      models.Group.find().exec(function(err, groups){
+        if(err) return abort(exit, 'ERROR', err);
+        allGroups = groups;
+        callback();
+      });
     });
 
     async.parallel(calls, function(err,result){
@@ -117,10 +126,22 @@ function pollProjects(exit) {
               slide.slides = _.map(slide.slides, function(s) {
                 var u = _.findWhere(allUsers, {userId: s.userId});
                 if(u) {
+                  s.author = u.name;
+                  s.role = u.role;
+                  s.avatar = u.picture;
+                  s.bio = u.bio;
                   // console.log('FOUND USER', u, 'AGAINST SLIDE', s);
                   var twitter = u.social && u.social.twitter;
                   if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
                   // console.log('RESULT USER', s);
+                  // get group
+                  var group = _.find(allGroups, function(g){
+                    return _.indexOf(g.users, u.userId) != -1;
+                  });
+                  // console.log('ALL GROUPS',allGroups,'GROUP FOUND',group)
+                  if(group) {
+                    s.group = group.group;
+                  }
                 }
                 return s;
               });

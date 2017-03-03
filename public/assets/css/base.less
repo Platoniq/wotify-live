@@ -61,6 +61,10 @@ body{
     // white-space: pre;
     font-size: 1.2em;
   }
+  .date {
+    color:#999;
+    font-style: oblique;
+  }
 
   li.media.editing {
     opacity: 0.5;
@@ -190,14 +194,15 @@ body{
   }
   &.allnotes {
     .well {
-      margin: 0;
+      margin-right: 0;
+      margin-left: 0;
     }
     .users {
       margin: 20px 0;
     }
     li.step {
       a {
-        color:#fff;
+        // color:#fff;
       }
       &.step-0 {
         a {
@@ -207,6 +212,10 @@ body{
       .name {
         padding:5px;
         margin-left: 5px;
+      }
+      &.step-0 .name {
+        color:#fff;
+        background-color: @nav-color-step1;
       }
       &.step-1 .name {
         color:#fff;
@@ -231,6 +240,10 @@ body{
       &.step-6 .name {
         color:#fff;
         background-color: @nav-color-step6;
+      }
+      &.step-7 .name {
+        color:#fff;
+        background-color: @body-color-step1;
       }
     }
   }

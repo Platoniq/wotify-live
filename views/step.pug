@@ -9,15 +9,15 @@ block header
     div.container-fluid
       div.row
         div.col-sm-2
-          div.step-circle.goto-fullscreen.with-group
+          div.step-circle.goto-fullscreen.with-group.hidden
             h1.title.text-center Step!{step}
             div.text-center
-              img(src="/assets/img/steps/step-"+step+".png")
+              img(src="/assets/img/steps/step-" + step + ".png")
           div.ideacamp-logo
             img(src='assets/img/ideacamp.svg'
               class='img-responsive')
         div.col-xs-4.col-sm-6.col-md-7
-          div(class="imagine hidden-xs hidden-sm nav-title-bg-"+step)
+          div(class="imagine hidden-xs hidden-sm nav-title-bg-" + step)
             div#step-prop-title
           //div.info.hidden-xs
             span#step-prop-subtitle
@@ -25,7 +25,7 @@ block header
                  aria-hidden="true")
         div.col-xs-12.col-sm-4.col-md-3.moving-container
           img(src='/assets/img/moving.png'
-              class='img-responsive moving')
+              class='img-responsive moving hidden-xs')
 
         div.glyphicon.glyphicon-refresh.spinning
 
@@ -36,13 +36,12 @@ block content
   div.row.users
     //- ideamakers, users defined in model Group
     div#step-users.col-sm-12
-      h2 Idea Feeders
 
 
 block footer
-  footer(class="navbar-fixed-bottom footer-bg-"+step)
+  footer(class="with-group navbar-fixed-bottom hidden footer-bg-"+step)
     div.container-fluid
-      div.row.with-group
+      div.row
         div.col-sm-2
           div.step-circle
             div.group.text-center

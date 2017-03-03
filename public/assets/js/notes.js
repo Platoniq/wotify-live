@@ -12,9 +12,13 @@ function addSlides(slides) {
       '</div>' +
       '<div class="media-body">' +
         '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span>' +
-        (slide.type === 'note' ? '<span class="btn-group pull-right"><button title="Edit note" class="note-edit btn btn-info"><span class="glyphicon glyphicon-edit"></span></button><button title="Remove note" class="note-remove btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>' : '<button title="Copy note" class="btn btn-success pull-right note-copy"><span class="glyphicon glyphicon-copy"></span></button>' ) +
+        '<span class="pull-right">' +
+        (slide.group ? '<span class="badge">Group ' + slide.group + '</span>&nbsp;' : '') +
+        (slide.type === 'note' ? '<span class="btn-group"><button title="Edit note" class="note-edit btn btn-info"><span class="glyphicon glyphicon-edit"></span></button><button title="Remove note" class="note-remove btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>' : '<button title="Copy note" class="btn btn-success note-copy"><span class="glyphicon glyphicon-copy"></span></button>' ) +
+        '</span>' +
         '</h4>' +
         '<div class="text">' + slide.text + '</div>' +
+        '<div class="date">' +  (new Date(slide.created_at)).toLocaleString() + '</div>' +
       '</div>' +
     '</li>';
     if($('#' + slide.type + ' #' + slide.id).is('li')) {
@@ -34,7 +38,7 @@ function addSlides(slides) {
 
   // Set totals
   _.each(totals, function(val, key){
-    console.log('SET TOTAL #total-'+key,':',val);
+    // console.log('SET TOTAL #total-'+key,':',val);
     $('#total-' + key).text(val);
   });
 }
@@ -45,14 +49,13 @@ function initModel(obj) {
 
   if(obj.users && obj.users.length) {
     $.getJSON('/api/users',{id:obj.users},function(users){
-      console.log('set users for',model,obj.users,users);
+      // console.log('set users for',model,obj.users,users);
       $('#' + model + '-users .users').html('');
       if(model=="group")
         $('#' + model + '-users > h4').html('Group ' + obj.group );
       else
         $('#' + model + '-users > h4').html('Idea Feeders & Facilitators');
       _.each(users,function(u){
-        console.log('ADD',u);
         if(model=="group")
           $('#' + model + '-users .users').append('<div class="pull-left">'+getHexagon(u,1)+'</div>');
         else
@@ -70,7 +73,7 @@ SOCKET.on('slides step ' + STEP, function(slide) {
   }
   var slides = slide && slide.slides;
   $('.spinning').hide();
-  console.log('Adding slides', slides);
+  // console.log('Adding slides', slides);
   addSlides(slides || []);
 });
 
@@ -200,7 +203,7 @@ $(function(){
         id: $('#note-id').val(),
       }
     };
-    console.log('Send form', obj);
+    // console.log('Send form', obj);
     SOCKET.emit('slide change', obj);
     $('#note ul.media-list li').removeClass('editing');
   });

@@ -11,7 +11,7 @@ body{
 
 /* Nav and footer background color */
 
-.nav-bg-0{
+.nav-bg-0, .nav-bg-7{
   background:none;
 }
 
@@ -67,7 +67,7 @@ body{
 
 /* Body background color */
 
-.body-bg-1, .body-bg-0{
+.body-bg-1, .body-bg-0, .body-bg-7{
   background-color: @body-color-step1;
 }
 
@@ -253,23 +253,21 @@ div.group{
 
 /* Custom step-0 what-if */
 
-.body-bg-0 .imagine{
-  display: none;
+.body-bg-0,.body-bg-7 {
+  .imagine{
+    display: none;
+  }
+  .ideacamp-logo{
+    display: block !important;
+  }
 }
-
 .ideacamp-logo{
   display: none;
-}
-
-.ideacamp-logo img{
-  max-width: 300px;
-  margin-top: 35px;
-  padding: 0 45px;
-}
-
-
-.body-bg-0 .ideacamp-logo{
-  display: block !important;
+   img{
+    max-width: 300px;
+    margin-top: 35px;
+    padding: 0 45px;
+  }
 }
 
 
