@@ -48,6 +48,7 @@ Go to http://localhost:3000
 # Config options
 
 * `apiUrl`: Hackdash api point (Wotify version version>=0.29)
+* `token`: Hackdash api bearer token
 * `dasboard`: Only use projects from this dashboard (can be null or an Array)
 * `db`: MongoDB url string for local storage
 * `slideInterval`: Number of seconds between slides for steps screens

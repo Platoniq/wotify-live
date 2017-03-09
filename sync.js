@@ -17,12 +17,13 @@ var _ = require('underscore');
 program
   .version(version)
   .option('-u, --url [url]', 'Specify API URL', config.apiUrl)
+  .option('-t, --token [token]', 'Specify API BEARER token', config.token)
   .option('-i, --interval [interval]', 'If defined, poll the api every [interval] seconds')
   .parse(process.argv);
 
 console.log('Using URL %s', program.url);
 
-var api = require(__dirname + '/lib/api.js')(program.url);
+var api = require(__dirname + '/lib/api.js')(program.url, program.token);
 
 POLLING=false;
 

@@ -46,38 +46,37 @@
 
     //Set slides from API
 
-    var url="https://roadbook.ideacamp2017.eu/api/v2/projects";
+    var url="/api/slides?step=0";
 
     $.getJSON(url, function(data) {
       num=0;
       items='';
       for(i in data) {
-        project = data[i];
-        if(project.extra.step0.whatif){
-          whatif=project.extra.step0.whatif;
-          whatif_size=whatif.length;
-          if(whatif_size<300&&project.leader.username!="microstudi")
+        slide = data[i];
+        if(slide.step == 0){
+          whatif=slide.text;
+          if(whatif.length<300)
           {
             num++;
-            img_author=project.leader.picture;
-            author=project.leader.name;
+            img_author=slide.avatar;
+            author=slide.author;
             items+='<div class="item';
             if(num==1)
               items+=' active';
             items+='" >';
               items+='<p class="text-center">'
-                items+=whatif;  
+                items+=whatif;
               items+='</p>';
               items+='<div class="text-center">'
-                items+='<img style="border-radius: 50%;" width="75" src="'+img_author+'" >';  
+                items+='<img style="border-radius: 50%;" width="75" src="'+img_author+'" >';
                 items+=' <span style="font-size:16px">'+author+'<span>'
-              items+='</div>'  
-            items+='</div>';  
+              items+='</div>'
+            items+='</div>';
           }
-        }        
+        }
       }
       //alert(num);
-      $('div#items').html(items);  
+      $('div#items').html(items);
     });
 
     $('.carousel').carousel({
