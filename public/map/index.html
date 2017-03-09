@@ -74,7 +74,7 @@
 					coordinates=project.location.coordinates;
 					image_url="https://roadbook.ideacamp2017.eu/"+project.cover+"?dim=100x0";
 					L.marker([coordinates[1],coordinates[0]]).addTo(mymap)
-						.bindPopup("<div><img width='100' src="+image_url+"></div><b>Project: </b>"+project.title+"<br /><b>Author: </b>"+project.leader.name+"<br /><b>Location: </b>"+location_content);
+						.bindPopup('<div class="marker-label"><a href="https://roadbook.ideacamp2017.eu/projects/' + project._id + '" target="_blank"><img width="100" src=' + image_url + '></a></div><b>Project: </b><a href="https://roadbook.ideacamp2017.eu/projects/' + project._id + '" target="_blank" >' + project.title + '</a><br /><b>Author: </b>' + project.leader.name + '<br /><b>Location: </b>' + location_content);
 				}
 				
 			}
