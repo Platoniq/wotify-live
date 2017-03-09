@@ -44,23 +44,23 @@ $(function(){
 
   var markers = L.markerClusterGroup();
 
-  var url="https://roadbook.ideacamp2017.eu/api/v2/projects";
+  var url="/api/slides?step=0";
 
   $.getJSON(url, function(data) {
     for(i in data) {
-      project = data[i];
-      if(project.location){
+      slide = data[i];
+      if(slide.location){
         var location_content="";
-        if(project.location.city)
-          location_content+=project.location.city+", ";
-        location_content+=project.location.country;
+        if(slide.location.city)
+          location_content+=slide.location.city+", ";
+        location_content+=slide.location.country;
 
-        coordinates=project.location.coordinates;
-        image_url="https://roadbook.ideacamp2017.eu/"+project.cover+"?dim=100x0";
+        coordinates=slide.location.coordinates;
+        image_url="https://roadbook.ideacamp2017.eu/image"+slide.image+"?dim=100x0";
 
-        var marker = L.marker(new L.LatLng(coordinates[1],coordinates[0]), { title: project.title });
+        var marker = L.marker(new L.LatLng(coordinates[1],coordinates[0]), { title: slide.title });
 
-        marker.bindPopup('<div class="marker-label"><a href="https://roadbook.ideacamp2017.eu/projects/' + project._id + '" target="_blank"><img width="100" src=' + image_url + '></a></div><b>Project: </b><a href="https://roadbook.ideacamp2017.eu/projects/' + project._id + '" target="_blank" >' + project.title + '</a><br /><b>Author: </b>' + project.leader.name + '<br /><b>Location: </b>' + location_content);
+        marker.bindPopup('<div class="marker-label"><a href="https://roadbook.ideacamp2017.eu/projects/' + slide.project_id + '" target="_blank"><img width="100" src=' + image_url + '></a></div><b>Project: </b><a href="https://roadbook.ideacamp2017.eu/projects/' + slide.project_id + '" target="_blank" >' + slide.title + '</a><br /><b>Author: </b>' + slide.author + '<br /><b>Location: </b>' + location_content);
         markers.addLayer(marker);
       }
 
