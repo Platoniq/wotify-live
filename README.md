@@ -1,5 +1,6 @@
 # wotify-widgets
-Widgets for the wotify (hackdash) api widgets.ideacamp2017.eu
+
+The Wotify Live API integrates widgets and features such as display of scenarios and metrics such as state of the prototypes developed during live co-creation sessions, as well as a live conversations notetaking, that allows prototypes owners to get the best out of the live sessions results, back at work.. The widgets in that package have been designed to display Visualizations on large screens.
 
 ## Dependencies
 
@@ -7,7 +8,7 @@ Widgets for the wotify (hackdash) api widgets.ideacamp2017.eu
 -  npm
 -  bower
 -  mongodb
--  A [hackdash](https://github.com/GoteoFoundation/hackdash) installation somewhere (GoteoFoundation version)
+-  A [hackdash](https://github.com/Platoniq/hackdash) installation somewhere (Platoniq version)
 
 # Development
 
