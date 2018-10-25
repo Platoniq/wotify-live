@@ -104,6 +104,16 @@ function pollProjects(exit) {
 
         models.Step.find().exec(function(err, steps){
           if(err) return abort(exit, 'ERROR', err);
+          if(steps.length === 0) {
+            // Create steps
+            config.steps.forEach(function(num) {
+              var step = new models.Step({step: num});
+              step.save(function(err, step){
+                if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
+                console.log('Created step %d', step.step);
+              });
+            });
+          }
           steps.forEach(function(step) {
 
             var projects = api.filterProjects(step.step, allProjects);
@@ -150,7 +160,7 @@ function pollProjects(exit) {
                 if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
                 console.log('Saved slide %d with %d slides', slide.step,slide.slides.length);
                 return abort(exit);
-              })
+              });
             });
           });
         });

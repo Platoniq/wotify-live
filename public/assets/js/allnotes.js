@@ -36,6 +36,11 @@ function addSlides(slides, step) {
 function initModel(obj, step) {
   var model = 'group';
   if(obj.step !== undefined) model = 'step';
+  // hide without groups
+  if(model === 'step' && !obj.group) {
+    // console.log(model, obj, $('.nav-tabs li.step.step-' + step))
+    $('.nav-tabs li.step.step-' + step).hide();
+  }
 
   if(obj.users && obj.users.length) {
     $.getJSON('/api/users',{id:obj.users},function(users){

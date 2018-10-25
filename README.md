@@ -54,3 +54,4 @@ Go to http://localhost:3000
 * `db`: MongoDB url string for local storage
 * `slideInterval`: Number of seconds between slides for steps screens
 * `useCDN`: tryies to use CDN for vendor libraries (like jQuery)
+* `port`: 3000 (specify a different port if needed)
