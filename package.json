@@ -10,20 +10,20 @@
     "start": "NODE_PATH=. DEBUG=widgets:* nodemon index"
   },
   "dependencies": {
-    "async": "^2.1.5",
-    "commander": "^2.9.0",
-    "cron": "^1.2.1",
-    "express": "^4.14.1",
-    "less-middleware": "^2.2.0",
-    "moment": "^2.17.1",
-    "mongoose": "^4.8.4",
+    "async": "^2.6.2",
+    "commander": "^2.20.0",
+    "cron": "^1.7.1",
+    "express": "^4.16.4",
+    "less-middleware": "^2.2.1",
+    "moment": "^2.24.0",
+    "mongoose": "^4.13.18",
     "node-rest-client": "^2.5.0",
-    "pug": "^2.0.0-beta11",
-    "socket.io": "^1.7.2",
-    "truncate": "^2.0.0",
-    "underscore": "^1.8.3"
+    "pug": "^2.0.3",
+    "socket.io": "^1.7.4",
+    "truncate": "^2.0.1",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.19.0"
   }
 }

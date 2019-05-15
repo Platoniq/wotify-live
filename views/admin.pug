@@ -6,7 +6,7 @@ block content
       h1 Admin
       ul.nav.nav-tabs
         li.active
-          a(href="#step-changer", data-toggle="tab") Steps
+          a(href="#step-changer", data-toggle="tab") Spaces
         li
           a(href="#group-changer", data-toggle="tab") Groups
 
@@ -17,20 +17,20 @@ block content
             li(data-step=val)
               form.form-inline
                 div.form-group
-                  p(class="form-control-static step step-" + val) Step !{val}
+                  p(class="form-control-static step step-" + val) Space !{val}
                 div.form-group
                   select.form-control.select-group
                     option(value="", selected=val==="") No Group
                     each g in groups
                       option(value=g, selected=val===g) Group !{g}
                 div.btn-group
-                  button(type="button" class="property btn btn-default", data-target="title", alt="Set title for this step")
+                  button(type="button" class="property btn btn-default", data-target="title", alt="Set title for this space")
                     span.glyphicon.glyphicon-header(title="Title")
-                  button(type="button", class="property btn btn-default", data-target="subtitle", alt="Set subtitle for this step")
+                  button(type="button", class="property btn btn-default", data-target="subtitle", alt="Set subtitle for this space")
                     span.glyphicon.glyphicon-superscript(title="Sub-Title")
-                  button(type="button", class="property btn btn-default", data-target="title_footer", alt="Set footer title for this step")
+                  button(type="button", class="property btn btn-default", data-target="title_footer", alt="Set footer title for this space")
                     span.glyphicon.glyphicon-subscript(title="Footer")
-                  button(type="button" class="property btn btn-default", data-target="subtitle_footer", alt="Set footer subtitle for this step")
+                  button(type="button" class="property btn btn-default", data-target="subtitle_footer", alt="Set footer subtitle for this space")
                     span.glyphicon.glyphicon-italic(title="Sub-Footer")
                 div.btn-group
                   select(class="form-control select-users", style="width:400px", multiple)
@@ -38,7 +38,7 @@ block content
                   button.btn.btn-link.icon-panic.hidden
                   .
                     &nbsp;
-                  a(href="/step" + val +"/notes", class="btn btn-default btn-step-" + val, alt="Add notes")
+                  a(href="/space" + val +"/notes", class="btn btn-default btn-step-" + val, alt="Add notes")
                     span.total-notes.badge 0
                     .
                       &nbsp;Notes

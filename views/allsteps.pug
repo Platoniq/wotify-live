@@ -10,8 +10,8 @@ block body
   body(class=bodyClass)
     each val in steps
       if val !== 0
-        iframe(id="iframe" + val, data-step=val, src="/step" + val)
-        //- iframe(id="iframe" + val, style="height:" + (100*3/total)+"%", src="/step" + val)
+        iframe(id="iframe" + val, data-step=val, src="/space" + val)
+        //- iframe(id="iframe" + val, style="height:" + (100*3/total)+"%", src="/space" + val)
 
 block prepend scripts
   script.
