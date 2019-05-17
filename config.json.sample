@@ -1,7 +1,11 @@
 {
     "apiUrl": "https://wotify.eu/api/v2",
     "token": "00000000-0000-0000-0000-000000000000",
-    "dashboard": "devel",
+    "dashboard": ["devel"],
+    "steps": [0,1,2,3,4,5,6],
+    "groups": [0,1,2,3,4,5,6],
+    "title": "Notify for Wotify",
+    "description": "Widgets and tools for the Wotify project",
     "db": "mongodb://localhost/widgets-ideacamp",
     "slideInterval": 5,
     "useCDN" : true,
