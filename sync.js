@@ -54,6 +54,12 @@ function pollProjects(exit) {
   var allGroups = [];
   console.log('Sync users...');
   POLLING=true;
+  if(config.userZero) {
+    // Insert user zero if configure
+    config.userZero.userId = "0";
+    console.log('Insert user zero', config.userZero);
+    allUsers.push(config.userZero);
+  }
   api.request('/users', 0, function(err, data){
       if(err) return abort(exit, 'ERROR', err);
       console.log('%d results, going to next page...', data.length);

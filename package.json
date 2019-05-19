@@ -13,7 +13,7 @@
     "async": "^2.6.2",
     "commander": "^2.20.0",
     "cron": "^1.7.1",
-    "express": "^4.16.4",
+    "express": "^4.17.0",
     "less-middleware": "^2.2.1",
     "moment": "^2.24.0",
     "mongoose": "^4.13.18",

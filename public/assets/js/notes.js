@@ -75,6 +75,8 @@ SOCKET.on('slides step ' + STEP, function(slide) {
   $('.spinning').hide();
   // console.log('Adding slides', slides);
   addSlides(slides || []);
+  $('#note-user').select2('open');
+  $('.select2-search__field').focus();
 });
 
 SOCKET.on('step init', function(step) {
@@ -159,6 +161,9 @@ $(function(){
   };
 
   $('#note-user').select2(select2);
+  $('#note-user').on('select2:close', function(){
+    $('#note-text').select();
+  });
 
   // Live/dynamic event handler
   $('ul.media-list').on('click', '.note-edit', function(e){
@@ -228,9 +233,11 @@ $(function(){
   })
 
   // Keypress CTRL-Enter sends form
-  $('body').keypress(function(e){
-     if(e.ctrlKey && e.which === 13 ) {
+  $('#note-text').keypress(function(e){
+    // console.log('keypress', e);
+    if(e.ctrlKey && (e.which === 10 || e.which === 13 )) {
       $('#note form').submit();
-     }
+    }
   });
+
 });
