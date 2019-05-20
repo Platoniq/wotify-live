@@ -1,29 +1,29 @@
-function addSlides(slides, step) {
+function addNotes(notes, step) {
   var valid = [];
-  _.each(slides, function(slide) {
-    var twitter = slide.twitter ? '&via=' + slide.twitter : '' ;
+  _.each(notes, function(note) {
+    var twitter = note.twitter ? '&via=' + note.twitter : '' ;
 
-    var markup = '<li class="media" id="' + slide.id + '">' +
+    var markup = '<li class="media" id="' + note._id + '">' +
       '<div class="media-left">' +
-        '<a href="#">' +  getHexagon(slide) + '</a>' +
+        '<a href="#">' +  getHexagon(note) + '</a>' +
       '</div>' +
       '<div class="media-body">' +
-        '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span>' +
-        (slide.group ? '<span class="badge pull-right">Group ' + slide.group + '</span>' : '') +
+        '<h4 class="media-heading"><b class="userId">' + note.userId + '</b> <span class="author">' + note.author + '</span>' +
+        (note.group ? '<span class="badge pull-right">Group ' + note.group + '</span>' : '') +
         '</h4>' +
-        '<div class="text">' + slide.text + '</div>' +
-        '<div class="date">' +  (new Date(slide.created_at)).toLocaleString() + '</div>' +
+        '<div class="text">' + note.text + '</div>' +
+        '<div class="date">' +  (new Date(note.created_at)).toLocaleString() + '</div>' +
       '</div>' +
       '<div class="media-right">' +
-        '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(slide.text) + '&hashtags=IdeaCamp17' + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
+        '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(note.text) + '&hashtags=IdeaCamp17' + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
       '</div>' +
     '</li>';
-    if($('#tab-' + step + ' #' + slide.id).is('li')) {
-      $('#tab-' + step + '  #' + slide.id).replaceWith(markup);
+    if($('#tab-' + step + ' #' + note._id).is('li')) {
+      $('#tab-' + step + '  #' + note._id).replaceWith(markup);
     } else {
       $('#tab-' + step + '  ul.media-list').prepend(markup);
     }
-    valid.push(slide.id);
+    valid.push(note._id);
   });
   // Delete removed
   $('#tab-' + step + ' .ul.media-list li').each(function(){
@@ -39,6 +39,7 @@ function initModel(obj, step) {
   // hide without groups
   if(model === 'step' && !obj.group) {
     // console.log(model, obj, $('.nav-tabs li.step.step-' + step))
+    console.log("HIDDING NON GRUP STEP", obj);
     $('.nav-tabs li.step.step-' + step).hide();
   }
 
@@ -87,19 +88,20 @@ SOCKET.on('step init', function(step){
   // Ask for slides
   SOCKET.emit('get slides', step.step);
   // Write data
-  SOCKET.on('notes space ' + step.step, function(slide) {
+  SOCKET.on('notes space ' + step.step, function(slide, notes) {
     $('body').loading('stop');
 
-    console.log('get slide',slide)
-    var notes = _.filter(slide.notes, function(s){
-      return s && s.type === 'note';
-    });
-    // console.log('notes',notes, slide.notes);
+    if(notes && notes.length)
+      console.log('get slide',slide, 'NOTES',notes)
+    // notes = _.filter(notes, function(s){
+    //   return s && s.type === 'note';
+    // });
+    // console.log('notes',notes, notes);
 
     // Set totals
     $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));
 
-    addSlides(notes || [], step.step);
+    addNotes(notes || [], step.step);
 
   });
 });
