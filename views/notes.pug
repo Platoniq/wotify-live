@@ -1,11 +1,11 @@
 extends layout
 
 block header
-  nav(class="step step"+step)
+  nav(class="step step"+space)
     div.container
       div.row
         div.col-xs-12
-          h1 Notes for Space !{step}
+          h1 Notes for Space !{space}
           span.icon-panic.pull-right
 
 block content
@@ -33,6 +33,12 @@ block content
         div#note.tab-pane.active
 
           form.form-horizontal
+            div.form-group
+              label(for="note-chapter", class="col-sm-2 control-label") Chapter:
+              div.col-sm-10
+                select#note-chapter.form-control
+                  each c in chapters
+                    option(value=c.id) !{c.title}
             div.form-group
               label(for="note-user", class="col-sm-2 control-label") User:
               div.col-sm-10
@@ -72,8 +78,8 @@ block content
 
 block prepend scripts
   script.
-    SPACE=!{step};
-    GROUP=!{step};
+    SPACE=!{space};
+    GROUP=!{space};
 
 block append scripts
   script(src="/assets/js/notes.js?v="+version)

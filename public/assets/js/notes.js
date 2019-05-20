@@ -123,8 +123,25 @@ $(function(){
   $('body').loading();
   SOCKET.emit('get slides', SPACE, true);
 
+  var select2_chapters = {
+    selectOnClose: true,
+    placeholder: "Select a chapter",
+    tags: true,
+    createTag: function (params) {
+      var term = $.trim(params.term);
 
-  var select2 = {
+      if (term === '') {
+        return null;
+      }
+
+      return {
+        id: parseInt($('#note-chapter option').length, 10) + 1,
+        text: term
+      }
+    }
+  };
+
+  var select2_users = {
     ajax: {
       url: '/api/users',
       dataType: 'json',
@@ -159,7 +176,8 @@ $(function(){
     },
   };
 
-  $('#note-user').select2(select2);
+  $('#note-chapter').select2(select2_chapters);
+  $('#note-user').select2(select2_users);
   $('#note-user').on('select2:close', function(){
     $('#note-text').select();
   });
@@ -205,6 +223,8 @@ $(function(){
         userId: $('#note-user').val(),
         text: $('#note-text').val(),
         id: $('#note-id').val(),
+        chapter_id: $('#note-chapter').val(),
+        chapter: $('#note-chapter option:selected').text()
       }
     };
     // console.log('Send form', obj);
