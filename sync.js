@@ -43,7 +43,7 @@ if(program.interval) {
 
 function abort(exit, msg, err) {
   POLLING=false;
-  if(err) console.log(msg, err);
+  if(err) console.error(msg, err);
   if(exit) process.exit(1);
   else return;
 }
