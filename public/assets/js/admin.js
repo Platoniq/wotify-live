@@ -46,11 +46,11 @@ SOCKET.on('step init', function(step) {
   initModel(step);
   if(!ASKED_SLIDES[step.step]) {
     SOCKET.emit('get slides', step.step, true);
-    SOCKET.on('slides step ' + step.step, function(slide) {
-      var notes = _.filter(slide.slides, function(s){
+    SOCKET.on('notes space ' + step.step, function(slide) {
+      var notes = _.filter(slide.notes, function(s){
         return s.type === 'note';
       });
-      console.log('notes',notes, slide.slides);
+      console.log('notes',notes, slide.notes);
       $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));
     });
   }
@@ -123,7 +123,7 @@ $(function(){
           console.log('EMIT GROUP',obj);
           SOCKET.emit('group change', obj)
         } else {
-          console.log('EMIT STEP',obj);
+          console.log('EMIT SPACE',obj);
           SOCKET.emit('step change', obj)
         }
         // initModel(obj);
@@ -145,7 +145,7 @@ $(function(){
     e.preventDefault();
     var step = $(this).closest('li').data('step');
     // Dismiss panic
-    SOCKET.emit('step panic', step, false);
+    SOCKET.emit('space panic', step, false);
 
   });
 

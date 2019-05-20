@@ -60,7 +60,7 @@ function addSlides(slides){
         var text=  '';
         item += '<div>';
 
-        if(STEP!=0)
+        if(SPACE!=0)
           text=$.truncate(slide.text, {
                     length: 250
                 });
@@ -96,15 +96,15 @@ function addSlides(slides){
 
 /* SOCKET ACTIONS */
 SOCKET.on('step init', function(step) {
-  console.log('Received init event for step ',step.step,'Current Step', STEP);
-  if(STEP === step.step) {
+  console.log('Received init event for step ',step,'Current Space', SPACE);
+  if(SPACE === step.step) {
     console.log('Applying Init step for ',step);
     initModel(step);
   }
 });
 
 SOCKET.on('group init', function(group) {
-  console.log('Received init event for group ',group.group,'Current Step', GROUP);
+  console.log('Received init event for group ',group.group,'Current Space', GROUP);
   if(GROUP === group.group) {
     console.log('Applying Init group for ',group);
     initModel(group);
@@ -130,13 +130,12 @@ function startSlides(){
   })
 }
 
-SOCKET.on('slides step ' + STEP, function(slide) {
-  var slides = slide && slide.slides;
+SOCKET.on('notes space ' + SPACE, function(slide, notes) {
   try{clearTimeout(CURRENT_TIMEOUT);}catch(e){};
   $('.spinning').hide();
   $('#stepsSlider').html('');
-  console.log('Adding slides', slides);
-  addSlides(slides || []);
+  console.log('Adding notes', notes);
+  addSlides(notes || []);
   if($('#stepsSlider > div:visible').is('div')) {
     $('#stepsSlider > div:visible').fadeOut(function(){
       $('#stepsSlider > div:first').fadeIn(function(){

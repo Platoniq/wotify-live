@@ -6,7 +6,7 @@ function addSlides(slides) {
   var valid = [];
   var totals = {api:0,note:0};
   _.each(slides, function(slide) {
-    var markup = '<li class="media" id="' + slide.id + '">' +
+    var markup = '<li class="media" id="' + slide._id + '">' +
       '<div class="media-left">' +
         '<a href="#">' +  getHexagon(slide) + '</a>' +
       '</div>' +
@@ -21,13 +21,13 @@ function addSlides(slides) {
         '<div class="date">' +  (new Date(slide.created_at)).toLocaleString() + '</div>' +
       '</div>' +
     '</li>';
-    if($('#' + slide.type + ' #' + slide.id).is('li')) {
-      $('#' + slide.type + ' #' + slide.id).replaceWith(markup);
+    if($('#' + slide.type + ' #' + slide._id).is('li')) {
+      $('#' + slide.type + ' #' + slide._id).replaceWith(markup);
     } else {
       $('#' + slide.type + ' ul.media-list').prepend(markup);
     }
     totals[slide.type] = (totals[slide.type] || 0) + 1;
-    valid.push(slide.id);
+    valid.push(slide._id);
   });
   // Delete removed
   $('ul.media-list li').each(function(){
@@ -66,23 +66,22 @@ function initModel(obj) {
 
 }
 
-SOCKET.on('slides step ' + STEP, function(slide) {
+SOCKET.on('notes space ' + SPACE, function(slide, notes) {
   $('body').loading('stop');
   if(slide && slide.show) {
     $('#show-type').val(slide.show);
   }
-  var slides = slide && slide.slides;
   $('.spinning').hide();
-  // console.log('Adding slides', slides);
-  addSlides(slides || []);
-  $('#note-user').select2('open');
-  $('.select2-search__field').focus();
+  // console.log('Adding notes', notes);
+  addSlides(notes || []);
+  // $('#note-user').select2('open');
+  // $('.select2-search__field').focus();
 });
 
 SOCKET.on('step init', function(step) {
-  if(STEP === step.step) {
+  if(SPACE === step.step) {
     GROUP=step.group;
-    console.log('Received init event for step ',step.step,'Current Step', STEP);
+    console.log('Received init event for step ',step.step,'Current Step', SPACE);
     // If panic, show icon
     if(step.panic) {
       $('.icon-panic').addClass('blink');
@@ -122,7 +121,7 @@ $(function(){
 
   console.log('Asking for slides');
   $('body').loading();
-  SOCKET.emit('get slides', STEP, true);
+  SOCKET.emit('get slides', SPACE, true);
 
 
   var select2 = {
@@ -183,7 +182,7 @@ $(function(){
     e.preventDefault();
     var id = $(this).closest('li').attr('id');
 
-    SOCKET.emit('slide remove', {step:STEP,id:id});
+    SOCKET.emit('note remove', {space:SPACE,id:id});
   });
 
   $('ul.media-list').on('click', '.note-copy', function(e){
@@ -201,7 +200,7 @@ $(function(){
   $('#note form').on('submit', function(e){
     e.preventDefault();
     var obj = {
-      step: STEP,
+      space: SPACE,
       add: {
         userId: $('#note-user').val(),
         text: $('#note-text').val(),
@@ -222,13 +221,13 @@ $(function(){
 
   // Note show-type
   $('#show-type').on('change', function(){
-    SOCKET.emit('slide change', {step: STEP, show: $(this).val()});
+    SOCKET.emit('slide change', {space: SPACE, show: $(this).val()});
   });
 
   // Panic button
   $('.icon-panic').on('click', function(e){
     e.preventDefault();
-    SOCKET.emit('step panic', STEP, !$(this).hasClass('blink'));
+    SOCKET.emit('space panic', SPACE, !$(this).hasClass('blink'));
     $(this).addClass('blink');
   })
 

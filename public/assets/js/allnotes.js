@@ -80,21 +80,21 @@ function initGroup(group) {
 SOCKET.on('group init', initGroup);
 
 SOCKET.on('step init', function(step){
-  console.log('step init',step);
+  console.log('space init',step);
   if(step.group) $('li.step.step-' + step.step).data('group', step.group);
   $('li.step.step-' + step.step).addClass('initialized');
   initModel(step, step.step);
   // Ask for slides
   SOCKET.emit('get slides', step.step);
   // Write data
-  SOCKET.on('slides step ' + step.step, function(slide) {
+  SOCKET.on('notes space ' + step.step, function(slide) {
     $('body').loading('stop');
 
     console.log('get slide',slide)
-    var notes = _.filter(slide.slides, function(s){
+    var notes = _.filter(slide.notes, function(s){
       return s && s.type === 'note';
     });
-    // console.log('notes',notes, slide.slides);
+    // console.log('notes',notes, slide.notes);
 
     // Set totals
     $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));

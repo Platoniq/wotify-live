@@ -133,14 +133,14 @@ function pollProjects(exit) {
             models.Slide.findOne({step:step.step}, function(err, slide){
               if(err) return abort(exit, 'ERROR FIND SLIDE', err);
               if(!slide) slide = new models.Slide({step: step.step});
-              var notes = _.filter(slide.slides, function(s){
+              var notes = _.filter(slide.notes, function(s){
                 return s && s.type === 'note';
               });
-              slide.slides = _.union(notes, projects);
+              slide.notes = _.union(notes, projects);
 
               console.log('Fixing props slides');
 
-              slide.slides = _.map(slide.slides, function(s) {
+              slide.notes = _.map(slide.notes, function(s) {
                 var u = _.findWhere(allUsers, {userId: s.userId});
                 if(u) {
                   s.author = u.name;
@@ -164,7 +164,7 @@ function pollProjects(exit) {
               });
               slide.save(function(err, slide){
                 if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
-                console.log('Saved slide %d with %d slides', slide.step,slide.slides.length);
+                console.log('Saved slide %d with %d slides', slide.step,slide.notes.length);
                 return abort(exit);
               });
             });

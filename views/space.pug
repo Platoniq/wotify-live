@@ -5,21 +5,20 @@ block append styles
   link(rel="stylesheet", href="/assets/css/step.css")
 
 block header
-  nav(class="nav-bg-"+step)
+  nav(class="nav-bg-"+space)
     div.container-fluid
       div.row
         div.col-sm-2
           div.step-circle.goto-fullscreen.with-group.hidden
-            h1.title.text-center Space!{step}
+            h1.title.text-center Space!{space}
             div.text-center
-              img(src="/assets/img/steps/step-" + step + ".png")
+              img(src="/assets/img/steps/step-" + space + ".png")
           div.ideacamp-logo
             img(src='assets/img/ideacamp.svg'
               class='img-responsive')
         div.col-xs-4.col-sm-6.col-md-7
-          div(class="imagine hidden-xs hidden-sm nav-title-bg-" + step)
+          div(class="imagine hidden-xs hidden-sm nav-title-bg-" + space)
             div#step-prop-title
-          //div.info.hidden-xs
             span#step-prop-subtitle
             span(class="glyphicon glyphicon-info-sign pull-right"
                  aria-hidden="true")
@@ -39,7 +38,7 @@ block content
 
 
 block footer
-  footer(class="with-group navbar-fixed-bottom hidden footer-bg-"+step)
+  footer(class="with-group navbar-fixed-bottom hidden footer-bg-"+space)
     div.container-fluid
       div.row
         div.col-sm-2
@@ -48,16 +47,16 @@ block footer
         div#group-users.col-sm-10
 
 
-        //div#step-prop-title_footer(class="title-footer footer-element-bg-"+step)
-        //div#step-prop-subtitle_footer(class="subtitle-footer footer-element-bg-"+step)
+        //div#step-prop-title_footer(class="title-footer footer-element-bg-"+space)
+        //div#step-prop-subtitle_footer(class="subtitle-footer footer-element-bg-"+space)
 
 
 
 block prepend scripts
   script.
-    STEP=!{step};
-    GROUP=!{step};
+    SPACE=!{space};
+    GROUP=!{space};
 
 block append scripts
-  script(src="/assets/js/steps.js?v="+version)
+  script(src="/assets/js/spaces.js?v="+version)
 
