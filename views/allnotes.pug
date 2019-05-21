@@ -9,7 +9,7 @@ block header
 
 block content
   div.row
-    div.col-xs-10
+    div.col-xs-12
       ul.nav.nav-tabs
         //- li.active
         //-   a(href="#all", data-toggle="tab")
@@ -27,10 +27,16 @@ block content
     each i in steps
       if i !== 0
         div(id="tab-"+i, class="row tab-pane" + (i===0 ? ' active' : ''))
-          div.col-xs-10
+          div.col-sm-10.col-xs-12
+            div.spacer
+              button(class="btn btn-primary" data-toggle="collapse" href="#toc-collapse-"+i)
+                span.glyphicon.glyphicon-list
+                .
+                  &nbsp;CHAPTERS
+            div(id="toc-"+i, class="toc")
             div(id="media-"+i)
 
-          div.col-xs-2
+          div.col-sm-2.col-xs-12
             div.step-users.well.well-sm
               h4 !{texts.facilitators}
               div.users

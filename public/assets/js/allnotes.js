@@ -36,6 +36,7 @@ function addNotes(notes, step) {
     var active = !!group[0].active;
     console.log('chapter', chapter_id, chapter);
     if($('#media-' + step).length) {
+      $('#toc-li-' + chapter_id +' .badge').text(group.length);
       var markup = (chapter ? '<h4 id="title-' + step + '-' + chapter_id + '">' + chapter + '</h4>' : '' ) + '<ul class="media-list well well-sm" id="chapter-' + step + '-' + chapter_id + '"></ul>';
       if($('#chapter-' + step + '-' + chapter_id).length) {
         console.log('Update UL container')
@@ -54,7 +55,7 @@ function addNotes(notes, step) {
     }
   });
   // Delete removed
-  // console.log('valid', valid);
+  console.log('valid', valid);
   $('#media-' + step + ' ul.media-list li').each(function(){
     if($.inArray($(this).attr('id'), valid) === -1) {
       $(this).remove();
@@ -114,49 +115,75 @@ function initGroup(group) {
 
 SOCKET.on('group init', initGroup);
 
+GOTO_CHAPTER = true;
 SOCKET.on('step init', function(step){
-  console.log('space init',step);
+  console.log('step init',step);
   if(step.group) $('li.step.step-' + step.step).data('group', step.group);
   $('li.step.step-' + step.step).addClass('initialized');
   initModel(step, step.step);
   // Ask for slides
-  SOCKET.emit('get slides', step.step);
+  SOCKET.emit('get slides', step.step, true);
   // Write data
   SOCKET.on('notes space ' + step.step, function(slide, notes) {
     $('body').loading('stop');
 
-    if(notes && notes.length)
-      console.log('get slide',slide, 'NOTES',notes)
-    notes = _.filter(notes, function(s){
-      return s && s.type === 'note';
-    });
-    // console.log('notes',notes, notes);
+    // if(notes && notes.length)
+    //   console.log('get slide',slide, 'NOTES',notes)
 
     // Set totals
     $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));
-
+    // Set chapters
+    if(slide.chapters && slide.chapters.length) {
+      $('#toc-' + step.step).html('<ul id="toc-collapse-' + step.step + '" class="collapse nav nav-pills nav-stacked"></ul>');
+      // console.log('CHAPTERS', slide.chapters);
+      _.each(slide.chapters, function(c) {
+        var li = '<li id="toc-li-' + c.id + '"><a href="#tab-' +
+          step.step + ',title-' + step.step  + '-' + c.id + '">' +
+          c.title +
+          '<span class="badge">0</span>' +
+         '</a></li>';
+        $('#toc-' + step.step+'>ul').append(li);
+      });
+    }
+    // Set notes
     addNotes(notes || [], step.step);
     // Update active status
+    console.log('CHAPTERS for step', step, slide.chapters);
     _.each(slide.chapters, function(c){
       $('#title-' + step.step + '-' + c.id + '>span').remove();
       if(c.active)
         $('#title-' + step.step + '-' + c.id).append('<span class="label label-danger pull-right">Active</span>');
     });
 
+    if(GOTO_CHAPTER && $('#tab-' + step.step).is(':visible')) {
+      // Slide if hash
+      processHash();
+      GOTO_CHAPTER = false;
+    }
 
   });
 });
 
 function processHash() {
-  var hash = window.location.hash;
-  var $tab = $('a[href="' + hash + '"]');
-  if($tab.is('a')) {
-    var step = $tab.parent().data('step');
-    $tab.tab('show');
-    $('nav.step').attr('class', 'step step' +  step);
-  } else {
-    window.location.hash = '#tab-1';
+  var hash = window.location.hash.split(',');
+  if(hash.length) {
+    var $tab = $('a[href="' + hash[0] + '"]');
+    if($tab.is('a')) {
+      var step = $tab.parent().data('step');
+      $tab.tab('show');
+      $('nav.step').attr('class', 'step step' +  step);
+      if(hash[1]) {
+        var $title = $('#' + hash[1]);
+        if($title.length) {
+          $([document.documentElement, document.body]).animate({
+              scrollTop: $title.offset().top
+          }, 800)
+        }
+      }
+      return;
+    }
   }
+  window.location.hash = '#tab-1';
 }
 
 $(function(){
