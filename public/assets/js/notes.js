@@ -6,7 +6,7 @@ function addSlides(slides) {
   var valid = [];
   var totals = {api:0,note:0};
   _.each(slides, function(slide) {
-    var markup = '<li class="media" id="' + slide._id + '">' +
+    var markup = '<li class="media" id="' + slide._id + '" data-chapter-id="' + slide.chapter_id + '">' +
       '<div class="media-left">' +
         '<a href="#">' +  getHexagon(slide) + '</a>' +
       '</div>' +
@@ -14,8 +14,8 @@ function addSlides(slides) {
         '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span>' +
         '<span class="pull-right">' +
         (slide.group ? '<span class="badge">Group ' + slide.group + '</span>&nbsp;' : '') +
-        (slide.chapter ? '<span class="badge">' + slide.chapter + '</span>&nbsp;' : '') +
-        (slide.type === 'note' ? '<span class="btn-group"><button title="Edit note" class="note-edit btn btn-info"><span class="glyphicon glyphicon-edit"></span></button><button title="Remove note" class="note-remove btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>' : '<button title="Copy note" class="btn btn-success note-copy"><span class="glyphicon glyphicon-copy"></span></button>' ) +
+        (slide.chapter ? '<span class="label label-info">' + slide.chapter + '</span>&nbsp;' : '') +
+        (slide.type === 'note' ? '<span class="btn-group"><button title="Edit note" class="note-edit btn btn-primary"><span class="glyphicon glyphicon-edit"></span></button><button title="Remove note" class="note-remove btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>' : '<button title="Copy note" class="btn btn-success note-copy"><span class="glyphicon glyphicon-copy"></span></button>' ) +
         '</span>' +
         '</h4>' +
         '<div class="text">' + slide.text + '</div>' +
@@ -178,6 +178,9 @@ $(function(){
   };
 
   $('#note-chapter').select2(select2_chapters);
+  // $('#note-chapter').on('select2:close', function(){
+  //   console.log('Activate chapter', $('#note-chapter'));
+  // });
   $('#note-user').select2(select2_users);
   $('#note-user').on('select2:close', function(){
     $('#note-text').select();
@@ -188,10 +191,13 @@ $(function(){
     e.preventDefault();
     $(this).closest('li').addClass('editing');
     var id = $(this).closest('li').attr('id');
+    var chapterId = $(this).closest('li').data('chapter-id');
     var userId = $(this).closest('li').find('.userId').text();
     var author = $(this).closest('li').find('.author').text();
     var text = $(this).closest('li').find('.text').text();
-    // console.log('EDIT', id, userId, author, text);
+    console.log('EDIT id', id, 'chapterId', chapterId, 'userId', userId, 'author', author, 'text', text);
+    $('#note-chapter').val(chapterId);
+    $('#note-chapter').trigger('change');
     $('#note-user').html('').append('<option value="' + userId + '" selected>' + author + '</option>');
     $('#note-id').val(id);
     $('#note-text').val(text).focus();

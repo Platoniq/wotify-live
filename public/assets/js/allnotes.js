@@ -8,7 +8,7 @@ function addNote(note, container) {
     '<div class="media-body">' +
       '<h4 class="media-heading"><b class="userId">' + note.userId + '</b> <span class="author">' + note.author + '</span>' +
       (note.group ? '<span class="badge pull-right">Group ' + note.group + '</span>' : '') +
-      (note.chapter ? '<span class="badge pull-right">' + note.chapter + '</span>' : '') +
+      // (note.chapter ? '<span class="badge pull-right">' + note.chapter + '</span>' : '') +
       '</h4>' +
       '<div class="text">' + note.text + '</div>' +
       '<div class="date">' +  (new Date(note.created_at)).toLocaleString() + '</div>' +
@@ -28,17 +28,18 @@ function addNotes(notes, step) {
   var valid = [];
 
   var grouped = _.groupBy(notes, 'chapter_id');
-  console.log('grouped', grouped);
+  // console.log('grouped', grouped);
   _.each(grouped, function(group) {
     // Create zone
     var chapter_id = group[0].chapter_id || '0';
     var chapter = group[0].chapter || '';
+    var active = !!group[0].active;
     console.log('chapter', chapter_id, chapter);
     if($('#media-' + step).length) {
-      var markup = (chapter ? '<h4>' + chapter + '</h4>' : '' ) + '<ul class="media-list well well-sm" id="chapter-' + step + '-' + chapter_id + '"></ul>';
+      var markup = (chapter ? '<h4 id="title-' + step + '-' + chapter_id + '">' + chapter + '</h4>' : '' ) + '<ul class="media-list well well-sm" id="chapter-' + step + '-' + chapter_id + '"></ul>';
       if($('#chapter-' + step + '-' + chapter_id).length) {
         console.log('Update UL container')
-        $('#chapter-' + step + '-' + chapter_id).contents('h4').text(chapter);
+        $('#title-' + step + '-' + chapter_id).text(chapter);
       } else {
         console.log('Create UL container');
         $('#media-' + step).append(markup)
@@ -135,6 +136,13 @@ SOCKET.on('step init', function(step){
     $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));
 
     addNotes(notes || [], step.step);
+    // Update active status
+    _.each(slide.chapters, function(c){
+      $('#title-' + step.step + '-' + c.id + '>span').remove();
+      if(c.active)
+        $('#title-' + step.step + '-' + c.id).append('<span class="label label-danger pull-right">Active</span>');
+    });
+
 
   });
 });
