@@ -7,7 +7,7 @@
 var version = require(__dirname + '/package.json').version;
 var config = require(__dirname + '/config.json');
 var models = require(__dirname + '/lib/models');
-
+var mongoose = require('mongoose');
 var program = require('commander');
 var truncate = require('truncate');
 var async = require('async');
@@ -52,6 +52,9 @@ function pollProjects(exit) {
   var allProjects = [];
   var allUsers = [];
   var allGroups = [];
+  var allSteps = [];
+  var allSlides = [];
+  var allNotes = [];
   console.log('Sync users...');
   POLLING=true;
   if(config.userZero) {
@@ -69,6 +72,7 @@ function pollProjects(exit) {
 
     var calls = [];
 
+    // console.log('Getting users...');
     allUsers.forEach(function(u, index){
       calls.push(function(callback){
         var twitter = u.social && u.social.twitter;
@@ -83,95 +87,199 @@ function pollProjects(exit) {
           callback();
         });
       });
-
     });
 
     calls.push(function(callback) {
+      // console.log('Getting groups...');
       models.Group.find().exec(function(err, groups){
         if(err) return abort(exit, 'ERROR', err);
         allGroups = groups;
+        console.log("Found %d groups", groups.length);
         callback();
       });
     });
 
-    async.parallel(calls, function(err,result){
-      if(err) return abort(exit, 'ERROR', err);
-      console.log('Done importing %d users',result.length);
-
-      console.log('Getting projects...');
-
-      api.request('/projects', 0, function(err, data){
+    calls.push(function(callback) {
+      // console.log('Getting steps...');
+      models.Step.find().exec(function(err, steps){
         if(err) return abort(exit, 'ERROR', err);
-        console.log('%d results, going to next page...', data.length);
-        allProjects = _.union(allProjects, data);
-      }, function(){
-        console.log('Obtained %d projects, now filtering', allProjects.length);
-        console.log('Getting configured steps');
-
-        models.Step.find().exec(function(err, steps){
-          if(err) return abort(exit, 'ERROR', err);
-          if(steps.length === 0) {
-            // Create steps
-            config.steps.forEach(function(num) {
-              var step = new models.Step({step: num});
-              step.save(function(err, step){
-                if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
-                console.log('Created step %d', step.step);
-              });
-            });
-          }
-          steps.forEach(function(step) {
-
-            var projects = api.filterProjects(step.step, allProjects);
-            if(!projects || !projects.length) {
-              console.error('No filtered projects found for step %d, Fallback to Step 0 (Whatif)', step.step);
-              projects = api.filterProjects(0, allProjects);
-            }
-
-            console.log('Step %d reduced to %d projects, saving to database', step.step, projects.length );
-
-            models.Slide.findOne({step:step.step}, function(err, slide){
-              if(err) return abort(exit, 'ERROR FIND SLIDE', err);
-              if(!slide) slide = new models.Slide({step: step.step});
-              var notes = _.filter(slide.notes, function(s){
-                return s && s.type === 'note';
-              });
-              slide.notes = _.union(notes, projects);
-
-              console.log('Fixing props slides');
-
-              slide.notes = _.map(slide.notes, function(s) {
-                var u = _.findWhere(allUsers, {userId: s.userId});
-                if(u) {
-                  s.author = u.name;
-                  s.role = u.role;
-                  s.avatar = u.picture;
-                  s.bio = u.bio;
-                  // console.log('FOUND USER', u, 'AGAINST SLIDE', s);
-                  var twitter = u.social && u.social.twitter;
-                  if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
-                  // console.log('RESULT USER', s);
-                  // get group
-                  var group = _.find(allGroups, function(g){
-                    return _.indexOf(g.users, u.userId) != -1;
-                  });
-                  // console.log('ALL GROUPS',allGroups,'GROUP FOUND',group)
-                  if(group) {
-                    s.group = group.group;
-                  }
-                }
-                return s;
-              });
-              slide.save(function(err, slide){
-                if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
-                console.log('Saved slide %d with %d slides', slide.step,slide.notes.length);
-                return abort(exit);
-              });
-            });
-          });
-        });
-
+        allSteps = steps;
+        console.log("Found %d steps", steps.length);
+        callback();
       });
     });
+
+    calls.push(function(callback) {
+      // console.log('Getting slides...');
+      models.Slide.find().exec(function(err, slides){
+        if(err) return abort(exit, 'ERROR', err);
+        allSlides = slides;
+        console.log("Found %d slides", slides.length);
+        callback();
+      });
+    });
+
+    calls.push(function(callback) {
+      // console.log('Getting notes...');
+      models.Note.find().exec(function(err, notes){
+        if(err) return abort(exit, 'ERROR', err);
+        allNotes = notes;
+        console.log("Found %d notes", notes.length, notes);
+        callback();
+      });
+    });
+
+    calls.push(function(callback) {
+      console.log('Getting projects...');
+      api.request('/projects', 0, function(err, data) {
+        if(err) return abort(exit, 'ERROR', err);
+        console.log('%d projects found...', data.length);
+        allProjects = _.union(allProjects, data);
+      }, function(){
+        callback();
+      });
+    });
+
+    calls.push(function(callback) {
+      console.log('Obtained %d projects, now filtering notes', allProjects.length);
+      config.steps.forEach(function(step) {
+        var notes = api.filterProjects(step, allProjects);
+        if(!notes || !notes.length) {
+          console.error('No filtered notes found for step %d, Fallback to Step 0 (Whatif)', step);
+          notes = api.filterProjects(0, allProjects);
+        }
+        console.log('%d notes for step %d', notes.length, step);
+        // Mix notes
+        allNotes = _.union(allNotes, notes);
+      });
+      // fix notes
+      var subcalls = [];
+      allNotes.forEach(function(note) {
+        var s =  {_id:  note._id, userId: note.userId};
+        console.log('Note check', s, note);
+        subcalls.push(function(callback) {
+          var u = _.findWhere(allUsers, {userId: s.userId});
+          if(u) {
+            if(!s._id) {
+              s._id = mongoose.Types.ObjectId();
+              console.log('Created new _id', s._id);
+            }
+            s.author = u.name;
+            s.role = u.role;
+            s.avatar = u.picture;
+            s.bio = u.bio;
+            // console.log('FOUND USER', u, 'AGAINST SLIDE', s);
+            var twitter = u.social && u.social.twitter;
+            if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
+            // console.log('RESULT USER', s);
+            // get group
+            var group = _.find(allGroups, function(g){
+              return _.indexOf(g.users, u.userId) != -1;
+            });
+            // console.log('ALL GROUPS',allGroups,'GROUP FOUND',group)
+            if(group) {
+              s.group = group.group;
+            }
+            models.Note.findOneAndUpdate({_id: s._id},s,{upsert: true},function(err){
+              if(err) return abort(exit, ['ERROR SAVING NOTE', s], err);
+              console.log('Saved note', s._id);
+              callback();
+            });
+          } else {
+            callback();
+          }
+        });
+      });
+      async.parallel(subcalls, callback);
+    });
+
+    async.series(calls, function(err, result) {
+      if(err) return abort(exit, 'ERROR', err);
+      console.log('Done importing %d items',result.length);
+
+      abort(exit);
+    });
+
+    // async.parallel(calls, function(err,result){
+    //   if(err) return abort(exit, 'ERROR', err);
+    //   console.log('Done importing %d users',result.length);
+
+    //   console.log('Getting projects...');
+
+    //   api.request('/projects', 0, function(err, data){
+    //     if(err) return abort(exit, 'ERROR', err);
+    //     console.log('%d results, going to next page...', data.length);
+    //     allProjects = _.union(allProjects, data);
+    //   }, function(){
+    //     console.log('Obtained %d projects, now filtering', allProjects.length);
+    //     console.log('Getting configured steps');
+
+    //     models.Step.find().exec(function(err, steps){
+    //       if(err) return abort(exit, 'ERROR', err);
+    //       if(steps.length === 0) {
+    //         // Create steps
+    //         config.steps.forEach(function(num) {
+    //           var step = new models.Step({step: num});
+    //           step.save(function(err, step){
+    //             if(err) return abort(exit, 'ERROR SAVING SLIDE', err);
+    //             console.log('Created step %d', step.step);
+    //           });
+    //         });
+    //       }
+    //       steps.forEach(function(step) {
+
+    //         var projects = api.filterProjects(step.step, allProjects);
+    //         if(!projects || !projects.length) {
+    //           console.error('No filtered projects found for step %d, Fallback to Step 0 (Whatif)', step.step);
+    //           projects = api.filterProjects(0, allProjects);
+    //         }
+
+    //         console.log('Step %d reduced to %d projects, saving to database', step.step, projects.length );
+
+    //         models.Slide.findOne({space:step.step}, function(err, slide){
+    //           if(err) return abort(exit, 'ERROR FIND SLIDE', err);
+    //           if(!slide) slide = new models.Slide({space: step.step});
+
+    //           models.Note.find({space: slide.space, type: 'note'}, function(err, notes) {
+    //             notes = _.union(notes, projects);
+    //             console.log('Fixing props notes for slide', slide.space);
+
+    //             var done = 0;
+    //             notes.forEach(function(note) {
+    //               var s = {};
+    //               var u = _.findWhere(allUsers, {userId: note.userId});
+    //               if(u) {
+    //                 s.author = u.name;
+    //                 s.role = u.role;
+    //                 s.avatar = u.picture;
+    //                 s.bio = u.bio;
+    //                 // console.log('FOUND USER', u, 'AGAINST SLIDE', s);
+    //                 var twitter = u.social && u.social.twitter;
+    //                 if(twitter) s.twitter = twitter.replace(/^(.*)twitter\.com\//g,'')
+    //                 // console.log('RESULT USER', s);
+    //                 // get group
+    //                 var group = _.find(allGroups, function(g){
+    //                   return _.indexOf(g.users, u.userId) != -1;
+    //                 });
+    //                 // console.log('ALL GROUPS',allGroups,'GROUP FOUND',group)
+    //                 if(group) {
+    //                   s.group = group.group;
+    //                 }
+    //                 models.Note.findOneAndUpdate({_id: s._id},s,{upsert: true},function(err){
+    //                   if(err) return abort(exit, ['ERROR SAVING NOTE', s], err);
+    //                   console.log('Saved slide %d with note', slide.space, s);
+    //                   done++;
+    //                 });
+    //               } else {
+    //                 done++;
+    //               }
+    //             });
+    //             if(done >= notes.length) return abort(exit);
+    //           });
+    //         });
+    //       });
+    //     });
+    //   });
+    // });
   });
 }

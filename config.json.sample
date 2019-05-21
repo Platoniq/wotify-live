@@ -9,11 +9,18 @@
     "db": "mongodb://localhost/widgets-ideacamp",
     "slideInterval": 5,
     "useCDN" : true,
+    "hashtags": "#wotify",
     "userZero": {
       "name": "User Zero",
-      "twitter": "",
+      {"social": "twitter": "myTwitterId"},
       "role": "user",
       "picture": "https://www.gravatar.com/avatar/?d=robohash"
     },
+    "defaultChapters": [
+      {
+        "id": 1,
+        "title": "S"
+      },
+    ],
     "port":  3001
 }

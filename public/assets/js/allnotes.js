@@ -15,7 +15,7 @@ function addNotes(notes, step) {
         '<div class="date">' +  (new Date(note.created_at)).toLocaleString() + '</div>' +
       '</div>' +
       '<div class="media-right">' +
-        '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(note.text) + '&hashtags=IdeaCamp17' + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
+        '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(note.text) + '&hashtags=' + HASHTAGS + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
       '</div>' +
     '</li>';
     if($('#tab-' + step + ' #' + note._id).is('li')) {
