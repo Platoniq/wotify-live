@@ -124,7 +124,7 @@ function pollProjects(exit) {
       models.Note.find().exec(function(err, notes){
         if(err) return abort(exit, 'ERROR', err);
         allNotes = notes;
-        console.log("Found %d notes", notes.length, notes);
+        console.log("Found %d notes", notes.length);
         callback();
       });
     });
@@ -148,6 +148,13 @@ function pollProjects(exit) {
           console.error('No filtered notes found for step %d, Fallback to Step 0 (Whatif)', step);
           notes = api.filterProjects(0, allProjects);
         }
+        // Assing space
+        var s = _.findWhere(allSlides, { space: step });
+        notes.forEach(function(n, i) {
+          notes[i].space = s.space;
+          notes[i].space_id = s._id;
+          // console.log(notes[i]);
+        });
         console.log('%d notes for step %d', notes.length, step);
         // Mix notes
         allNotes = _.union(allNotes, notes);
@@ -155,14 +162,19 @@ function pollProjects(exit) {
       // fix notes
       var subcalls = [];
       allNotes.forEach(function(note) {
-        var s =  {_id:  note._id, userId: note.userId};
-        console.log('Note check', s, note);
+        var s =  {
+          id: note.id,
+          userId: note.userId,
+          text: note.text,
+          space: note.space,
+          space_id: note.space_id
+        };
+        // console.log('Note check', s);
         subcalls.push(function(callback) {
           var u = _.findWhere(allUsers, {userId: s.userId});
           if(u) {
-            if(!s._id) {
-              s._id = mongoose.Types.ObjectId();
-              console.log('Created new _id', s._id);
+            if(!s.id) {
+              console.log('Creating new note with', s.text);
             }
             s.author = u.name;
             s.role = u.role;
@@ -180,9 +192,9 @@ function pollProjects(exit) {
             if(group) {
               s.group = group.group;
             }
-            models.Note.findOneAndUpdate({_id: s._id},s,{upsert: true},function(err){
+            models.Note.findOneAndUpdate({id: s.id},s,{upsert: true},function(err){
               if(err) return abort(exit, ['ERROR SAVING NOTE', s], err);
-              console.log('Saved note', s._id);
+              console.log('Saved note', s.id);
               callback();
             });
           } else {
