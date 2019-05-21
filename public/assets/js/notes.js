@@ -150,7 +150,7 @@ $(function(){
         return null;
       }
       var n = {
-        id: parseInt($('#note-chapter option').length, 10) + 1,
+        id: new Date().getUTCMilliseconds(),
         text: term
       }
       // TODO: add to show select and chapter editor
