@@ -14,6 +14,7 @@ function addSlides(slides) {
         '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span>' +
         '<span class="pull-right">' +
         (slide.group ? '<span class="badge">Group ' + slide.group + '</span>&nbsp;' : '') +
+        (slide.chapter ? '<span class="badge">' + slide.chapter + '</span>&nbsp;' : '') +
         (slide.type === 'note' ? '<span class="btn-group"><button title="Edit note" class="note-edit btn btn-info"><span class="glyphicon glyphicon-edit"></span></button><button title="Remove note" class="note-remove btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>' : '<button title="Copy note" class="btn btn-success note-copy"><span class="glyphicon glyphicon-copy"></span></button>' ) +
         '</span>' +
         '</h4>' +

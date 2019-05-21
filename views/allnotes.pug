@@ -28,7 +28,7 @@ block content
       if i !== 0
         div(id="tab-"+i, class="row tab-pane" + (i===0 ? ' active' : ''))
           div.col-xs-10
-            ul.media-list.well.well-sm
+            div(id="media-"+i)
 
           div.col-xs-2
             div.step-users.well.well-sm

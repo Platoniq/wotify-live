@@ -1,35 +1,68 @@
+function addNote(note, container) {
+  var twitter = note.twitter ? '&via=' + note.twitter : '' ;
+
+  var markup = '<li class="media" id="' + note._id + '">' +
+    '<div class="media-left">' +
+      '<a href="#">' +  getHexagon(note) + '</a>' +
+    '</div>' +
+    '<div class="media-body">' +
+      '<h4 class="media-heading"><b class="userId">' + note.userId + '</b> <span class="author">' + note.author + '</span>' +
+      (note.group ? '<span class="badge pull-right">Group ' + note.group + '</span>' : '') +
+      (note.chapter ? '<span class="badge pull-right">' + note.chapter + '</span>' : '') +
+      '</h4>' +
+      '<div class="text">' + note.text + '</div>' +
+      '<div class="date">' +  (new Date(note.created_at)).toLocaleString() + '</div>' +
+    '</div>' +
+    '<div class="media-right">' +
+      '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(note.text) + '&hashtags=' + HASHTAGS + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
+    '</div>' +
+  '</li>';
+  if($(container + ' #' + note._id).is('li')) {
+    $(container + '  #' + note._id).replaceWith(markup);
+  } else {
+    $(container).prepend(markup);
+  }
+}
+
 function addNotes(notes, step) {
   var valid = [];
-  _.each(notes, function(note) {
-    var twitter = note.twitter ? '&via=' + note.twitter : '' ;
 
-    var markup = '<li class="media" id="' + note._id + '">' +
-      '<div class="media-left">' +
-        '<a href="#">' +  getHexagon(note) + '</a>' +
-      '</div>' +
-      '<div class="media-body">' +
-        '<h4 class="media-heading"><b class="userId">' + note.userId + '</b> <span class="author">' + note.author + '</span>' +
-        (note.group ? '<span class="badge pull-right">Group ' + note.group + '</span>' : '') +
-        '</h4>' +
-        '<div class="text">' + note.text + '</div>' +
-        '<div class="date">' +  (new Date(note.created_at)).toLocaleString() + '</div>' +
-      '</div>' +
-      '<div class="media-right">' +
-        '<a href="http://twitter.com/intent/tweet?text='+ encodeURI(note.text) + '&hashtags=' + HASHTAGS + twitter + '"><img src="/assets/img/social/twitter.svg" ></a>' +
-      '</div>' +
-    '</li>';
-    if($('#tab-' + step + ' #' + note._id).is('li')) {
-      $('#tab-' + step + '  #' + note._id).replaceWith(markup);
+  var grouped = _.groupBy(notes, 'chapter_id');
+  console.log('grouped', grouped);
+  _.each(grouped, function(group) {
+    // Create zone
+    var chapter_id = group[0].chapter_id || '0';
+    var chapter = group[0].chapter || '';
+    console.log('chapter', chapter_id, chapter);
+    if($('#media-' + step).length) {
+      var markup = (chapter ? '<h4>' + chapter + '</h4>' : '' ) + '<ul class="media-list well well-sm" id="chapter-' + step + '-' + chapter_id + '"></ul>';
+      if($('#chapter-' + step + '-' + chapter_id).length) {
+        console.log('Update UL container')
+        $('#chapter-' + step + '-' + chapter_id).contents('h4').text(chapter);
+      } else {
+        console.log('Create UL container');
+        $('#media-' + step).append(markup)
+      }
+      // Add notes to the proper container
+      _.each(group, function(note) {
+        addNote(note, '#chapter-' + step + '-' + chapter_id);
+        valid.push(note._id);
+      });
     } else {
-      $('#tab-' + step + '  ul.media-list').prepend(markup);
+      console.error('Media container not found for step', step);
     }
-    valid.push(note._id);
   });
   // Delete removed
-  $('#tab-' + step + ' .ul.media-list li').each(function(){
+  // console.log('valid', valid);
+  $('#media-' + step + ' ul.media-list li').each(function(){
     if($.inArray($(this).attr('id'), valid) === -1) {
       $(this).remove();
     }
+  });
+  // Delete empty ul
+  $('#media-' + step + ' ul.media-list:empty').each(function(){
+    if($(this).prev().is('h4')) $(this).prev().remove();
+    $(this).remove();
   });
 }
 
@@ -93,9 +126,9 @@ SOCKET.on('step init', function(step){
 
     if(notes && notes.length)
       console.log('get slide',slide, 'NOTES',notes)
-    // notes = _.filter(notes, function(s){
-    //   return s && s.type === 'note';
-    // });
+    notes = _.filter(notes, function(s){
+      return s && s.type === 'note';
+    });
     // console.log('notes',notes, notes);
 
     // Set totals
