@@ -9,29 +9,35 @@ block header
           span.icon-panic.pull-right
 
 block content
+  ul.nav.nav-tabs
+    li.active
+      a(href="#note", data-toggle="tab") Notes&nbsp;
+        span#total-note.badge
+    li
+      a(href="#api", data-toggle="tab") Roadbook responses&nbsp;
+        span#total-api.badge
+
+    li.pull-right
+      form.form-inline
+        div.form-group
+          label(for="show-type") Show:&nbsp;
+          select#show-type.form-control
+            option(value="all") Notes &amp; Roadbook
+            option(value="note") Only notes
+            option(value="api") Only Roadbook
+        div.form-group
+          label(for="show-chapter") Chapter:&nbsp;
+          select#show-chapter.form-control
+            option(value="_all_") All
+            option(value="_active_") Active chapter
+            option(value="") ---
+            each c in chapters
+              option(value=c.id) !{c.title}
+
   div.row
-    div.col-xs-10
-      ul.nav.nav-tabs
-        li.active
-          a(href="#note", data-toggle="tab") Notes&nbsp;
-            span#total-note.badge
-        li
-          a(href="#api", data-toggle="tab") Roadbook responses&nbsp;
-            span#total-api.badge
-
-        li.pull-right
-          form.form-inline
-            div.form-group
-              label(for="show-type") Show:
-              select#show-type.form-control
-                option(value="all") Notes &amp; Roadbook
-                option(value="note") Only notes
-                option(value="api") Only Roadbook
-
-      div.well.well-sm.tab-content
-
+    div.col-md-10.col-xs-12
+      div.tab-content
         div#note.tab-pane.active
-
           form.form-horizontal
             div.form-group
               label(for="note-chapter", class="col-sm-2 control-label") Chapter:
@@ -54,19 +60,44 @@ block content
                   span.glyphicon.glyphicon-floppy-save
                   .
                     &nbsp;Save note
-                button(type="reset", class="btn btn-default pull-right")
-                  span.glyphicon.glyphicon-remove
+                div.pull-right
+                  button(type="reset", class="btn btn-default")
+                    span.glyphicon.glyphicon-remove
+                    .
+                      &nbsp;Cancel
                   .
-                    &nbsp;Cancel
+                    &nbsp;
+                  //- div.btn-group
+                    button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown")
+                      span.glyphicon.glyphicon-list
+                      .
+                        &nbsp;Chapter&nbsp;
+                      span.caret
+                    ul.dropdown-menu
+                      li
+                        a
+                          span.glyphicon.glyphicon-ok
+                          .
+                            &nbsp;Assign
+                      li
+                        a
+                          span.glyphicon.glyphicon-edit
+                          .
+                            &nbsp;Edit
+                      li
+                        a
+                          span.glyphicon.glyphicon-trash
+                          .
+                            &nbsp;Remove
                 input(type="hidden", id="note-id")
-          hr
-          ul.media-list
+          ul.media-list.well.sm-well
 
         div#api.tab-pane
 
           ul.media-list
+      div.clearfix
 
-    div.col-xs-2
+    div.col-md-2.col-xs-12
       div#step-users.well.well-sm
         h4 !{texts.facilitators}
         div.users

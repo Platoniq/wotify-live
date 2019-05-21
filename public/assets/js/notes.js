@@ -12,13 +12,16 @@ function addSlides(slides) {
       '</div>' +
       '<div class="media-body">' +
         '<h4 class="media-heading"><b class="userId">' + slide.userId + '</b> <span class="author">' + slide.author + '</span>' +
-        '<span class="pull-right">' +
-        (slide.group ? '<span class="badge">Group ' + slide.group + '</span>&nbsp;' : '') +
-        (slide.chapter ? '<span class="label label-info">' + slide.chapter + '</span>&nbsp;' : '') +
-        (slide.type === 'note' ? '<span class="btn-group"><button title="Edit note" class="note-edit btn btn-primary"><span class="glyphicon glyphicon-edit"></span></button><button title="Remove note" class="note-remove btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>' : '<button title="Copy note" class="btn btn-success note-copy"><span class="glyphicon glyphicon-copy"></span></button>' ) +
+        '<span class="pull-right text-right chapter-badge">' +
+        (slide.chapter ? '<span class="badge' + ( $('#note-chapter').val() == slide.chapter_id ? ' active' : '') + '">' + slide.chapter + '</span>' : '') +
         '</span>' +
         '</h4>' +
         '<div class="text">' + slide.text + '</div>' +
+        '<div class="pull-right text-right">' +
+          (slide.group ? '<span class="badge">Group ' + slide.group + '</span>' : '') +
+          (slide.type === 'note' ? '<span class="btn-group"><button title="Edit note" class="note-edit btn btn-sm btn-primary"><span class="glyphicon glyphicon-edit"></span></button><button title="Remove note" class="note-remove btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button></span>' : '<button title="Copy note" class="btn btn-sm btn-success note-copy"><span class="glyphicon glyphicon-copy"></span></button>' ) +
+        '</div>' +
+        '</span>' +
         '<div class="date">' +  (new Date(slide.created_at)).toLocaleString() + '</div>' +
       '</div>' +
     '</li>';
@@ -72,6 +75,17 @@ SOCKET.on('notes space ' + SPACE, function(slide, notes) {
   if(slide && slide.show) {
     $('#show-type').val(slide.show);
   }
+  if(slide && slide.chapter) {
+    $('#show-chapter').val(slide.chapter);
+  }
+
+  var c = _.findWhere(slide.chapters, { active: true });
+  if(c && c.id) {
+    console.log('Active chapter', c);
+    $('#note-chapter').val(c.id);
+    $('#note-chapter').trigger('change');
+  }
+
   $('.spinning').hide();
   // console.log('Adding notes', notes);
   addSlides(notes || []);
@@ -126,6 +140,7 @@ $(function(){
 
   var select2_chapters = {
     selectOnClose: true,
+    width: '100%',
     placeholder: "Select a chapter",
     tags: true,
     createTag: function (params) {
@@ -134,15 +149,17 @@ $(function(){
       if (term === '') {
         return null;
       }
-
-      return {
+      var n = {
         id: parseInt($('#note-chapter option').length, 10) + 1,
         text: term
       }
+      // TODO: add to show select and chapter editor
+      return n;
     }
   };
 
   var select2_users = {
+    width: '100%',
     ajax: {
       url: '/api/users',
       dataType: 'json',
@@ -178,9 +195,13 @@ $(function(){
   };
 
   $('#note-chapter').select2(select2_chapters);
-  // $('#note-chapter').on('select2:close', function(){
-  //   console.log('Activate chapter', $('#note-chapter'));
-  // });
+  $('#note-chapter').on('select2:close', function(){
+    var id = $('#note-chapter').val();
+    console.log('Activate chapter', id);
+    $('.chapter-badge>.badge.active').removeClass('active');
+    $('[data-chapter-id="' + id + '"] .chapter-badge>.badge').addClass('active');
+    SOCKET.emit('slide change', {space: SPACE, activate: id});
+  });
   $('#note-user').select2(select2_users);
   $('#note-user').on('select2:close', function(){
     $('#note-text').select();
@@ -247,8 +268,8 @@ $(function(){
   });
 
   // Note show-type
-  $('#show-type').on('change', function(){
-    SOCKET.emit('slide change', {space: SPACE, show: $(this).val()});
+  $('#show-type,#show-chapter').on('change', function(){
+    SOCKET.emit('slide change', {space: SPACE, type: $('#show-type').val(), chapter: $('#show-chapter').val()});
   });
 
   // Panic button
