@@ -54,7 +54,7 @@ function initModel(obj) {
       if(model=="group")
         $('#' + model + '-users > h4').html('Group ' + obj.group );
       else
-        $('#' + model + '-users > h4').html('Idea Feeders & Facilitators');
+        $('#' + model + '-users > h4').html(TEXTS.facilitators);
       _.each(users,function(u){
         if(model=="group")
           $('#' + model + '-users .users').append('<div class="pull-left">'+getHexagon(u,1)+'</div>');

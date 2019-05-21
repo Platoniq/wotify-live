@@ -23,7 +23,7 @@ function initModel(obj) {
         if(model=="group")
           $('#' + model + '-users').html('');
         else
-          $('#' + model + '-users').html('<h2>Idea Feeders & Facilitators</h2>');
+          $('#' + model + '-users').html('<h2>' + TEXTS.facilitators + '</h2>');
       _.each(users,function(u){
         // TODO: format this
         if(model=="group")

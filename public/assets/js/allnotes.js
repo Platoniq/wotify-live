@@ -50,7 +50,7 @@ function initModel(obj, step) {
       if(model=="group")
         $('#tab-' + step + ' .' + model + '-users > h4').html('Current group ' + obj.group );
       else
-        $('#tab-' + step + ' .' + model + '-users > h4').html('Idea Feeders & Facilitators');
+        $('#tab-' + step + ' .' + model + '-users > h4').html(TEXTS.facilitators);
       _.each(users,function(u){
         if(model=="group")
           $('#tab-' + step + ' .' + model + '-users .users').append('<div class="pull-left">'+getHexagon(u,1)+'</div>');
