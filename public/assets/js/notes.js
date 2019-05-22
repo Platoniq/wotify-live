@@ -2,10 +2,10 @@ FULLSCREEN=false;
 
 /* SOCKET ACTIONS */
 
-function addSlides(slides) {
+function addNotes(notes) {
   var valid = [];
   var totals = {api:0,note:0};
-  _.each(slides, function(slide) {
+  _.each(notes, function(slide) {
     var markup = '<li class="media" id="' + slide._id + '" data-chapter-id="' + slide.chapter_id + '">' +
       '<div class="media-left">' +
         '<a href="#">' +  getHexagon(slide) + '</a>' +
@@ -47,6 +47,54 @@ function addSlides(slides) {
   });
 }
 
+function updateSlide(slide) {
+  // update selects
+  $('#show-chapter option').each(function(){
+    var $o = $(this);
+    if($o.val() == '_all_' || $o.val() == '_active_' || !$o.val())
+      return;
+    var $c = $('#note-chapter option[value="' + $o.val() + '"]');
+    var c = _.findWhere(slide.chapters, {id: parseInt($o.val(),10)});
+    if(c) {
+      if(c.title != $o.text()) {
+        console.log('UPDATE', c);
+        $o.text(c.title);
+        $c.text(c.title);
+        $('#note-chapter').trigger('change');
+      }
+    } else {
+      console.log('REMOVE!', $o.val(), $o.text());
+      $c.remove();
+      $o.remove();
+      $('#note-chapter').trigger('change');
+    }
+  });
+  // add missing
+  _.each(slide.chapters, function(c) {
+    var $o = $('#show-chapter option[value="' + c.id + '"]');
+    var $c = $('#note-chapter option[value="' + c.id + '"]');
+    if(!$o.length)
+      $('#show-chapter').append('<option value="' + c.id + '">' + c.title + '</option>');
+    if(!$c.length) {
+      $('#note-chapter').append('<option value="' + c.id + '">' + c.title + '</option>');
+      $('#note-chapter').trigger('change');
+    }
+  });
+
+  if(slide && slide.show) {
+    $('#show-type').val(slide.show);
+  }
+  if(slide && slide.chapter) {
+    $('#show-chapter').val(slide.chapter);
+  }
+
+  var c = _.findWhere(slide.chapters, { active: true });
+  if(c && c.id) {
+    console.log('Active chapter', c);
+    $('#note-chapter').val(c.id);
+    $('#note-chapter').trigger('change');
+  }
+}
 function initModel(obj) {
   var model = 'group';
   if(obj.step !== undefined) model = 'step';
@@ -72,23 +120,12 @@ function initModel(obj) {
 
 SOCKET.on('notes space ' + SPACE, function(slide, notes) {
   $('body').loading('stop');
-  if(slide && slide.show) {
-    $('#show-type').val(slide.show);
-  }
-  if(slide && slide.chapter) {
-    $('#show-chapter').val(slide.chapter);
-  }
-
-  var c = _.findWhere(slide.chapters, { active: true });
-  if(c && c.id) {
-    console.log('Active chapter', c);
-    $('#note-chapter').val(c.id);
-    $('#note-chapter').trigger('change');
-  }
 
   $('.spinning').hide();
-  // console.log('Adding notes', notes);
-  addSlides(notes || []);
+
+  console.log('Adding slides & notes', slide);
+  updateSlide(slide);
+  addNotes(notes || []);
   // $('#note-user').select2('open');
   // $('.select2-search__field').focus();
 });
@@ -276,7 +313,6 @@ $(function(){
     eModal
       .prompt({title: "Edit chapter name", value: chapter})
       .then(function(msg) {
-        console.log(msg);
         SOCKET.emit('slide change', {space: SPACE, edit: {id: chapter_id, title: msg}});
         // showSuccess('Set <strong>'+target+'</strong> to <em>'+msg+'</em>');
       });
@@ -286,6 +322,7 @@ $(function(){
     var chapter_id = $('#note-chapter').val();
     var chapter = $('#note-chapter option:selected').text();
     console.log('REMOVE', chapter_id, chapter);
+    SOCKET.emit('slide change', {space: SPACE, remove: chapter_id});
   });
 
   // Note show-type
