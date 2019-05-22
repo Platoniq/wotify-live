@@ -60,7 +60,8 @@ function updateSlide(slide) {
         console.log('UPDATE', c);
         $o.text(c.title);
         $c.text(c.title);
-        $('#note-chapter').trigger('change');
+        $('#note-chapter').select2('destroy');
+        $('#note-chapter').select2(select2_chapters);
       }
     } else {
       console.log('REMOVE!', $o.val(), $o.text());
@@ -168,6 +169,61 @@ SOCKET.on('success', function(msg) {
 
 /* JQUERY ACTIONS */
 
+var select2_chapters = {
+  selectOnClose: true,
+  width: '100%',
+  placeholder: "Select a chapter",
+  tags: true,
+  createTag: function (params) {
+    var term = $.trim(params.term);
+
+    if (term === '') {
+      return null;
+    }
+    var n = {
+      id: new Date().getUTCMilliseconds(),
+      text: term
+    }
+    // TODO: add to show select and chapter editor
+    return n;
+  }
+};
+
+var select2_users = {
+  width: '100%',
+  ajax: {
+    url: '/api/users',
+    dataType: 'json',
+    delay: 250,
+    processResults: function (data) {
+      return {
+        results: data
+      };
+    },
+  },
+  selectOnClose: true,
+  placeholder: "Select an user",
+  escapeMarkup: function (markup) { return markup; },
+  minimumInputLength: 1,
+  templateSelection: function(item) {
+    return '<b>' + item.id + '</b> ' + (item.name || item.text);
+  },
+  templateResult: function(item) {
+    if (item.loading) return item.name;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+      "<div class='select2-result-repository__avatar'>" + getHexagon(item) + "</div>" +
+      "<div class='select2-result-repository__meta'>" +
+      "<div class='select2-result-repository__title'><b>" + item.id + '</b> ' + item.name + "</div>";
+
+    // if (repo.bio) {
+    //   markup += "<div class='select2-result-__description'>" + repo.bio + "</div>";
+    // }
+
+    markup += "</div></div>";
+
+    return markup;
+  },
+};
 $(function(){
   // Set loading initial status
 
@@ -175,61 +231,6 @@ $(function(){
   $('body').loading();
   SOCKET.emit('get slides', SPACE, 'all');
 
-  var select2_chapters = {
-    selectOnClose: true,
-    width: '100%',
-    placeholder: "Select a chapter",
-    tags: true,
-    createTag: function (params) {
-      var term = $.trim(params.term);
-
-      if (term === '') {
-        return null;
-      }
-      var n = {
-        id: new Date().getUTCMilliseconds(),
-        text: term
-      }
-      // TODO: add to show select and chapter editor
-      return n;
-    }
-  };
-
-  var select2_users = {
-    width: '100%',
-    ajax: {
-      url: '/api/users',
-      dataType: 'json',
-      delay: 250,
-      processResults: function (data) {
-        return {
-          results: data
-        };
-      },
-    },
-    selectOnClose: true,
-    placeholder: "Select an user",
-    escapeMarkup: function (markup) { return markup; },
-    minimumInputLength: 1,
-    templateSelection: function(item) {
-      return '<b>' + item.id + '</b> ' + (item.name || item.text);
-    },
-    templateResult: function(item) {
-      if (item.loading) return item.name;
-      var markup = "<div class='select2-result-repository clearfix'>" +
-        "<div class='select2-result-repository__avatar'>" + getHexagon(item) + "</div>" +
-        "<div class='select2-result-repository__meta'>" +
-        "<div class='select2-result-repository__title'><b>" + item.id + '</b> ' + item.name + "</div>";
-
-      // if (repo.bio) {
-      //   markup += "<div class='select2-result-__description'>" + repo.bio + "</div>";
-      // }
-
-      markup += "</div></div>";
-
-      return markup;
-    },
-  };
 
   $('#note-chapter').select2(select2_chapters);
   $('#note-user').select2(select2_users);
