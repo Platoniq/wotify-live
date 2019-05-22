@@ -67,24 +67,29 @@ block content
                       &nbsp;Cancel
                   .
                     &nbsp;
-                  //- div.btn-group
+                  div.btn-group
                     button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown")
                       span.glyphicon.glyphicon-list
                       .
                         &nbsp;Chapter&nbsp;
                       span.caret
                     ul.dropdown-menu
+                      li
+                        a(id="chapter-activate", href="#")
+                          span.glyphicon.glyphicon-check
+                          .
+                            &nbsp;Activate
                       //- li
                         a#chapter-assign
                           span.glyphicon.glyphicon-ok
                           .
                             &nbsp;Assign
-                      li
+                      //- li
                         a#chapter-edit
                           span.glyphicon.glyphicon-edit
                           .
                             &nbsp;Edit
-                      li
+                      //- li
                         a#chapter-remove
                           span.glyphicon.glyphicon-trash
                           .

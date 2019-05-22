@@ -195,13 +195,6 @@ $(function(){
   };
 
   $('#note-chapter').select2(select2_chapters);
-  $('#note-chapter').on('select2:close', function(){
-    var id = $('#note-chapter').val();
-    console.log('Activate chapter', id);
-    $('.chapter-badge>.badge.active').removeClass('active');
-    $('[data-chapter-id="' + id + '"] .chapter-badge>.badge').addClass('active');
-    SOCKET.emit('slide change', {space: SPACE, activate: id});
-  });
   $('#note-user').select2(select2_users);
   $('#note-user').on('select2:close', function(){
     $('#note-text').select();
@@ -268,6 +261,14 @@ $(function(){
   });
 
   // Chapter editor
+  $('#chapter-activate').on('click', function() {
+    var id = $('#note-chapter').val();
+    console.log('Activate chapter', id);
+    $('.chapter-badge>.badge.active').removeClass('active');
+    $('[data-chapter-id="' + id + '"] .chapter-badge>.badge').addClass('active');
+    SOCKET.emit('slide change', {space: SPACE, activate: id});
+  });
+
   $('#chapter-edit').on('click', function() {
     var chapter_id = $('#note-chapter').val();
     var chapter = $('#note-chapter option:selected').text();
