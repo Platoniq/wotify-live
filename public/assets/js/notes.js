@@ -126,9 +126,11 @@ SOCKET.on('notes space ' + SPACE, function(slide, notes) {
 
   console.log('Adding slides & notes', slide);
   updateSlide(slide);
+  if($('ul.media-list').hasClass('assign')) {
+    console.log('SKIPPING REFRESH IN ASSIGN MODE');
+    return;
+  }
   addNotes(notes || []);
-  // $('#note-user').select2('open');
-  // $('.select2-search__field').focus();
 });
 
 SOCKET.on('step init', function(step) {
@@ -326,6 +328,40 @@ $(function(){
     SOCKET.emit('slide change', {space: SPACE, remove: chapter_id});
   });
 
+  $('#chapter-assign').on('click', function() {
+    var chapter_id = $('#note-chapter').val();
+    var chapter = $('#note-chapter option:selected').text();
+    $('#note-form').slideUp();
+    $('#note-assign span').text(chapter);
+    $('#note-assign').slideDown();
+    $('ul.media-list').addClass('assign');
+    $('ul.media-list li').each(function(){
+      if($(this).data('chapter-id') == chapter_id) $(this).addClass('active');
+    });
+    $('ul.media-list li').on('click', function(){
+      console.log('ASSIGN');
+      $(this).toggleClass('active');
+    });
+  });
+  var cancelAssign = function() {
+    $('#note-form').slideDown();
+    $('#note-assign').slideUp();
+    $('ul.media-list').removeClass('assign');
+    $('ul.media-list li').removeClass('active');
+    $('ul.media-list li').off('click');
+  };
+  $('#chapter-assign-cancel').on('click', cancelAssign);
+  $('#chapter-assign-save').on('click', function() {
+    var chapter_id = $('#note-chapter').val();
+    var chapter = $('#note-chapter option:selected').text();
+    var ids = [];
+    $('ul.media-list li.active').each(function(){
+      ids.push($(this).attr('id'));
+    });
+    console.log('save these:', ids, 'with chapter', chapter_id, chapter);
+    SOCKET.emit('slide change', {space: SPACE, assign: { id: chapter_id, ids: ids}});
+    cancelAssign();
+  });
   // Note show-type
   $('#show-type,#show-chapter').on('change', function(){
     SOCKET.emit('slide change', {space: SPACE, type: $('#show-type').val(), chapter: $('#show-chapter').val()});

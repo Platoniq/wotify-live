@@ -38,7 +38,7 @@ block content
     div.col-sm-10.col-xs-12
       div.tab-content
         div#note.tab-pane.active
-          form.form-horizontal
+          form#note-form.form-horizontal
             div.form-group
               label(for="note-chapter", class="col-sm-2 control-label") Chapter:
               div.col-sm-10
@@ -79,8 +79,8 @@ block content
                           span.glyphicon.glyphicon-check
                           .
                             &nbsp;Activate
-                      //- li
-                        a#chapter-assign
+                      li
+                        a(id="chapter-assign", href="#")
                           span.glyphicon.glyphicon-ok
                           .
                             &nbsp;Assign
@@ -95,6 +95,13 @@ block content
                           .
                             &nbsp;Remove
                 input(type="hidden", id="note-id")
+          div#note-assign
+            .
+              Just click on the notes to assign <span class="badge"></span>&nbsp;
+            button#chapter-assign-save.btn.btn-primary Save
+            .
+              &nbsp;
+            button#chapter-assign-cancel.btn.btn-default Cancel
           ul.media-list.well.sm-well
 
         div#api.tab-pane
