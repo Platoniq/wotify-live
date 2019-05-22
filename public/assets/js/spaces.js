@@ -42,17 +42,17 @@ function initModel(obj) {
   console.log('Initialized ',model);
   if(model === 'step') {
     console.log(obj.step,' asking for slides');
-    SOCKET.emit('get slides', obj.step);
+    SOCKET.emit('get slides', obj.step, 'filtered');
     $('.spinning').show();
   }
 }
 
-function addSlides(slides){
+function addNotes(notes){
 
   var total = $('#stepsSlider > div').length;
 
   var index = 0;
-  _.each(slides, function(slide) {
+  _.each(notes, function(slide) {
     // console.log('ADDING SLIDE',index, slide);
     // TODO: split texts
     if(slide.text) {
@@ -68,6 +68,12 @@ function addSlides(slides){
           text=$.truncate(slide.text, {
                     length: 400
               });
+        // console.log('ADDING SLIDE',index, slide.text);
+        if(slide.chapter) {
+          item += '<h4 class="chapter">';
+          item += slide.chapter;
+          item += '</h4>';
+        }
         //if(index === 0 && total === 0)
             //item += ' active';
         //item += '" id="' + slide.id + '" data-index="' + (total + index) + '">';
@@ -135,11 +141,11 @@ SOCKET.on('notes space ' + SPACE, function(slide, notes) {
   $('.spinning').hide();
   $('#stepsSlider').html('');
   console.log('Adding notes', notes);
-  addSlides(notes || []);
+  addNotes(notes || []);
   if($('#stepsSlider > div:visible').is('div')) {
     $('#stepsSlider > div:visible').fadeOut(function(){
       $('#stepsSlider > div:first').fadeIn(function(){
-        CURRENT_TIMEOUT = setTimeout(startSlides, SLIDE_INTERVAL * 1000);
+        CURRENT_TIMEOUT = setTimeout(startNotes, SLIDE_INTERVAL * 1000);
       });
     });
   } else {

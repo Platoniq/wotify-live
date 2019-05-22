@@ -136,7 +136,7 @@ $(function(){
 
   console.log('Asking for slides');
   $('body').loading();
-  SOCKET.emit('get slides', SPACE, true);
+  SOCKET.emit('get slides', SPACE, 'all');
 
   var select2_chapters = {
     selectOnClose: true,
@@ -265,6 +265,26 @@ $(function(){
     $('#note-user').html('');
     $('#note-id').val('');
     $('#note ul.media-list li').removeClass('editing');
+  });
+
+  // Chapter editor
+  $('#chapter-edit').on('click', function() {
+    var chapter_id = $('#note-chapter').val();
+    var chapter = $('#note-chapter option:selected').text();
+    console.log('EDIT', chapter_id, chapter);
+    eModal
+      .prompt({title: "Edit chapter name", value: chapter})
+      .then(function(msg) {
+        console.log(msg);
+        SOCKET.emit('slide change', {space: SPACE, edit: {id: chapter_id, title: msg}});
+        // showSuccess('Set <strong>'+target+'</strong> to <em>'+msg+'</em>');
+      });
+  });
+
+  $('#chapter-remove').on('click', function() {
+    var chapter_id = $('#note-chapter').val();
+    var chapter = $('#note-chapter option:selected').text();
+    console.log('REMOVE', chapter_id, chapter);
   });
 
   // Note show-type

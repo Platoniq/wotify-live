@@ -262,6 +262,31 @@ body{
         background-color: @body-color-step1;
       }
     }
+    .media {
+      >h4 {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin:1em 0;
+        &:before,&:after {
+          content: '';
+          border-top: 2px solid;
+          margin: 0 20px 0 0;
+          flex: 1 0 20px;
+        }
+        &:after {
+          margin: 0 0 0 20px;
+        }
+        &.active {
+          color:#D9534F;
+        }
+      }
+      ul.media-list + h4 {
+        margin-top:3em;
+      }
+    }
   }
   // Bootstrap tweaks
   .media-left {

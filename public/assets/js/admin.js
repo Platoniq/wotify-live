@@ -45,12 +45,9 @@ function initModel (obj) {
 SOCKET.on('step init', function(step) {
   initModel(step);
   if(!ASKED_SLIDES[step.step]) {
-    SOCKET.emit('get slides', step.step, true);
-    SOCKET.on('notes space ' + step.step, function(slide) {
-      var notes = _.filter(slide.notes, function(s){
-        return s.type === 'note';
-      });
-      console.log('notes',notes, slide.notes);
+    SOCKET.emit('get slides', step.step, 'notes');
+    SOCKET.on('notes space ' + step.step, function(slide, notes) {
+      console.log('notes',notes, notes);
       $('li[data-step=' + step.step+ '] .total-notes').text(parseInt(notes.length,10));
     });
   }

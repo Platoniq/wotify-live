@@ -24,14 +24,15 @@ function addNote(note, container) {
   }
 }
 
-function addNotes(notes, step) {
+function addNotes(notes, step, slide) {
   var valid = [];
 
-  var grouped = _.groupBy(notes, 'chapter_id');
+  var grouped = _.groupBy(notes, 'chapter_id' );
   // console.log('grouped', grouped);
   _.each(grouped, function(group) {
     // Create zone
     var chapter_id = group[0].chapter_id || '0';
+    // var chapter = (slide.chapters && slide.chapters[chapter_id] && slide.chapters[chapter_id].title) || group[0].chapter || '';
     var chapter = group[0].chapter || '';
     var active = !!group[0].active;
     console.log('chapter', chapter_id, chapter);
@@ -122,7 +123,7 @@ SOCKET.on('step init', function(step){
   $('li.step.step-' + step.step).addClass('initialized');
   initModel(step, step.step);
   // Ask for slides
-  SOCKET.emit('get slides', step.step, true);
+  SOCKET.emit('get slides', step.step, 'notes');
   // Write data
   SOCKET.on('notes space ' + step.step, function(slide, notes) {
     $('body').loading('stop');
@@ -146,13 +147,15 @@ SOCKET.on('step init', function(step){
       });
     }
     // Set notes
-    addNotes(notes || [], step.step);
+    addNotes(notes || [], step.step, slide);
     // Update active status
     console.log('CHAPTERS for step', step, slide.chapters);
     _.each(slide.chapters, function(c){
-      $('#title-' + step.step + '-' + c.id + '>span').remove();
+      $('#title-' + step.step + '-' + c.id).removeClass('active');
+      // $('#title-' + step.step + '-' + c.id + '>span').remove();
       if(c.active)
-        $('#title-' + step.step + '-' + c.id).append('<span class="label label-danger pull-right">Active</span>');
+        $('#title-' + step.step + '-' + c.id).addClass('active');
+        // $('#title-' + step.step + '-' + c.id).append('<span class="label label-danger pull-right">Active</span>');
     });
 
     if(GOTO_CHAPTER && $('#tab-' + step.step).is(':visible')) {
